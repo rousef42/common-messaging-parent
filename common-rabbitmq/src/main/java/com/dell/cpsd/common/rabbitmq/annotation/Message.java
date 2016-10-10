@@ -31,6 +31,13 @@ public @interface Message
     String value();
 
     /**
+     * This is the message version
+     *
+     * @return the message version
+     */
+    String version();
+
+    /**
      * Visibility message visibility. Defaults to non-federated.
      *
      * @return the message visibility

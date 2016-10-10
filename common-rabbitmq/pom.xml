@@ -52,7 +52,13 @@
             <artifactId>spring-rabbit</artifactId>
             <version>${spring-amqp-version}</version>
         </dependency>
-        
+
+        <dependency>
+            <artifactId>jsonschema2pojo-core</artifactId>
+            <groupId>org.jsonschema2pojo</groupId>
+            <version>0.4.27</version>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>junit</groupId>
