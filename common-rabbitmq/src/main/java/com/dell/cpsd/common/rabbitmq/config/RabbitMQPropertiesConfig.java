@@ -3,7 +3,7 @@
  * VCE Confidential/Proprietary Information
  */
 
-package com.dell.cpsd.common.rabbitmq;
+package com.dell.cpsd.common.rabbitmq.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -99,6 +99,21 @@ public class RabbitMQPropertiesConfig
     public String rabbitPassword()
     {
         return environment.getProperty("remote.dell.amqp.rabbitPassword", "");
+    }
+    
+    
+    /**
+     * This returns the rabbit user name. The name of the property is
+     * <code>remote.dell.amqp.rabbitUsername</code>.
+     * 
+     * @return  The rabbit user name.
+     * 
+     * @since   SINCE-TBD
+     */
+    @Bean
+    public String rabbitUsername()
+    {
+        return environment.getProperty("remote.dell.amqp.rabbitUsername", "");
     }
 
     
