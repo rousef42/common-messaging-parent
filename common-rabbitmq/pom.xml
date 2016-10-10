@@ -19,7 +19,14 @@
 
 
     <dependencies>
-
+        
+        <!--  slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        
         <!-- Spring Core -->
         <dependency>
             <groupId>org.springframework</groupId>
