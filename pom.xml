@@ -10,6 +10,15 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+         <distribution.id>vce.release</distribution.id>
+        <distribution.name>vce.release</distribution.name>
+        <distribution.url>http://repo.vmo.lab:8080/artifactory/libs-release-local</distribution.url>
+        <snapshot.id>vce.snapshot</snapshot.id>
+        <snapshot.name>vce.snapshot</snapshot.name>
+        <snapshot.url>http://repo.vmo.lab:8080/artifactory/libs-snapshot-local</snapshot.url>
+        <buildrepo.url>http://repo.vmo.lab:8080/artifactory/build-repos/</buildrepo.url>
+        
     </properties>
 
     <modules>
@@ -29,5 +38,96 @@
             </plugin>
         </plugins>
     </build>
+    
+     <!-- ====================================================================== -->
+    <!-- Distribution Management TO BE REMOVED -->
+    <!-- ====================================================================== -->
+    <distributionManagement>
+        <repository>
+            <id>${distribution.id}</id>
+            <name>${distribution.name}</name>
+            <url>${distribution.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${snapshot.id}</id>
+            <name>${snapshot.name}</name>
+            <url>${snapshot.url}</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!-- ====================================================================== -->
+    <!-- Default VCE Dependency Repositories TO BE REMOVED -->
+    <!-- ====================================================================== -->
+    <repositories>
+        <repository>
+            <id>build-repos</id>
+            <url>${buildrepo.url}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>${snapshot.id}</id>
+            <url>${snapshot.url}</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!-- ====================================================================== -->
+    <!-- Default VCE Plugin Repostiory TO BE REMOVED -->
+    <!-- ====================================================================== -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>build-repos</id>
+            <url>${buildrepo.url}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>${snapshot.id}</id>
+            <url>${snapshot.url}</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
