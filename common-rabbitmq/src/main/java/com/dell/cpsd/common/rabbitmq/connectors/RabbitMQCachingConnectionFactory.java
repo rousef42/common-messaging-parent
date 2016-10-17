@@ -117,6 +117,7 @@ public final class RabbitMQCachingConnectionFactory extends CachingConnectionFac
         
         this.primaryHost = configuration.rabbitHostname();
         this.password = configuration.rabbitPassword();
+        this.username = configuration.rabbitUsername();
         this.port = configuration.rabbitPort();
         this.virtualHost = configuration.rabbitVirtualHost();
         this.secondaryAddresses = configuration.secondaryHostnames();
