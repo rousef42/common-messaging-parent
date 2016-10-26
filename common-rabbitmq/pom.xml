@@ -17,9 +17,7 @@
         <spring-amqp-version>1.4.0.RELEASE</spring-amqp-version>
     </properties>
 
-
     <dependencies>
-        
         <!--  slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -51,12 +49,6 @@
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
             <version>${spring-amqp-version}</version>
-        </dependency>
-
-        <dependency>
-            <artifactId>jsonschema2pojo-core</artifactId>
-            <groupId>org.jsonschema2pojo</groupId>
-            <version>0.4.27</version>
         </dependency>
 
         <!-- Test Dependencies -->

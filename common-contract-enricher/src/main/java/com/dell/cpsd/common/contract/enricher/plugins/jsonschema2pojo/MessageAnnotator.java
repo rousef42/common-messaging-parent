@@ -3,7 +3,7 @@
  * VCE Confidential/Proprietary Information
  */
 
-package com.dell.cpsd.common.rabbitmq.plugin;
+package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo;
 
 /**
  * <p>
@@ -35,7 +35,8 @@ public class MessageAnnotator extends AbstractAnnotator
         super();
     }
 
-    @Override public void propertyInclusion(JDefinedClass clazz, JsonNode schema)
+    @Override
+    public void propertyInclusion(JDefinedClass clazz, JsonNode schema)
     {
         JsonNode meta = schema.get("_meta");
         if (meta != null)

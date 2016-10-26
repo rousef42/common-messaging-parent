@@ -20,7 +20,23 @@
 
     <modules>
         <module>common-rabbitmq</module>
+        <module>common-contract-enricher</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.dell.cpsd.common.messaging</groupId>
+                <artifactId>common-rabbitmq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dell.cpsd.common.messaging</groupId>
+                <artifactId>common-contract-enricher</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
