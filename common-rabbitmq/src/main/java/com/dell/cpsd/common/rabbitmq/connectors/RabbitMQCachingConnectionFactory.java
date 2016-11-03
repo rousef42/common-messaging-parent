@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.dell.cpsd.common.rabbitmq.config.RabbitMQPropertiesConfig;
+import com.dell.cpsd.common.rabbitmq.config.IRabbitMqPropertiesConfig;
 
 import com.dell.cpsd.common.logging.ILogger;
 
@@ -113,6 +114,21 @@ public final class RabbitMQCachingConnectionFactory extends CachingConnectionFac
     public RabbitMQCachingConnectionFactory(ConnectionFactory connectionFactory,
             RabbitMQPropertiesConfig configuration)
     {
+        this(connectionFactory, ((IRabbitMqPropertiesConfig)configuration));
+    }
+
+    
+    /**
+     * RabbitMQCachingConnectionFactory constructor.
+     * 
+     * @param   connectionFactory  The RabbitMQ connection factory.
+     * @param   configuration      The configuration to use.
+     * 
+     * @since   SINCE-TDB
+     */
+    public RabbitMQCachingConnectionFactory(ConnectionFactory connectionFactory,
+            IRabbitMqPropertiesConfig configuration)
+    {
         super(connectionFactory);
         
         this.primaryHost = configuration.rabbitHostname();
@@ -134,7 +150,6 @@ public final class RabbitMQCachingConnectionFactory extends CachingConnectionFac
                          lparams, exception);
         }
     }
-
 
 
     /**

@@ -5,13 +5,6 @@
 
 package com.dell.cpsd.common.rabbitmq.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import org.springframework.core.env.Environment;
-
 /**
  * Configuration for common RabbitMQ properties.
  *
@@ -21,28 +14,8 @@ import org.springframework.core.env.Environment;
 
  * @since   SINCE-TBD
  */
-@Configuration
-public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
+public interface IRabbitMqPropertiesConfig
 {
-
-    /**
-     * The Environment.
-     */
-    @Autowired
-    protected Environment environment;
-    
-    
-    /**
-     * RabbitMQPropertiesConfig constructor.
-     * 
-     * @since   SINCE-TBD
-     */
-    public RabbitMQPropertiesConfig()
-    {
-        super();
-    }
-
-    
     /**
      * This returns the rabbit host name. The name of the property is 
      * <code>remote.dell.amqp.rabbitHostname</code>.
@@ -51,11 +24,7 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean
-    public String rabbitHostname()
-    {
-        return environment.getRequiredProperty("remote.dell.amqp.rabbitHostname");
-    }
+    public String rabbitHostname();
     
     
     /**
@@ -66,11 +35,7 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean 
-    public String secondaryHostnames()
-    {
-        return environment.getProperty("remote.dell.secondaries.amqp.rabbitHostname", "");
-    }
+    public String secondaryHostnames();
 
     
     /**
@@ -81,11 +46,7 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean
-    public Integer rabbitPort()
-    {
-        return environment.getProperty("remote.dell.amqp.rabbitPort", Integer.class, 5672);
-    }
+    public Integer rabbitPort();
 
     
     /**
@@ -96,11 +57,7 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean
-    public String rabbitPassword()
-    {
-        return environment.getProperty("remote.dell.amqp.rabbitPassword", "");
-    }
+    public String rabbitPassword();
     
     
     /**
@@ -111,11 +68,7 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean
-    public String rabbitUsername()
-    {
-        return environment.getProperty("remote.dell.amqp.rabbitUsername", "");
-    }
+    public String rabbitUsername();
 
     
     /**
@@ -126,11 +79,7 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean
-    public String rabbitVirtualHost()
-    {
-        return environment.getRequiredProperty("remote.dell.amqp.rabbitVirtualHost");
-    }
+    public String rabbitVirtualHost();
 
     
     /**
@@ -141,11 +90,7 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean
-    public Integer rabbitRequestedHeartbeat()
-    {
-        return environment.getProperty("remote.dell.amqp.rabbitRequestedHeartbeat", Integer.class, 0);
-    }
+    public Integer rabbitRequestedHeartbeat();
 
 
     /**
@@ -156,9 +101,5 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      * 
      * @since   SINCE-TBD
      */
-    @Bean
-    public String dataCenter()
-    {
-        return environment.getRequiredProperty("data.center");
-    }
+    public String dataCenter();
 }
