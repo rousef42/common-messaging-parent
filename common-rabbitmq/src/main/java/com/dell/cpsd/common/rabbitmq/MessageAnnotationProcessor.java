@@ -44,14 +44,14 @@ public class MessageAnnotationProcessor
      * @param   callback
      * @param   aClass
      */
-    private void process(final MessageAnnotationProcessorCallback callback, final Class<?> aClass)
+    public void process(final MessageAnnotationProcessorCallback callback, final Class<?> aClass)
     {
         Annotation annotation = aClass.getAnnotation(Message.class);
         
         if (annotation != null)
         {
             Message messageAnnotation = (Message) annotation;
-            callback.found(messageAnnotation.value(), aClass);
+            callback.found(messageAnnotation.value(), aClass); // @TODO, update callback to include version ... messageAnnotation.version());
         }
     }
 }

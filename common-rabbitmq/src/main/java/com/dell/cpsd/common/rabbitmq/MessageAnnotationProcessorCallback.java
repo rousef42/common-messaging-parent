@@ -21,8 +21,9 @@ public interface MessageAnnotationProcessorCallback
      * Callback method that is called for a class that contains the Message annotation.
      *
      * @param   messageType The messageType specified within the annotation.
-     * @param   cl          The class that contains message annotation.
+     * @param   messageClass The class that contains message annotation.
+     *
      */
-    void found(String messageType, Class cl);
+    void found(String messageType, Class messageClass);
 
 }
