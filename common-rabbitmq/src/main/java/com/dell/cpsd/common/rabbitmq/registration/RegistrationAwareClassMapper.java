@@ -6,9 +6,10 @@
 package com.dell.cpsd.common.rabbitmq.registration;
 
 import com.dell.cpsd.common.rabbitmq.MessageAnnotationProcessor;
+import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageDirectionType;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageExchangeDto;
+import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageQueueDto;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageRegistrationDto;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -16,9 +17,10 @@ import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,20 +44,17 @@ public class RegistrationAwareClassMapper extends DefaultClassMapper implements 
         this.autoRegister = autoRegister;
     }
 
-    public void addClassMapping(Class<?> expectedClass, MessageExchangeDto... expectedExchanges)
+    public MessageRegistrationBuilder builder(Class<?> expectedClass)
     {
-        final MessageAnnotationProcessor messageAnnotationProcessor = new MessageAnnotationProcessor();
-
-        messageAnnotationProcessor.process((messageType, messageClass) ->
-        {
-            JsonSchema schema = createSchema(messageClass);
-            classRegistrations
-                    .put(messageType, new MessageRegistrationDto(serviceName, messageClass, messageType, "1.0", schema,
-                            Arrays.asList(expectedExchanges)));
-        }, expectedClass);
+        return new MessageRegistrationBuilder(this, serviceName, expectedClass);
     }
 
-    public void initialiseMapper()
+    public void add(MessageRegistrationDto messageRegistrationDto)
+    {
+        this.classRegistrations.put(messageRegistrationDto.getMessageType(), messageRegistrationDto);
+    }
+
+    public void apply()
     {
         final Map<String, Class<?>> classMappings = new HashMap<>();
 
@@ -79,23 +78,74 @@ public class RegistrationAwareClassMapper extends DefaultClassMapper implements 
         return autoRegister;
     }
 
-    private JsonSchema createSchema(Class<?> clazz)
+    public class MessageRegistrationBuilder
     {
-        ObjectMapper mapper = new ObjectMapper();
-        try
+        private RegistrationAwareClassMapper classMapper;
+        private String serviceName;
+        private Class<?> expectedClass;
+        private List<MessageExchangeDto> exchanges = new ArrayList<>();
+        private List<MessageQueueDto> queues = new ArrayList<>();
+
+        public MessageRegistrationBuilder(RegistrationAwareClassMapper classMapper, String serviceName, Class<?> expectedClass)
         {
-            mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-            return mapper.generateJsonSchema(clazz);
-        }
-        catch (JsonMappingException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
+            this.classMapper = classMapper;
+            this.serviceName = serviceName;
+            this.expectedClass = expectedClass;
         }
 
-        return null;
+        public MessageRegistrationBuilder toExchange(String name)
+        {
+            return toExchange(name, MessageDirectionType.PRODUCE);
+        }
+
+        public MessageRegistrationBuilder toExchange(String name, MessageDirectionType direction)
+        {
+            exchanges.add(new MessageExchangeDto(name, direction));
+            return this;
+        }
+
+        public MessageRegistrationBuilder fromQueue(String name)
+        {
+            queues.add(new MessageQueueDto(name));
+            return this;
+        }
+
+        public MessageRegistrationDto register()
+        {
+            final List<MessageRegistrationDto> result = new ArrayList<>();
+
+            final MessageAnnotationProcessor messageAnnotationProcessor = new MessageAnnotationProcessor();
+            messageAnnotationProcessor.process((messageType, messageClass) ->
+            {
+                JsonSchema schema = createSchema(expectedClass);
+                result.add(new MessageRegistrationDto(serviceName, messageClass, messageType, "1.0",
+                        schema, exchanges, queues));
+            }, expectedClass);
+
+            MessageRegistrationDto dto = result.iterator().next();
+            classMapper.add(dto);
+
+            return dto;
+        }
+
+        private JsonSchema createSchema(Class<?> clazz)
+        {
+            ObjectMapper mapper = new ObjectMapper();
+            try
+            {
+                mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+                return mapper.generateJsonSchema(clazz);
+            }
+            catch (JsonMappingException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 }

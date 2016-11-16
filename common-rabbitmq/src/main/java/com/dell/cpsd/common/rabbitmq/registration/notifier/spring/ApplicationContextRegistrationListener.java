@@ -7,6 +7,7 @@ package com.dell.cpsd.common.rabbitmq.registration.notifier.spring;
 
 import com.dell.cpsd.common.rabbitmq.registration.MessageRegistrationAware;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.BindingDataDto;
+import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageDirectionType;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageExchangeDto;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageRegistrationDto;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.service.RegistrationNotifierService;
@@ -21,10 +22,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -76,53 +76,61 @@ public class ApplicationContextRegistrationListener implements ApplicationListen
     private void notify(RegistrationNotifierService registrationNotifierService, MessageRegistrationAware messageRegistrationAware,
             Collection<Binding> bindings)
     {
-
         for (MessageRegistrationDto entry : messageRegistrationAware.getRegistrations())
         {
-            List<MessageExchangeDto> exchanges =
-                    entry.getMessageExchanges().stream()
-                            .map(new MergeBindings(bindings)).collect(Collectors.toList());
+            Map<String, MessageExchangeDto> exchangeMap = new HashMap<>();
+            Map<String, List<BindingDataDto>> exchangeToBindingMap = new HashMap<>();
+
+            if (entry.getMessageExchanges() != null)
+            {
+                entry.getMessageExchanges().forEach(m -> {
+                    exchangeMap.put(m.getName(), m);
+                    m.getBindings().forEach(b -> {
+                        List<BindingDataDto> exchangeBinding = exchangeToBindingMap.get(m.getName());
+                        if (exchangeBinding == null)
+                        {
+                            exchangeBinding = new ArrayList<>();
+                            exchangeToBindingMap.put(m.getName(), exchangeBinding);
+                        }
+                        exchangeBinding.add(b);
+                    });
+                });
+            }
+
+            if (entry.getMessageQueues() != null)
+            {
+                entry.getMessageQueues().forEach(q -> {
+                    bindings.stream().filter(b -> q.getName().equals(b.getDestination())).forEach(b -> {
+                        MessageExchangeDto exchange = exchangeMap.get(b.getExchange());
+                        if (exchange == null)
+                        {
+                            exchange = new MessageExchangeDto(b.getExchange(), MessageDirectionType.CONSUME);
+                            exchangeMap.put(b.getExchange(), exchange);
+                        }
+                        List<BindingDataDto> exchangeBinding = exchangeToBindingMap.get(b.getExchange());
+                        if (exchangeBinding == null)
+                        {
+                            exchangeBinding = new ArrayList<>();
+                            exchangeToBindingMap.put(b.getExchange(), exchangeBinding);
+                        }
+                        exchangeBinding.add(new BindingDataDto(b.getDestination(), b.getRoutingKey()));
+                    });
+                });
+            }
+
+            List<MessageExchangeDto> messageExchanges = new ArrayList<>();
+            for (Map.Entry<String, MessageExchangeDto> exchangeEntry : exchangeMap.entrySet())
+            {
+                MessageExchangeDto exchangeDto = exchangeEntry.getValue();
+                List<BindingDataDto> bindingDataDtos = exchangeToBindingMap.get(exchangeEntry.getKey());
+                messageExchanges.add(new MessageExchangeDto(exchangeDto.getName(), exchangeDto.getDirection(), bindingDataDtos));
+            }
 
             MessageRegistrationDto enrichedEntry = new MessageRegistrationDto(entry.getServiceName(), entry.getMessageClass(),
-                    entry.getMessageType(), entry.getMessageVersion(), entry.getMessageSchema(), exchanges);
+                    entry.getMessageType(), entry.getMessageVersion(), entry.getMessageSchema(), messageExchanges, entry.getMessageQueues());
 
             registrations.add(enrichedEntry);
             registrationNotifierService.notify(enrichedEntry);
-        }
-    }
-
-    private class MergeBindings implements Function<MessageExchangeDto, MessageExchangeDto>
-    {
-        private Collection<Binding> bindings;
-
-        public MergeBindings(Collection<Binding> bindings)
-        {
-            this.bindings = bindings;
-        }
-
-        @Override
-        public MessageExchangeDto apply(MessageExchangeDto exchange)
-        {
-            List<BindingDataDto> bindingDataDtos = new ArrayList<>();
-
-            if (exchange.getBindings() != null)
-            {
-                bindingDataDtos.addAll(exchange.getBindings());
-            }
-
-            if (bindings != null)
-            {
-                bindingDataDtos.addAll(bindings.stream()
-                        .filter(binding -> binding.getExchange().equals(exchange.getName()))
-                        .map(this::transformBinding).collect(Collectors.toList()));
-            }
-
-            return new MessageExchangeDto(exchange.getName(), exchange.getDirection(), bindingDataDtos.toArray(new BindingDataDto[]{}));
-        };
-
-        private BindingDataDto transformBinding(Binding binding)
-        {
-            return new BindingDataDto(binding.getDestination(), binding.getRoutingKey());
         }
     }
 

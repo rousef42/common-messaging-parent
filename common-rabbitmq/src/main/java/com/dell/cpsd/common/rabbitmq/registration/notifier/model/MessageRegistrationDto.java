@@ -28,9 +28,10 @@ public class MessageRegistrationDto
     private String                   messageVersion;
     private JsonSchema               messageSchema;
     private List<MessageExchangeDto> messageExchanges;
+    private List<MessageQueueDto>    messageQueues;
 
     public MessageRegistrationDto(String serviceName, Class<?> messageClass, String messageType, String messageVersion,
-            JsonSchema messageSchema, List<MessageExchangeDto> messageExchanges)
+            JsonSchema messageSchema, List<MessageExchangeDto> messageExchanges, List<MessageQueueDto> messageQueues)
     {
         this.registrationId = UUID.randomUUID().toString();
         this.serviceName = serviceName;
@@ -39,16 +40,7 @@ public class MessageRegistrationDto
         this.messageVersion = messageVersion;
         this.messageSchema = messageSchema;
         this.messageExchanges = messageExchanges;
-    }
-
-    public boolean add(MessageExchangeDto messageExchangeDto)
-    {
-        return messageExchanges.add(messageExchangeDto);
-    }
-
-    public boolean addAll(Collection<? extends MessageExchangeDto> c)
-    {
-        return messageExchanges.addAll(c);
+        this.messageQueues = messageQueues;
     }
 
     public String getRegistrationId()
@@ -84,5 +76,10 @@ public class MessageRegistrationDto
     public List<MessageExchangeDto> getMessageExchanges()
     {
         return messageExchanges;
+    }
+
+    public List<MessageQueueDto> getMessageQueues()
+    {
+        return messageQueues;
     }
 }
