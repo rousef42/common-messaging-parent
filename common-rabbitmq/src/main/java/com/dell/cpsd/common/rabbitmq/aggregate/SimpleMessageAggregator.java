@@ -51,7 +51,7 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
         {
             throw new IllegalArgumentException("updateAction connot be null");
         }
-        
+
         final M aggregate = getAggregate(correlationId);
 
         updateAction.accept(aggregate);
@@ -70,7 +70,9 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
         AggregateWrapper wrapper = aggregates.get(correlationId);
         if (wrapper == null)
         {
-            wrapper = new AggregateWrapper(aggregateSupplier.get());
+            LOGGER.debug("No wrapper for correlationId=" + correlationId);
+            final M agg = aggregateSupplier.get();
+            wrapper = new AggregateWrapper(agg);
             aggregates.put(correlationId, wrapper);
         }
         return wrapper.getAggregate();
@@ -87,7 +89,7 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
         private M    aggregate    = null;
         private Date creationDate = new Date();
 
-        public AggregateWrapper(M aggregate)
+        public AggregateWrapper(final M aggregate)
         {
             this.aggregate = aggregate;
         }
