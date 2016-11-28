@@ -30,6 +30,8 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      */
     @Autowired
     protected Environment environment;
+
+    public static final String ROUTING_KEY_SEPARATOR = "|";
     
     
     /**
