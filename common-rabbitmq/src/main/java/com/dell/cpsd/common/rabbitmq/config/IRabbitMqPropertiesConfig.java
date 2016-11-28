@@ -16,6 +16,12 @@ package com.dell.cpsd.common.rabbitmq.config;
  */
 public interface IRabbitMqPropertiesConfig
 {
+
+    /**
+     * The Routing Key Separator for all the services [Pipe].
+     */
+    String ROUTING_KEY_SEPARATOR = "|";
+
     /**
      * This returns the rabbit host name. The name of the property is 
      * <code>remote.dell.amqp.rabbitHostname</code>.
@@ -102,4 +108,14 @@ public interface IRabbitMqPropertiesConfig
      * @since   SINCE-TBD
      */
     public String dataCenter();
+
+    /**
+     * This returns the name of the service or application name. The name of
+     * the property is <code>application.name</code>
+     * @return The Application/Service Name
+     *
+     * @since   SINCE-TBD
+     */
+    String applicationName();
+
 }

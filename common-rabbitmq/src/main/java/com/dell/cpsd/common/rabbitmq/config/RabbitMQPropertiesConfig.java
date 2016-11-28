@@ -30,9 +30,6 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      */
     @Autowired
     protected Environment environment;
-
-    public static final String ROUTING_KEY_SEPARATOR = "|";
-    
     
     /**
      * RabbitMQPropertiesConfig constructor.
@@ -162,5 +159,11 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     public String dataCenter()
     {
         return environment.getRequiredProperty("data.center");
+    }
+
+    @Bean
+    public String applicationName()
+    {
+        return environment.getProperty("application.name", "");
     }
 }
