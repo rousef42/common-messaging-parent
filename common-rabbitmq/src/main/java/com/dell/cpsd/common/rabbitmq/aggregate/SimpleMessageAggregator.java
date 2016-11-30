@@ -65,7 +65,7 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
         deleteOldAggregates();
     }
 
-    protected M getAggregate(final String correlationId)
+    public M getAggregate(final String correlationId)
     {
         AggregateWrapper wrapper = aggregates.get(correlationId);
         if (wrapper == null)
