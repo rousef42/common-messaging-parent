@@ -4,7 +4,7 @@
     <packaging>pom</packaging>
     <groupId>com.dell.cpsd.common.messaging</groupId>
     <artifactId>common-messaging-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     
     <parent>
         <groupId>com.dell.cpsd</groupId>
@@ -14,7 +14,7 @@
 
     <scm>
         <connection>scm:git:${scm.git.repo.url}/VCE-Symphony/common-messaging-parent.git</connection>
-      <tag>HEAD</tag>
+      <tag>common-messaging-parent-1.0</tag>
   </scm>
 
     <properties>
