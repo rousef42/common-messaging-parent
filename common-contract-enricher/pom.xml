@@ -19,7 +19,6 @@
         <dependency>
             <artifactId>jsonschema2pojo-core</artifactId>
             <groupId>org.jsonschema2pojo</groupId>
-            <version>0.4.27</version>
         </dependency>
     </dependencies>
 

@@ -10,64 +10,49 @@
     <packaging>jar</packaging>
     <artifactId>common-rabbitmq</artifactId>
 
-    <properties>
-        <spring-core-version>4.3.4.RELEASE</spring-core-version>
-        <spring-amqp-version>1.6.5.RELEASE</spring-amqp-version>
-        <commons-lang-version>3.5</commons-lang-version>
-    </properties>
-
     <dependencies>
         <!--  slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
         </dependency>
         
         <!-- Spring Core -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>${spring-core-version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring-core-version}</version>
         </dependency>
 
         <!-- Spring AMQP -->
         <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-amqp</artifactId>
-            <version>${spring-amqp-version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
-            <version>${spring-amqp-version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.8.5</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang-version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>
