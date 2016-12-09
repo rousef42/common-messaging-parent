@@ -17,45 +17,38 @@ import java.util.List;
  * </p>
  *
  * @version 1.0
- * @since SINCE-TBD
  */
 public class ValidationResult
 {
-    private List<String> messages = new ArrayList<>();
-    private boolean      valid    = true;
+    private List<String> errors = new ArrayList<>();
 
-    public List<String> getMessages()
+    public List<String> getErrors()
     {
-        return Collections.unmodifiableList(messages);
+        return Collections.unmodifiableList(errors);
     }
 
-    public void add(final List<String> newMessages)
+    public void addErrors(List<String> newErrors)
     {
-        this.messages.addAll(newMessages);
+        this.errors.addAll(newErrors);
     }
 
-    public void add(final String newMessage)
+    public void addError(String error)
     {
-        this.messages.add(newMessage);
+        this.errors.add(error);
     }
 
     public boolean isValid()
     {
-        return valid;
-    }
-
-    public void setValid(final boolean valid)
-    {
-        this.valid = valid;
+        return errors.isEmpty();
     }
 
     @Override
     public String toString()
     {
         final StringBuilder sb = new StringBuilder("ValidationResult{");
-        sb.append("valid=").append(valid);
+        sb.append("valid=").append(isValid());
         sb.append(", messages:\n");
-        for (final String message : messages)
+        for (final String message : errors)
         {
             sb.append(message);
             sb.append("\n");

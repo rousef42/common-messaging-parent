@@ -29,7 +29,13 @@ public enum RabbitMQMessageCode
     AMQP_CONNECTION_FAILURE_E(1003,     "VAMQP1003E"),
     NO_AMQP_CONNECTIONS_E(1004,         "VAMQP1004E"),
     REUSE_1005_E(1005,                  "VAMQP1005E"),
-    MESSAGE_CONSUMER_E(1006,            "VAMQP1006E");
+    MESSAGE_CONSUMER_E(1006,            "VAMQP1006E"),
+
+    VALIDATION_INTERNAL_ERROR_E(2001,   "VAMQP2001E"),
+    VALIDATION_MESSAGE_IS_NULL_E(2002,  "VAMQP2002E"),
+    VALIDATION_PROPERTY_IS_NULL_E(2003, "VAMQP2003E"),
+    VALIDATION_STRING_IS_EMPTY_E(2004,  "VAMQP2004E"),
+    ;
     
 
     /*
@@ -119,7 +125,7 @@ public enum RabbitMQMessageCode
      * 
      * @since   SINCE-TDB
      */
-    public String getMessageText(Object[] params)
+    public String getMessageText(Object... params)
     {
         String message = null;
         
