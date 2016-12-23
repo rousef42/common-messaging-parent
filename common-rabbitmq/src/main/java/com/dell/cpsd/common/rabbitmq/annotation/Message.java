@@ -38,9 +38,23 @@ public @interface Message
     String version();
 
     /**
-     * Visibility message visibility. Defaults to non-federated.
+     * message correlationId property
      *
-     * @return the message visibility
+     * @return
      */
-    MessageVisibility visibility() default MessageVisibility.CLUSTER;
+    String correlationIdProperty() default "correlationId";
+
+    /**
+     * message timestamp property
+     *
+     * @return
+     */
+    String timestampProperty() default "timestamp";
+
+    /**
+     * Content type
+     *
+     * @return
+     */
+    MessageContentType content() default MessageContentType.CLEAR;
 }
