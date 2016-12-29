@@ -23,7 +23,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  *
  * @version 1.0
  */
-public abstract class GenericMessageValidator<M>
+public abstract class GenericMessageValidator<M> implements MessageValidator<M>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericMessageValidator.class);
 
@@ -42,6 +42,7 @@ public abstract class GenericMessageValidator<M>
      *
      * @param message The message to be consumed
      */
+    @Override
     public ValidationResult validate(M message)
     {
         if (message == null)

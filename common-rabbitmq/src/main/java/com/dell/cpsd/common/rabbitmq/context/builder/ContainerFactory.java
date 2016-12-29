@@ -7,7 +7,6 @@ package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.logging.ILogger;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
-import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.RetryPolicyExceptionUnpackerDelegate;
 import org.aopalliance.aop.Advice;
 import org.springframework.amqp.core.AcknowledgeMode;
@@ -108,14 +107,6 @@ public class ContainerFactory
      */
     private ErrorHandler errorHandler(final String listenerName)
     {
-        return new ErrorHandler()
-        {
-            @Override
-            public void handleError(Throwable cause)
-            {
-                Object[] lparams = {listenerName, cause.getMessage()};
-                LOGGER.error(RabbitMQMessageCode.MESSAGE_CONSUMER_E.getMessageCode(), lparams, cause);
-            }
-        };
+        return new DefaultContainerErrorHandler(listenerName);
     }
 }
