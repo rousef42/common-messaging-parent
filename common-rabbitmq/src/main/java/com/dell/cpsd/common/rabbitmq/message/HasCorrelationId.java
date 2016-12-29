@@ -9,6 +9,7 @@ package com.dell.cpsd.common.rabbitmq.message;
  */
 public interface HasCorrelationId
 {
-
     String getCorrelationId();
+
+    void setCorrelationId(String correlationId);
 }
