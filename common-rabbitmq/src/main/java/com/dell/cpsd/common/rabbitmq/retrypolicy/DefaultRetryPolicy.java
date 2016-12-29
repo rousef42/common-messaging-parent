@@ -4,7 +4,9 @@
  */
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
+import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.RetryableResponseMessageException;
+import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.retry.RetryPolicy;
@@ -17,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO: Document usage. Set proper Vision version in since tag.
+ * Default retry policy for standard exception.
  * <p>
  * <p>
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
@@ -37,13 +39,15 @@ public class DefaultRetryPolicy extends ExceptionClassifierRetryPolicy
         Map<Class<? extends Throwable>, RetryPolicy> policyMap = new HashMap<>();
 
         policyMap.put(Exception.class, new SimpleRetryPolicy());
+        policyMap.put(RetryableResponseMessageException.class, new SimpleRetryPolicy());
 
         policyMap.put(ClassNotFoundException.class, new NeverRetryPolicy());
-        policyMap.put(MessageConversionException.class, new NeverRetryPolicy());
-        policyMap.put(JsonParseException.class, new NeverRetryPolicy());
         policyMap.put(IOException.class, new NeverRetryPolicy());
+        policyMap.put(JsonParseException.class, new NeverRetryPolicy());
+        policyMap.put(MessageConversionException.class, new NeverRetryPolicy());
+        policyMap.put(MessageValidationException.class, new NeverRetryPolicy());
+        policyMap.put(ResponseMessageException.class, new NeverRetryPolicy());
 
-        policyMap.put(RetryableResponseMessageException.class, new SimpleRetryPolicy());
         return policyMap;
     }
 }

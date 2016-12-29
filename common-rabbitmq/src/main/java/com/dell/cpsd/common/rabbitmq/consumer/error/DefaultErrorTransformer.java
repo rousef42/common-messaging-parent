@@ -45,6 +45,10 @@ public class DefaultErrorTransformer<
     @Override
     public Exception transform(Exception e, HasMessageProperties<?> requestMessage)
     {
+        if (e instanceof ResponseMessageException)
+        {
+            return e;
+        }
         if (e instanceof MessageValidationException)
         {
             String errorText = ((MessageValidationException) e).getFirstError();

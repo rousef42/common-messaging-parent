@@ -15,7 +15,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 /**
- * TODO: Document usage. Set proper Vision version in since tag.
+ * Adaptor between Spring AMQP listener and MessageHandler implementations.
  * <p>
  * <p>
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.

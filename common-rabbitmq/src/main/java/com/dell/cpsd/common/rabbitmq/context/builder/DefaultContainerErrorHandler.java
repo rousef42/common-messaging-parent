@@ -5,8 +5,11 @@
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.logging.ILogger;
+import com.dell.cpsd.common.rabbitmq.exceptions.AmqpExceptionUnwrapTrait;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
+import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
+import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
 import org.springframework.util.ErrorHandler;
 
 /**
@@ -16,7 +19,7 @@ import org.springframework.util.ErrorHandler;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class DefaultContainerErrorHandler implements ErrorHandler
+public class DefaultContainerErrorHandler implements ErrorHandler, AmqpExceptionUnwrapTrait
 {
     private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(DefaultContainerErrorHandler.class);
 
@@ -30,7 +33,16 @@ public class DefaultContainerErrorHandler implements ErrorHandler
     @Override
     public void handleError(Throwable cause)
     {
-        Object[] params = {listenerName, cause.getMessage()};
-        LOGGER.error(RabbitMQMessageCode.MESSAGE_CONSUMER_E.getMessageCode(), params, cause);
+        cause = unwrap(cause);
+
+        if (cause instanceof ImmediateAcknowledgeAmqpException)
+        {
+            String message = RabbitMQMessageCode.MESSAGE_IMMEDIATE_ACK_E.getMessageText(listenerName, cause.getMessage());
+            LOGGER.info(message);
+            return;
+        }
+
+        String message = RabbitMQMessageCode.AMQP_ERROR_E.getMessageText(listenerName, cause.getMessage());
+        LOGGER.error(message, cause);
     }
 };

@@ -5,7 +5,7 @@
 package com.dell.cpsd.common.rabbitmq.retrypolicy.exception;
 
 /**
- * TODO: Document usage. Set proper Vision version in since tag.
+ * Minimal details necessary to send response message.
  * <p>
  * <p>
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.

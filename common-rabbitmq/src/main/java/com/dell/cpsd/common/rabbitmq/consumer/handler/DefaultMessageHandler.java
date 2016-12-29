@@ -13,7 +13,7 @@ import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
 import org.springframework.amqp.core.Message;
 
 /**
- * TODO: Document usage. Set proper Vision version in since tag.
+ * Validates message. Converts exception in case of error.
  * <p>
  * <p>
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
@@ -69,6 +69,11 @@ public abstract class DefaultMessageHandler<M extends HasMessageProperties<? ext
 
     protected void handleError(Exception e, M message) throws Exception
     {
-        throw errorTransformer.transform(e, message);
+        throw convertError(e, message);
+    }
+
+    protected Exception convertError(Exception e, M message)
+    {
+        return errorTransformer.transform(e, message);
     }
 }

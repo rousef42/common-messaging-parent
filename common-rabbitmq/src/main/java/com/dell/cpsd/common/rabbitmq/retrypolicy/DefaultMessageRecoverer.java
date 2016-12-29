@@ -33,7 +33,7 @@ public class DefaultMessageRecoverer implements MessageRecoverer
     @Override
     public void recover(Message message, Throwable cause)
     {
-        log.debug("Message {} has failed all retries. Last exception was {}", message, cause);
+        log.debug("Message has failed all retries. Message: {} Last exception was:", message, cause);
 
         if (cause instanceof ResponseMessageException)
         {
@@ -41,7 +41,7 @@ public class DefaultMessageRecoverer implements MessageRecoverer
             return;
         }
 
-        log.error("Message {} has failed with no recovery details {}", message, cause);
+        log.error("Message has failed with no recovery details. Message: {}", message, cause);
     }
 
     protected void recoverFromResponseMessageException(Message message, ResponseMessageException exception)
@@ -49,9 +49,10 @@ public class DefaultMessageRecoverer implements MessageRecoverer
         ResponseDetails responseDetails = exception.getResponseDetails();
         if (responseDetails == null)
         {
-            log.info("Exception {} has no response details populated", exception);
+            log.error("Message has failed with no response details populated. Message: {}", message, exception);
             return;
         }
+        log.info("Sending error response to [{}] with routing key [{}]", responseDetails.getExchange(), responseDetails.getRoutingKey());
         rabbitTemplate.convertAndSend(responseDetails.getExchange(), responseDetails.getRoutingKey(), responseDetails.getBody());
     }
 }

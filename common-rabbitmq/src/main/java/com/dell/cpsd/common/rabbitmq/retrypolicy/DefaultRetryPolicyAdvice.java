@@ -4,13 +4,20 @@
  */
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
+import com.dell.cpsd.common.logging.ILogger;
+import com.dell.cpsd.common.rabbitmq.exceptions.AmqpExceptionUnwrapTrait;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.amqp.rabbit.config.StatefulRetryOperationsInterceptorFactoryBean;
 import org.springframework.amqp.rabbit.retry.MessageRecoverer;
+import org.springframework.retry.RetryCallback;
+import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor;
+import org.springframework.retry.listener.RetryListenerSupport;
 import org.springframework.retry.support.RetryTemplate;
 
 /**
@@ -37,6 +44,7 @@ public class DefaultRetryPolicyAdvice implements MethodInterceptor
         RetryTemplate retryTemplate = new RetryTemplate();
         retryTemplate.setBackOffPolicy(createBackOffPolicy());
         retryTemplate.setRetryPolicy(retryPolicyWrapper);
+        retryTemplate.registerListener(new RetryErrorListener());
 
         StatefulRetryOperationsInterceptorFactoryBean factory = new StatefulRetryOperationsInterceptorFactoryBean();
         factory.setRetryOperations(retryTemplate);
@@ -57,5 +65,20 @@ public class DefaultRetryPolicyAdvice implements MethodInterceptor
     public Object invoke(MethodInvocation invocation) throws Throwable
     {
         return delegate.invoke(invocation);
+    }
+
+    protected static class RetryErrorListener extends RetryListenerSupport implements AmqpExceptionUnwrapTrait
+    {
+        private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(RetryErrorListener.class);
+
+        @Override
+        public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback, Throwable cause)
+        {
+            // Log only attempt and error. DefaultContainerErrorHandler will log details.
+            Integer attempt = context == null ? null : (context.getRetryCount() + 1);
+            cause = unwrap(cause);
+            String message = RabbitMQMessageCode.AMQP_ERROR_RETRY_E.getMessageText(attempt, cause.getMessage());
+            LOGGER.error(message);
+        }
     }
 }

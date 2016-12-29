@@ -1,7 +1,7 @@
 package com.dell.cpsd.common.rabbitmq.validators;
 
 /**
- * TODO: Document usage. Set proper Vision version in since tag.
+ * Interface for message validator.
  * <p>
  * <p>
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
