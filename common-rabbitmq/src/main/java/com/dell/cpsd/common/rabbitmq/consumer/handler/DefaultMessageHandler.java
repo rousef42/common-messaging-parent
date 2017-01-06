@@ -11,6 +11,8 @@ import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
 import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
 import com.dell.cpsd.common.rabbitmq.validators.MessageValidator;
 import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 
 /**
@@ -22,6 +24,8 @@ import org.springframework.amqp.core.Message;
  */
 public abstract class DefaultMessageHandler<M extends HasMessageProperties<? extends MessagePropertiesContainer>> implements MessageHandler<M>
 {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     protected Class<M> messageClass;
     protected MessageValidator<M> validator;
     protected String errorRoutingKeyPrefix;
@@ -50,13 +54,36 @@ public abstract class DefaultMessageHandler<M extends HasMessageProperties<? ext
     {
         try
         {
+            log.info(
+                    "Received message {} with correlationId [{}]",
+                    message.getClass().getSimpleName(),
+                    getCorrelationId(message)
+            );
+
             validate(message);
             executeOperation(message);
+
+            log.info(
+                    "Finished processing message {} with correlationId [{}]",
+                    message.getClass().getSimpleName(),
+                    getCorrelationId(message)
+            );
         }
         catch (Exception e)
         {
+            log.error(
+                    "Failed to process message {} with correlationId [{}]: {}",
+                    message.getClass().getSimpleName(),
+                    getCorrelationId(message),
+                    e.getMessage()
+            );
             handleError(e, message);
         }
+    }
+
+    private Object getCorrelationId(M message)
+    {
+        return message.getMessageProperties() == null ? null : message.getMessageProperties().getCorrelationId();
     }
 
     protected void validate(M message) throws Exception
