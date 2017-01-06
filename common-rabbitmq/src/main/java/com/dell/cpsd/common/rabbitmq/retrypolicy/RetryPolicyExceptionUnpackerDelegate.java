@@ -20,7 +20,10 @@ import org.springframework.retry.RetryPolicy;
  * @version 1.0
  *
  * @since   SINCE-TDB
+ * @deprecated Use DefaultRetryPolicy to configure unwrapping together with retry policies.
+ * Current implementation will provide unwrapped exception to message recoverer. This may be undesirable behavior.
  */
+@Deprecated
 public class RetryPolicyExceptionUnpackerDelegate implements RetryPolicy
 {
     /*

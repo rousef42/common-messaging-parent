@@ -21,6 +21,7 @@ public class MessageValidationException extends RuntimeException
 
     public MessageValidationException(ValidationResult validationResult)
     {
+        super(getFirstError(validationResult));
         this.validationResult = validationResult;
     }
 
@@ -31,11 +32,16 @@ public class MessageValidationException extends RuntimeException
 
     public String getFirstError()
     {
-        if (validationResult == null)
+        return getFirstError(validationResult);
+    }
+
+    private static String getFirstError(ValidationResult result)
+    {
+        if (result == null)
         {
             return null;
         }
-        List<String> errors = validationResult.getErrors();
+        List<String> errors = result.getErrors();
         if (errors == null || errors.isEmpty())
         {
             return null;

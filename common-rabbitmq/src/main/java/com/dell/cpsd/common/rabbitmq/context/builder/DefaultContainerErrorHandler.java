@@ -5,11 +5,10 @@
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.logging.ILogger;
-import com.dell.cpsd.common.rabbitmq.exceptions.AmqpExceptionUnwrapTrait;
+import com.dell.cpsd.common.rabbitmq.exceptions.ExceptionLogTransformer;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
 import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
-import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
 import org.springframework.util.ErrorHandler;
 
 /**
@@ -19,9 +18,11 @@ import org.springframework.util.ErrorHandler;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class DefaultContainerErrorHandler implements ErrorHandler, AmqpExceptionUnwrapTrait
+public class DefaultContainerErrorHandler implements ErrorHandler
 {
     private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(DefaultContainerErrorHandler.class);
+
+    protected ExceptionLogTransformer exceptionTransformer = new ExceptionLogTransformer();
 
     private String listenerName;
 
@@ -33,7 +34,7 @@ public class DefaultContainerErrorHandler implements ErrorHandler, AmqpException
     @Override
     public void handleError(Throwable cause)
     {
-        cause = unwrap(cause);
+        cause = exceptionTransformer.transform(cause);
 
         if (cause instanceof ImmediateAcknowledgeAmqpException)
         {

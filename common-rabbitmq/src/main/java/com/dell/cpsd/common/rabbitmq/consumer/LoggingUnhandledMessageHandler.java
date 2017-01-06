@@ -20,7 +20,9 @@ import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
  * @version 1.0
  *
  * @since   SINCE-TBD
+ * @deprecated Use DefaultMessageHandler instead.
  */
+@Deprecated
 public class LoggingUnhandledMessageHandler implements UnhandledMessageHandler
 {
     /*

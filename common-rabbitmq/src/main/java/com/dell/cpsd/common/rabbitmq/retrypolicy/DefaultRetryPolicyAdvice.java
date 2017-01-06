@@ -5,7 +5,7 @@
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
 import com.dell.cpsd.common.logging.ILogger;
-import com.dell.cpsd.common.rabbitmq.exceptions.AmqpExceptionUnwrapTrait;
+import com.dell.cpsd.common.rabbitmq.exceptions.ExceptionLogTransformer;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -38,12 +38,9 @@ public class DefaultRetryPolicyAdvice implements MethodInterceptor
 
     public DefaultRetryPolicyAdvice(MessageRecoverer messageRecoverer, RetryPolicy retryPolicy)
     {
-        // Delegate handler that unpacks the throwable to get the root offending exception so we can set a specific policy for it.
-        RetryPolicyExceptionUnpackerDelegate retryPolicyWrapper = new RetryPolicyExceptionUnpackerDelegate(retryPolicy);
-
         RetryTemplate retryTemplate = new RetryTemplate();
         retryTemplate.setBackOffPolicy(createBackOffPolicy());
-        retryTemplate.setRetryPolicy(retryPolicyWrapper);
+        retryTemplate.setRetryPolicy(retryPolicy);
         retryTemplate.registerListener(new RetryErrorListener());
 
         StatefulRetryOperationsInterceptorFactoryBean factory = new StatefulRetryOperationsInterceptorFactoryBean();
@@ -67,16 +64,18 @@ public class DefaultRetryPolicyAdvice implements MethodInterceptor
         return delegate.invoke(invocation);
     }
 
-    protected static class RetryErrorListener extends RetryListenerSupport implements AmqpExceptionUnwrapTrait
+    protected static class RetryErrorListener extends RetryListenerSupport
     {
         private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(RetryErrorListener.class);
+
+        protected ExceptionLogTransformer exceptionTransformer = new ExceptionLogTransformer();
 
         @Override
         public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback, Throwable cause)
         {
             // Log only attempt and error. DefaultContainerErrorHandler will log details.
             Integer attempt = context == null ? null : (context.getRetryCount() + 1);
-            cause = unwrap(cause);
+            cause = exceptionTransformer.transform(cause);
             String message = RabbitMQMessageCode.AMQP_ERROR_RETRY_E.getMessageText(attempt, cause.getMessage());
             LOGGER.error(message);
         }

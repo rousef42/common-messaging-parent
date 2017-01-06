@@ -7,10 +7,12 @@ package com.dell.cpsd.common.rabbitmq.consumer.error;
 import com.dell.cpsd.common.rabbitmq.message.HasErrorMessage;
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
 import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
 
 import java.util.Date;
+import java.util.function.Supplier;
 
 /**
  * Creates ResponseMessageException using standard approach from
@@ -20,30 +22,24 @@ import java.util.Date;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class DefaultErrorTransformer<
-        MessageProperties extends MessagePropertiesContainer,
-        ErrorMessage extends HasMessageProperties<MessageProperties> & HasErrorMessage> implements ErrorTransformer<HasMessageProperties<?>>
+public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<? extends MessagePropertiesContainer> & HasErrorMessage>
+        implements ErrorTransformer<HasMessageProperties<?>>
 {
+    public static final String ERROR_BINDING_TEMPLATE = "${handler.routingKey}.error.${request.replyTo}";
 
-    protected Class<MessageProperties> messagePropertiesClass;
-    protected Class<ErrorMessage> errorMessageClass;
+    protected Supplier<ErrorMessage> errorMessageSupplier;
     protected String responseExchange;
-    protected String responseRoutingKeyPrefix;
     protected String replyTo;
 
-    public DefaultErrorTransformer(Class<MessageProperties> messagePropertiesClass,
-                                   Class<ErrorMessage> errorMessageClass, String responseExchange,
-                                   String responseRoutingKeyPrefix, String replyTo)
+    public DefaultErrorTransformer(String responseExchange, String replyTo, Supplier<ErrorMessage> errorMessageSupplier)
     {
-        this.messagePropertiesClass = messagePropertiesClass;
-        this.errorMessageClass = errorMessageClass;
+        this.errorMessageSupplier = errorMessageSupplier;
         this.responseExchange = responseExchange;
-        this.responseRoutingKeyPrefix = responseRoutingKeyPrefix;
         this.replyTo = replyTo;
     }
 
     @Override
-    public Exception transform(Exception e, HasMessageProperties<?> requestMessage)
+    public Exception transform(Exception e, ErrorContext<HasMessageProperties<?>> context)
     {
         if (e instanceof ResponseMessageException)
         {
@@ -54,26 +50,26 @@ public class DefaultErrorTransformer<
             String errorText = ((MessageValidationException) e).getFirstError();
             if (errorText != null)
             {
-                return createResponseMessageException(errorText, e, requestMessage);
+                return createResponseMessageException(errorText, e, context);
             }
             // Fallback to default error handling if for some reason there are no validation messages
         }
 
-        return createResponseMessageException(e.getMessage(), e, requestMessage);
+        return createResponseMessageException(e.getMessage(), e, context);
     }
 
-    protected Exception createResponseMessageException(String errorText, Exception e, HasMessageProperties<?> requestMessage)
+    protected Exception createResponseMessageException(String errorText, Exception e, ErrorContext<HasMessageProperties<?>> context)
     {
         try
         {
-            String routingKey = responseRoutingKeyPrefix + "." + requestMessage.getMessageProperties().getReplyTo();
+            HasMessageProperties<?> requestMessage = context.getRequestMessage();
 
-            ErrorMessage message = errorMessageClass.newInstance();
-            MessageProperties properties = messagePropertiesClass.newInstance();
-            message.setMessageProperties(properties);
+            String routingKey = createRoutingKey(context);
+
+            ErrorMessage message = errorMessageSupplier.get();
             populateErrorMessage(errorText, requestMessage, message);
 
-            return new ResponseMessageException(e, responseExchange, routingKey, message);
+            return new ErrorResponseException(e, responseExchange, routingKey, message);
         }
         catch (Exception internalError)
         {
@@ -81,9 +77,17 @@ public class DefaultErrorTransformer<
         }
     }
 
+    protected String createRoutingKey(ErrorContext<HasMessageProperties<?>> context)
+    {
+        HasMessageProperties<?> requestMessage = context.getRequestMessage();
+        return ERROR_BINDING_TEMPLATE
+                .replace("${handler.routingKey}", context.getErrorRoutingKeyPrefix())
+                .replace("${request.replyTo}", requestMessage.getMessageProperties().getReplyTo());
+    }
+
     protected void populateErrorMessage(String errorText, HasMessageProperties<?> requestMessage, ErrorMessage message)
     {
-        MessageProperties properties = message.getMessageProperties();
+        MessagePropertiesContainer properties = message.getMessageProperties();
         properties.setCorrelationId(requestMessage.getMessageProperties().getCorrelationId());
         properties.setReplyTo(replyTo);
         properties.setTimestamp(new Date());

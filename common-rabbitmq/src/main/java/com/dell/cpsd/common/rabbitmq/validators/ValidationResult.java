@@ -27,14 +27,16 @@ public class ValidationResult
         return Collections.unmodifiableList(errors);
     }
 
-    public void addErrors(List<String> newErrors)
+    public ValidationResult addErrors(List<String> newErrors)
     {
         this.errors.addAll(newErrors);
+        return this;
     }
 
-    public void addError(String error)
+    public ValidationResult addError(String error)
     {
         this.errors.add(error);
+        return this;
     }
 
     public boolean isValid()

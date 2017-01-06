@@ -9,5 +9,5 @@ package com.dell.cpsd.common.rabbitmq.consumer.error;
  */
 public interface ErrorTransformer<M>
 {
-    Exception transform(Exception e, M requestMessage);
+    Exception transform(Exception e, ErrorContext<M> context);
 }

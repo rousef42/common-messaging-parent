@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
 import org.springframework.amqp.rabbit.retry.MessageRecoverer;
 
 /**
@@ -34,6 +35,11 @@ public class DefaultMessageRecoverer implements MessageRecoverer
     public void recover(Message message, Throwable cause)
     {
         log.debug("Message has failed all retries. Message: {} Last exception was:", message, cause);
+
+        if (cause instanceof ListenerExecutionFailedException && cause.getCause() != null)
+        {
+            cause = cause.getCause();
+        }
 
         if (cause instanceof ResponseMessageException)
         {

@@ -4,17 +4,17 @@
  */
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
+import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
-import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.RetryableResponseMessageException;
 import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
 import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
 import org.springframework.retry.policy.NeverRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,15 +38,17 @@ public class DefaultRetryPolicy extends ExceptionClassifierRetryPolicy
     {
         Map<Class<? extends Throwable>, RetryPolicy> policyMap = new HashMap<>();
 
+        // Unwrap exceptions to decide how to handle them.
+        policyMap.put(ListenerExecutionFailedException.class, new RootCauseRetryPolicy(this));
+        policyMap.put(ErrorResponseException.class, new RootCauseRetryPolicy(this));
+
         policyMap.put(Exception.class, new SimpleRetryPolicy());
-        policyMap.put(RetryableResponseMessageException.class, new SimpleRetryPolicy());
+        policyMap.put(ResponseMessageException.class, new ResponseMessageRetryPolicy());
 
         policyMap.put(ClassNotFoundException.class, new NeverRetryPolicy());
-        policyMap.put(IOException.class, new NeverRetryPolicy());
         policyMap.put(JsonParseException.class, new NeverRetryPolicy());
         policyMap.put(MessageConversionException.class, new NeverRetryPolicy());
         policyMap.put(MessageValidationException.class, new NeverRetryPolicy());
-        policyMap.put(ResponseMessageException.class, new NeverRetryPolicy());
 
         return policyMap;
     }

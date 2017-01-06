@@ -15,7 +15,9 @@ package com.dell.cpsd.common.rabbitmq.consumer;
  * @version 1.0
  *
  * @since   SINCE-TBD
+ * @deprecated Use DefaultMessageListener with DefaultMessageHandler instead.
  */
+@Deprecated
 public abstract class UnhandledMessageConsumer
 {
     /*

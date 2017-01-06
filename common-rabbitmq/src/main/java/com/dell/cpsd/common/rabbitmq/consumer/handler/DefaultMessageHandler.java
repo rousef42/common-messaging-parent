@@ -4,6 +4,7 @@
  */
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
+import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorContext;
 import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorTransformer;
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
@@ -22,15 +23,19 @@ import org.springframework.amqp.core.Message;
 public abstract class DefaultMessageHandler<M extends HasMessageProperties<? extends MessagePropertiesContainer>> implements MessageHandler<M>
 {
     protected Class<M> messageClass;
-    protected ErrorTransformer<HasMessageProperties<?>> errorTransformer;
     protected MessageValidator<M> validator;
+    protected String errorRoutingKeyPrefix;
+    protected ErrorTransformer<HasMessageProperties<?>> errorTransformer;
+
 
     protected abstract void executeOperation(M message) throws Exception;
 
-    public DefaultMessageHandler(Class<M> messageClass, MessageValidator<M> validator, ErrorTransformer<HasMessageProperties<?>> errorTransformer)
+    public DefaultMessageHandler(Class<M> messageClass, MessageValidator<M> validator, String errorRoutingKeyPrefix,
+                                 ErrorTransformer<HasMessageProperties<?>> errorTransformer)
     {
         this.messageClass = messageClass;
         this.validator = validator;
+        this.errorRoutingKeyPrefix = errorRoutingKeyPrefix;
         this.errorTransformer = errorTransformer;
     }
 
@@ -74,6 +79,7 @@ public abstract class DefaultMessageHandler<M extends HasMessageProperties<? ext
 
     protected Exception convertError(Exception e, M message)
     {
-        return errorTransformer.transform(e, message);
+        ErrorContext<HasMessageProperties<?>> context = new ErrorContext<>(message, errorRoutingKeyPrefix);
+        return errorTransformer.transform(e, context);
     }
 }
