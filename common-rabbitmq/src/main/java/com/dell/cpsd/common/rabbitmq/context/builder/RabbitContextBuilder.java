@@ -8,9 +8,11 @@ package com.dell.cpsd.common.rabbitmq.context.builder;
 import com.dell.cpsd.common.logging.ILogger;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
 import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
 import com.dell.cpsd.common.rabbitmq.context.RabbitContext;
 import com.dell.cpsd.common.rabbitmq.context.RabbitContextAware;
+import com.dell.cpsd.common.rabbitmq.context.RequestReplyKey;
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +26,7 @@ import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.ClassMapper;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
@@ -33,8 +36,6 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,10 +51,10 @@ import java.util.Set;
  * &copy; 2016 VCE Company, LLC. All rights reserved.
  * VCE Confidential/Proprietary Information
  * </p>
- *
+ * <p>
  * This RabbitContextBuilder is an opinionated builder that builds up a set of queues, exchanges, binding, and message descriptions
  * to provide some conformity and convention to the creation of rabbit contexts.
- *
+ * <p>
  * This is not a complete builder and will ideally get added as the norms evolve
  *
  * @since SINCE-TBD
@@ -71,29 +72,33 @@ public class RabbitContextBuilder
 
     private static final String ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
 
-    final Map<String, Exchange>              exchanges     = new HashMap<>();
-    final Map<String, Queue>                 queues        = new HashMap<>();
-    final Map<String, Binding>               bindings      = new HashMap<>();
-    final Map<String, MessageDescription<?>> descriptions  = new HashMap<>();
-    final Map<String, ContainerQueueData>    containerMap  = new HashMap<>();
-    final List<RabbitContextAware>           contextAwares = new ArrayList<>();
+    final Map<String, Exchange>           exchanges             = new HashMap<>();
+    final Map<String, Queue>              queues                = new HashMap<>();
+    final Map<String, Binding>            bindings              = new HashMap<>();
+    final Map<String, MessageDescription> descriptions          = new HashMap<>();
+    final List<MessageListenerContainer>  containers            = new ArrayList<>();
+    final Map<String, ContainerQueueData> containerQueueDataMap = new HashMap<>();
+    final List<RabbitContextAware>        contextAwares         = new ArrayList<>();
+    final Map<RequestReplyKey, String>    replyToMap            = new HashMap<>();
 
     private MessageDescriptionFactory messageDescriptionFactory = new MessageDescriptionFactory();
     private ContainerFactory          containerFactory          = new ContainerFactory();
 
-    private ConnectionFactory rabbitConnectionFactory;
-    private String            consumerPostfix;
+    private ConnectionFactory        rabbitConnectionFactory;
+    private ApplicationConfiguration applicationConfiguration;
+    private String                   consumerPostfix;
 
     /**
      * Constructor
      *
      * @param rabbitConnectionFactory
-     * @param applicationName
+     * @param configuration
      */
-    public RabbitContextBuilder(ConnectionFactory rabbitConnectionFactory, String applicationName)
+    public RabbitContextBuilder(ConnectionFactory rabbitConnectionFactory, ApplicationConfiguration configuration)
     {
         this.rabbitConnectionFactory = rabbitConnectionFactory;
-        this.consumerPostfix = hostName() + "-" + applicationName;
+        this.applicationConfiguration = configuration;
+        this.consumerPostfix = configuration.getApplicationName() + "." + configuration.getHostName();
     }
 
     /**
@@ -108,7 +113,9 @@ public class RabbitContextBuilder
         descriptions.put(produceDescription.getType(), produceDescription);
         MessageExchangeBuilder builder = new MessageExchangeBuilder(this, produceDescription.getExchange(),
                 produceDescription.getExchangeType());
-        return add(builder.exchange());
+        builder.exchange();
+
+        return this;
     }
 
     /**
@@ -120,7 +127,7 @@ public class RabbitContextBuilder
      * @param listener
      * @return
      */
-    public <C> RabbitContextBuilder consumes(Class<C> messageClass, String queueName, boolean durable, Object listener)
+    public <C> RabbitContextBuilder consumes(String queueName, boolean durable, Object listener, Class<C> messageClass)
     {
         MessageDescription<C> description = messageDescriptionFactory.createDescription(messageClass);
         descriptions.put(description.getType(), description);
@@ -128,37 +135,49 @@ public class RabbitContextBuilder
         //If the container alias happens to be null, then all queues will get the same 'null' container
         addQueueData(description.getContainerAlias(), queueName, listener);
 
-        MessageBindingBuilder builder = new MessageBindingBuilder(this, binding(description, consumerPostfix));
-        return add(builder.fromExchange(description.getExchange(), description.getExchangeType()).toQueue(queueName, durable).bind());
+        MessageBindingBuilder bindingBuilder = new MessageBindingBuilder(this, resolveRoutingKey(description, consumerPostfix));
+        bindingBuilder.fromExchange(description.getExchange(), description.getExchangeType()).toQueue(queueName, durable);
+        bindingBuilder.bind();
+
+        return this;
     }
 
     /**
      * Register a produce message class and consumme class pair. This is useful because a listener queue will be bound with the
      * producer routing key for replies
      *
-     * @param produceClass
-     * @param consumeClass
+     * @param requestClass
+     * @param replyClasses
      * @param queueName
      * @param durable
      * @param listener
      * @return
      */
-    public <P, C> RabbitContextBuilder producesAndConsumes(Class<P> produceClass, Class<C> consumeClass, String queueName, boolean durable,
-            Object listener)
+    public <P> RabbitContextBuilder requestsAndReplies(Class<P> requestClass, String queueName, boolean durable, Object listener,
+            Class<?>... replyClasses)
     {
-        MessageDescription<P> produceDescription = messageDescriptionFactory.createDescription(produceClass);
-        MessageDescription<C> consumeDescription = messageDescriptionFactory.createDescription(consumeClass);
+        produces(requestClass);
 
-        descriptions.put(produceDescription.getType(), produceDescription);
-        descriptions.put(consumeDescription.getType(), consumeDescription);
+        MessageDescription<P> requestDescription = messageDescriptionFactory.createDescription(requestClass);
+        descriptions.put(requestDescription.getType(), requestDescription);
 
-        addQueueData(consumeDescription.getContainerAlias(), queueName, listener);
+        for (Class<?> replyClass : replyClasses)
+        {
+            MessageDescription replyDescription = messageDescriptionFactory.createDescription(replyClass);
+            descriptions.put(replyDescription.getType(), replyDescription);
 
-        MessageBindingBuilder builder = new MessageBindingBuilder(this,
-                binding(MessageStereotype.REPLY, produceDescription.getProducerRoutingKey(), consumerPostfix));
+            addQueueData(replyDescription.getContainerAlias(), queueName, listener);
 
-        return produces(produceClass).add(builder.fromExchange(consumeDescription.getExchange(), consumeDescription.getExchangeType())
-                .toQueue(queueName, durable).bind());
+            MessageBindingBuilder replyBindingBuilder = new MessageBindingBuilder(this,
+                    resolveRoutingKey(replyDescription.getStereotype(), requestDescription.getRoutingKey(), consumerPostfix));
+
+            Binding replyBinding = replyBindingBuilder.fromExchange(replyDescription.getExchange(), replyDescription.getExchangeType())
+                    .toQueue(queueName, durable).bind();
+
+            replyToMap.put(new RequestReplyKey(requestClass, replyClass), replyBinding.getRoutingKey());
+        }
+
+        return this;
     }
 
     /**
@@ -185,8 +204,7 @@ public class RabbitContextBuilder
 
         // Create containers for queues based on the containerAlias value on the message.
         // Default behaviour will be to add all queues to a single container
-        List<SimpleMessageListenerContainer> containers = new ArrayList<>();
-        containerMap.forEach((containerAlias, containerData) ->
+        containerQueueDataMap.forEach((containerAlias, containerData) ->
         {
             SimpleMessageListenerContainer container = containerFactory
                     .createDefaultContainer(consumerPostfix + "-" + containerAlias, rabbitConnectionFactory, converter,
@@ -195,8 +213,8 @@ public class RabbitContextBuilder
             containers.add(container);
         });
 
-        RabbitContext context = new RabbitContext(consumerPostfix, admin, rabbitTemplate, exchanges.values(), queues.values(), bindings.values(),
-                descriptions.values(), containers);
+        RabbitContext context = new RabbitContext(consumerPostfix, admin, rabbitTemplate, exchanges.values(), queues.values(),
+                bindings.values(), descriptions.values(), containers, replyToMap);
 
         // Set the context in anything that has been added as a RabbitContextAware
         contextAwares.forEach(contextAware -> contextAware.setRabbitContext(context));
@@ -240,14 +258,26 @@ public class RabbitContextBuilder
         return this;
     }
 
+    /**
+     * Add a container
+     *
+     * @param container
+     * @return
+     */
+    public RabbitContextBuilder add(MessageListenerContainer container)
+    {
+        containers.add(container);
+        return this;
+    }
+
     private void addQueueData(String containerAlias, String queueName, Object listener)
     {
         //If the container alias happens to be null, then all queues will get the same 'null' container
-        ContainerQueueData queueData = containerMap.get(containerAlias);
+        ContainerQueueData queueData = containerQueueDataMap.get(containerAlias);
         if (queueData == null)
         {
             queueData = new ContainerQueueData(containerAlias, queueName, listener);
-            containerMap.put(containerAlias, queueData);
+            containerQueueDataMap.put(containerAlias, queueData);
         }
         else
         {
@@ -314,40 +344,28 @@ public class RabbitContextBuilder
         return classMapper;
     }
 
-    private <M> String binding(MessageDescription<M> messageDescription, String consumerPostfix)
+    private <M> String resolveRoutingKey(MessageDescription<M> messageDescription, String consumerPostfix)
     {
-        String consumerBindingBase = messageDescription.getConsumerBindingBase();
-        if (consumerBindingBase == null)
+        String routingKey = messageDescription.getRoutingKey();
+        if (routingKey == null)
         {
-            consumerBindingBase = messageDescription.getType();
+            routingKey = messageDescription.getType();
         }
 
         MessageStereotype stereotype = messageDescription.getStereotype();
-        return binding(stereotype, consumerBindingBase, consumerPostfix);
+        return resolveRoutingKey(stereotype, routingKey, consumerPostfix);
     }
 
-    private String binding(MessageStereotype stereotype, String consumerBindingBase, String consumerPostfix)
+    private String resolveRoutingKey(MessageStereotype stereotype, String routingKey, String consumerPostfix)
     {
         StringBuilder builder = new StringBuilder();
-        builder.append(consumerBindingBase);
+        builder.append(routingKey);
 
-        if (MessageStereotype.REPLY == stereotype)
+        if (MessageStereotype.REPLY == stereotype || MessageStereotype.ERROR == stereotype)
         {
             builder.append("." + consumerPostfix);
         }
         return builder.toString();
-    }
-
-    private String hostName()
-    {
-        try
-        {
-            return InetAddress.getLocalHost().getHostName();
-        }
-        catch (UnknownHostException e)
-        {
-            throw new RuntimeException("Unable to identify hostname", e);
-        }
     }
 
     private static class ContainerQueueData

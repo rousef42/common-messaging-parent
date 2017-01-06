@@ -25,31 +25,50 @@ import java.util.Map;
  *
  * @since SINCE-TBD
  */
-public class RabbitContext<M>
+public class RabbitContext
 {
-    private String         contextUuid;
-    private RabbitAdmin    admin;
-    private RabbitTemplate rabbitTemplate;
+    private final String         contextUuid;
+    private final RabbitAdmin    admin;
+    private final RabbitTemplate rabbitTemplate;
 
-    Collection<Exchange>                 exchanges         = new ArrayList<>();
-    Collection<Queue>                    queues            = new ArrayList<>();
-    Collection<Binding>                  bindings          = new ArrayList<>();
-    Collection<MessageListenerContainer> containers        = new ArrayList<>();
-    Map<Class, MessageDescription>       descriptionLookup = new HashMap<>();
+    private final Collection<Exchange>                 exchanges         = new ArrayList<>();
+    private final Collection<Queue>                    queues            = new ArrayList<>();
+    private final Collection<Binding>                  bindings          = new ArrayList<>();
+    private final Collection<MessageListenerContainer> containers        = new ArrayList<>();
+    private final Map<Class, MessageDescription>       descriptionLookup = new HashMap<>();
+    private final Map<RequestReplyKey, String>         replyToLookup     = new HashMap<>();
 
     public RabbitContext(String contextUuid, RabbitAdmin admin, RabbitTemplate rabbitTemplate, Collection<Exchange> exchanges,
             Collection<Queue> queues, Collection<Binding> bindings, Collection<MessageDescription> descriptions,
-            Collection<MessageListenerContainer> containers)
+            Collection<MessageListenerContainer> containers, Map<RequestReplyKey, String> replyToLookup)
     {
         this.contextUuid = contextUuid;
         this.admin = admin;
         this.rabbitTemplate = rabbitTemplate;
-        this.exchanges = exchanges;
-        this.queues = queues;
-        this.bindings = bindings;
-        this.containers = containers;
+
+        addAll(this.exchanges, exchanges);
+        addAll(this.queues, queues);
+        addAll(this.bindings, bindings);
+        addAll(this.containers, containers);
+        putAll(this.replyToLookup, replyToLookup);
 
         descriptions.forEach(d -> descriptionLookup.put(d.getMessageClass(), d));
+    }
+
+    private void addAll(Collection source, Collection additions)
+    {
+        if (additions != null)
+        {
+            source.addAll(additions);
+        }
+    }
+
+    private void putAll(Map source, Map additions)
+    {
+        if (additions != null)
+        {
+            source.putAll(additions);
+        }
     }
 
     public void declare()
@@ -102,5 +121,10 @@ public class RabbitContext<M>
     public Collection<MessageListenerContainer> getContainers()
     {
         return containers;
+    }
+
+    public String getReplyTo(Class request, Class reply)
+    {
+        return replyToLookup.get(new RequestReplyKey(request, reply));
     }
 }

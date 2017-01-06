@@ -28,8 +28,7 @@ public class MessageDescription<M>
     private String              correlationIdProperty = null;
     private String              replyToProperty       = null;
     private String              timestampProperty     = null;
-    private String              consumerBindingBase   = null;
-    private String              producerRoutingKey    = null;
+    private String              routingKey            = null;
     private MessageContentType  contentType           = null;
     private String              containerAlias        = null;
 
@@ -88,24 +87,14 @@ public class MessageDescription<M>
         this.timestampProperty = timestampProperty;
     }
 
-    public String getConsumerBindingBase()
+    public String getRoutingKey()
     {
-        return consumerBindingBase;
+        return routingKey;
     }
 
-    public void setConsumerBindingBase(String consumerBindingBase)
+    public void setRoutingKey(String routingKey)
     {
-        this.consumerBindingBase = consumerBindingBase;
-    }
-
-    public String getProducerRoutingKey()
-    {
-        return producerRoutingKey;
-    }
-
-    public void setProducerRoutingKey(String producerRoutingKey)
-    {
-        this.producerRoutingKey = producerRoutingKey;
+        this.routingKey = routingKey;
     }
 
     public Class<M> getMessageClass()

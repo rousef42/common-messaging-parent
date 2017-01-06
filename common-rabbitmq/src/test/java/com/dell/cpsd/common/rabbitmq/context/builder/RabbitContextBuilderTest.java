@@ -6,6 +6,8 @@
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.rabbitmq.connectors.RabbitMQConnectionFactory;
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfigurationFactory;
 import com.dell.cpsd.common.rabbitmq.context.RabbitContext;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,8 +30,8 @@ public class RabbitContextBuilderTest
     @Test
     public void testConsumeRequest()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), "consumerPostfix");
-        builder.consumes(TestRequestMessage.class, "queue1", false, new Object());
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        builder.consumes("queue1", false, new Object(), TestRequestMessage.class);
         RabbitContext context = builder.build();
 
         Assert.assertNotNull(context.getAdmin());
@@ -46,13 +48,13 @@ public class RabbitContextBuilderTest
         Assert.assertEquals(1, bindings.size());
 
         Binding binding = bindings.stream().findAny().get();
-        Assert.assertEquals("binding.base", binding.getRoutingKey());
+        Assert.assertEquals("routing.base", binding.getRoutingKey());
     }
 
     @Test
     public void testProduceRequest()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), "consumerPostfix");
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
         builder.produces(TestRequestMessage.class);
         RabbitContext context = builder.build();
 
@@ -73,8 +75,8 @@ public class RabbitContextBuilderTest
     @Test
     public void testConsumeReply()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), "consumerPostfix");
-        builder.consumes(TestReplyMessage.class, "queue1", false, new Object());
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        builder.consumes("queue1", false, new Object(), TestReplyMessage.class);
         RabbitContext context = builder.build();
 
         Assert.assertNotNull(context.getAdmin());
@@ -91,14 +93,14 @@ public class RabbitContextBuilderTest
         Assert.assertEquals(1, bindings.size());
 
         Binding binding = bindings.stream().findAny().get();
-        Assert.assertTrue(binding.getRoutingKey().startsWith("binding.base."));
-        Assert.assertTrue(binding.getRoutingKey().endsWith("consumerPostfix"));
+        Assert.assertTrue(binding.getRoutingKey().startsWith("routing.base."));
+        Assert.assertTrue(binding.getRoutingKey().contains("appXXX"));
     }
 
     @Test
     public void testProduceReply()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), "consumerPostfix");
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
         builder.produces(TestReplyMessage.class);
         RabbitContext context = builder.build();
 
@@ -114,5 +116,26 @@ public class RabbitContextBuilderTest
         Assert.assertEquals(1, exchanges.size());
         Assert.assertEquals(0, queues.size());
         Assert.assertEquals(0, bindings.size());
+    }
+
+    @Test
+    public void testRequestAndReply()
+    {
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        builder.requestsAndReplies(TestRequestMessage.class, "requestReply", false, new Object(), TestReplyMessage.class);
+        RabbitContext context = builder.build();
+
+        Collection<Exchange> exchanges = context.getExchanges();
+        Collection<Queue> queues = context.getQueues();
+        Collection<Binding> bindings = context.getBindings();
+
+        Assert.assertEquals(1, exchanges.size());
+        Assert.assertEquals(1, queues.size());
+        Assert.assertEquals(1, bindings.size());
+    }
+
+    private ApplicationConfiguration appConfig(String name)
+    {
+        return ApplicationConfigurationFactory.getInstance().createApplicationConfiguration(name);
     }
 }

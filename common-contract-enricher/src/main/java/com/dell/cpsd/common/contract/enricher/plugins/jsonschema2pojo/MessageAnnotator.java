@@ -20,6 +20,7 @@ import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageConsumer;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchange;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageProducer;
+import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageError;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageRequest;
@@ -105,10 +106,10 @@ public class MessageAnnotator extends AbstractAnnotator
     private void annotateConsumerOpinion(JDefinedClass clazz, JsonNode meta)
     {
         JAnnotationUse consumer = clazz.annotate(MessageConsumer.class);
-        JsonNode bindingBase = meta.get("bindingBase");
+        JsonNode bindingBase = meta.get("routingKey");
         if (bindingBase != null)
         {
-            consumer.param("bindingBase", bindingBase.asText());
+            consumer.param("routingKey", bindingBase.asText());
         }
     }
 
@@ -151,6 +152,10 @@ public class MessageAnnotator extends AbstractAnnotator
             else if ("EVENT".equalsIgnoreCase(stereoTypeValue))
             {
                 clazz.annotate(MessageEvent.class);
+            }
+            else if ("ERROR".equalsIgnoreCase(stereoTypeValue))
+            {
+                clazz.annotate(MessageError.class);
             }
         }
     }

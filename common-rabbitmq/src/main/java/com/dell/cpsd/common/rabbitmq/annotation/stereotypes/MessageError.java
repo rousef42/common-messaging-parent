@@ -3,7 +3,7 @@
  * VCE Confidential/Proprietary Information
  */
 
-package com.dell.cpsd.common.rabbitmq.annotation.opinions;
+package com.dell.cpsd.common.rabbitmq.annotation.stereotypes;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -21,9 +21,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MessageConsumer
+public @interface MessageError
 {
-    String routingKey() default OpinionConstants.UNDEFINED;
-
-    String containerAlias() default OpinionConstants.UNDEFINED;
+    MessageStereotype stereotype() default MessageStereotype.ERROR;
 }

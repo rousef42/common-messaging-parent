@@ -36,7 +36,7 @@ public class MessageDescriptionFactoryTest
         Assert.assertEquals("exchange.test", description.getExchange());
         Assert.assertEquals(MessageExchangeType.TOPIC, description.getExchangeType());
 
-        Assert.assertEquals("binding.base", description.getConsumerBindingBase());
+        Assert.assertEquals("routing.base", description.getRoutingKey());
         Assert.assertEquals(MessageStereotype.REQUEST, description.getStereotype());
         Assert.assertEquals(MessageContentType.CLEAR, description.getContentType());
     }

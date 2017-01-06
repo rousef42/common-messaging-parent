@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Message(value = "test.message.consumer", version = "1.0")
 @MessageExchange(exchange = "exchange.test")
-@MessageConsumer(bindingBase = "binding.base")
+@MessageConsumer(routingKey = "binding.base")
 @MessageProducer(routingKey = "routing.base")
 @MessageRequest
 public class TestRequestMessage

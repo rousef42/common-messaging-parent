@@ -37,8 +37,7 @@ public class MessageDescriptionFactory
         String correlationIdProperty = null;
         String replyToProperty = null;
         String timestampProperty = null;
-        String consumerBindingBase = null;
-        String producerRoutingKey = null;
+        String routingKey = null;
         MessageStereotype stereotype = null;
         MessageContentType contentType = null;
         String containerAlias = null;
@@ -63,9 +62,9 @@ public class MessageDescriptionFactory
         MessageConsumer consumerAnnotation = messageClass.getAnnotation(MessageConsumer.class);
         if (consumerAnnotation != null)
         {
-            if (OpinionConstants.isDefined(consumerAnnotation.bindingBase()))
+            if (OpinionConstants.isDefined(consumerAnnotation.routingKey()))
             {
-                consumerBindingBase = consumerAnnotation.bindingBase();
+                routingKey = consumerAnnotation.routingKey();
             }
             if (OpinionConstants.isDefined(consumerAnnotation.containerAlias()))
             {
@@ -79,7 +78,7 @@ public class MessageDescriptionFactory
         {
             if (OpinionConstants.isDefined(producerAnnotation.routingKey()))
             {
-                producerRoutingKey = producerAnnotation.routingKey();
+                routingKey = producerAnnotation.routingKey();
             }
         }
 
@@ -106,12 +105,11 @@ public class MessageDescriptionFactory
         }
 
         MessageDescription<M> description = new MessageDescription<M>();
-        description.setConsumerBindingBase(consumerBindingBase);
         description.setCorrelationIdProperty(correlationIdProperty);
         description.setExchange(exchange);
         description.setExchangeType(exchangeType);
         description.setMessageClass(messageClass);
-        description.setProducerRoutingKey(producerRoutingKey);
+        description.setRoutingKey(routingKey);
         description.setReplyToProperty(replyToProperty);
         description.setCorrelationIdProperty(correlationIdProperty);
         description.setStereotype(stereotype);

@@ -27,6 +27,17 @@ public class OpinionatedRabbitTemplate implements RabbitContextAware
     private RabbitTemplate rabbitTemplate;
 
     /**
+     * Sends a message to the exchange using the routingKey defined by the RabbitContext
+     *
+     * @param message
+     */
+    public void send(Object message)
+    {
+        MessageDescription description = rabbitContext.getDescription(message.getClass());
+        rabbitTemplate.convertAndSend(description.getExchange(), description.getRoutingKey(), message);
+    }
+
+    /**
      * Sends a message to the exchange defined by the RabbitContext
      *
      * @param message
