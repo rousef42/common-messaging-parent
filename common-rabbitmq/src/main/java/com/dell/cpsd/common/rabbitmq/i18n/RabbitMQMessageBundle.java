@@ -33,6 +33,8 @@ public class RabbitMQMessageBundle extends ListResourceBundle
         {"VAMQP1007E", "VAMQP1007E [{0}] AMQP acknowledgment error: [{1}]"},
         {"VAMQP1008E", "VAMQP1008E AMQP error (attempt {0}): [{1}]"},
         {"VAMQP1009E", "VAMQP1009E [{0}] AMQP error: [{1}]"},
+        {"VAMQP1010E", "VAMQP1010E Failed to create error message for exception [{0}]. Reason:"},
+        {"VAMQP1011E", "VAMQP1011E Can not create response error message: property [{0}] not specified"},
 
         {"VAMQP2001E", "VAMQP2001E Unexpected error during validation: [{0}]"},
         {"VAMQP2002E", "VAMQP2002E Provided message is null."},

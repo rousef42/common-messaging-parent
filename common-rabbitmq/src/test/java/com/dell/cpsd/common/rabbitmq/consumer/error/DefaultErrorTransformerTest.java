@@ -22,6 +22,7 @@ import static org.junit.Assert.assertSame;
 public class DefaultErrorTransformerTest
 {
     DefaultErrorTransformer<TestErrorMessage> transformer;
+    TestRequestMessage requestMessage;
     ErrorContext<HasMessageProperties<?>> context;
 
     @Before
@@ -29,7 +30,7 @@ public class DefaultErrorTransformerTest
     {
         transformer = new DefaultErrorTransformer<>("test-exchange", "test-reply", TestErrorMessage::new);
 
-        TestRequestMessage requestMessage = new TestRequestMessage();
+        requestMessage = new TestRequestMessage();
         requestMessage.getMessageProperties().setCorrelationId("test-id");
         requestMessage.getMessageProperties().setReplyTo("request-reply-to");
         context = new ErrorContext<>(requestMessage, "service-key");
@@ -65,6 +66,39 @@ public class DefaultErrorTransformerTest
 
         assertSame(e, result.getCause());
         assertResponseDetails("test error", result);
+    }
+
+    @Test
+    public void transform_RuntimeException_noMessageProperties() throws Exception
+    {
+        requestMessage.setMessageProperties(null);
+        RuntimeException e = new RuntimeException("test error");
+
+        Exception result = transformer.transform(e, context);
+
+        assertSame(e, result);
+    }
+
+    @Test
+    public void transform_RuntimeException_noCorrelationId() throws Exception
+    {
+        requestMessage.getMessageProperties().setCorrelationId(null);
+        RuntimeException e = new RuntimeException("test error");
+
+        Exception result = transformer.transform(e, context);
+
+        assertSame(e, result);
+    }
+
+    @Test
+    public void transform_RuntimeException_noReplyTo() throws Exception
+    {
+        requestMessage.getMessageProperties().setReplyTo(null);
+        RuntimeException e = new RuntimeException("test error");
+
+        Exception result = transformer.transform(e, context);
+
+        assertSame(e, result);
     }
 
     protected void assertResponseDetails(String expectedErrorMessage, ErrorResponseException result)

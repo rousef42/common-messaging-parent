@@ -4,15 +4,22 @@
  */
 package com.dell.cpsd.common.rabbitmq.consumer.error;
 
+import com.dell.cpsd.common.rabbitmq.exceptions.RabbitMQException;
 import com.dell.cpsd.common.rabbitmq.message.HasErrorMessage;
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
 import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.function.Supplier;
+
+import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_FAILED_E;
+import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_NO_PROPERTY_E;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * Creates ResponseMessageException using standard approach from
@@ -25,6 +32,8 @@ import java.util.function.Supplier;
 public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<? extends MessagePropertiesContainer> & HasErrorMessage>
         implements ErrorTransformer<HasMessageProperties<?>>
 {
+    private static final Logger log = LoggerFactory.getLogger(DefaultErrorTransformer.class);
+
     public static final String ERROR_BINDING_TEMPLATE = "${handler.routingKey}.error.${request.replyTo}";
 
     protected Supplier<ErrorMessage> errorMessageSupplier;
@@ -63,6 +72,7 @@ public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<?
         try
         {
             HasMessageProperties<?> requestMessage = context.getRequestMessage();
+            validate(requestMessage);
 
             String routingKey = createRoutingKey(context);
 
@@ -73,11 +83,36 @@ public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<?
         }
         catch (Exception internalError)
         {
-            return new TransformationException("Failed to transform error message: " + internalError.getMessage(), e, internalError);
+            String msg = ERROR_RESPONSE_FAILED_E.getMessageText(e.getMessage());
+            log.error(msg, internalError);
+            return e;
         }
     }
 
-    protected String createRoutingKey(ErrorContext<HasMessageProperties<?>> context)
+    /**
+     * Ensures incoming message has enough data to create response error message.
+     *
+     * @param requestMessage request message
+     * @throws RabbitMQException in case of absent data
+     */
+    protected void validate(HasMessageProperties<?> requestMessage) throws RabbitMQException
+    {
+        MessagePropertiesContainer messageProperties = requestMessage.getMessageProperties();
+        if (messageProperties == null)
+        {
+            throw new RabbitMQException(ERROR_RESPONSE_NO_PROPERTY_E.getMessageText("messageProperties"));
+        }
+        if (isEmpty(messageProperties.getReplyTo()))
+        {
+            throw new RabbitMQException(ERROR_RESPONSE_NO_PROPERTY_E.getMessageText("replyTo"));
+        }
+        if (isEmpty(messageProperties.getCorrelationId()))
+        {
+            throw new RabbitMQException(ERROR_RESPONSE_NO_PROPERTY_E.getMessageText("correlationId"));
+        }
+    }
+
+    protected String createRoutingKey(ErrorContext<HasMessageProperties<?>> context) throws RabbitMQException
     {
         HasMessageProperties<?> requestMessage = context.getRequestMessage();
         return ERROR_BINDING_TEMPLATE
