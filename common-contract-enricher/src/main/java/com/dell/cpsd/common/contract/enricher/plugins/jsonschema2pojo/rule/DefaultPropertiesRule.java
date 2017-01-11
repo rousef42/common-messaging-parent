@@ -35,7 +35,6 @@ public class DefaultPropertiesRule extends PropertiesRule
                     asList("code", "message"),
                     "com.dell.cpsd.common.rabbitmq.message.ErrorContainer"
             ),
-            new AddInterface("errorMessage", "com.dell.cpsd.common.rabbitmq.message.HasErrorMessage"),
             new AddGenericInterface("messageProperties", "com.dell.cpsd.common.rabbitmq.message.HasMessageProperties"),
             new AddGenericInterface("errors", "com.dell.cpsd.common.rabbitmq.message.HasErrors")
                     .unwrapFieldType(List.class)
