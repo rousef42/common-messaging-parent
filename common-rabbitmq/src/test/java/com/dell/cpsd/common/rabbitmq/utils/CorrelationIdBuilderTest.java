@@ -62,6 +62,13 @@ public class CorrelationIdBuilderTest
     }
 
     @Test
+    public void splitAndRemoveLast() throws Exception
+    {
+        CorrelationIdBuilder bld = new CorrelationIdBuilder("a1$b212$1667667");
+        assertEquals("a1", bld.removeLast().removeLast().readLast());
+        assertEquals("a1", bld.build());
+    }
+    @Test
     public void buildEmpty() throws Exception
     {
         CorrelationIdBuilder bld = new CorrelationIdBuilder("");

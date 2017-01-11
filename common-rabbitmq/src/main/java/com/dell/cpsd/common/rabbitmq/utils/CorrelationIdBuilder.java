@@ -28,6 +28,7 @@ public class CorrelationIdBuilder
     /**
      * Sections separator character.
      */
+    public static final String SEPARATOR_REGEX = "\\$";
     public static final String SEPARATOR = "$";
 
     private List<String> sections = new ArrayList<>();
@@ -132,7 +133,7 @@ public class CorrelationIdBuilder
     {
         if (StringUtils.isNotEmpty(correlationString))
         {
-            final String[] array = correlationString.split(SEPARATOR);
+            final String[] array = correlationString.split(SEPARATOR_REGEX);
             return Arrays.asList(array);
         }
         else
