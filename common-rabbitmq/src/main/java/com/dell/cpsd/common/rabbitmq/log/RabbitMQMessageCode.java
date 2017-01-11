@@ -5,11 +5,9 @@
 
 package com.dell.cpsd.common.rabbitmq.log;
 
-import java.text.MessageFormat;
-
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorCode;
+import com.dell.cpsd.common.rabbitmq.i18n.DefaultMessageFormatter;
 import com.dell.cpsd.common.rabbitmq.i18n.RabbitMQMessageBundle;
 
 /**
@@ -22,7 +20,7 @@ import com.dell.cpsd.common.rabbitmq.i18n.RabbitMQMessageBundle;
  * 
  * @since    SINCE-TDB
  */
-public enum RabbitMQMessageCode
+public enum RabbitMQMessageCode implements LocalizedErrorCode
 {
     CONNECTION_FACTORY_INIT_E(1001,     "VAMQP1001E"),
     CONNECTION_FACTORY_INIT_I(1002,     "VAMQP1002I"),
@@ -33,8 +31,10 @@ public enum RabbitMQMessageCode
     MESSAGE_IMMEDIATE_ACK_E(1007,       "VAMQP1007E"),
     AMQP_ERROR_RETRY_E(1008,            "VAMQP1008E"),
     AMQP_ERROR_E(1009,                  "VAMQP1009E"),
+
     ERROR_RESPONSE_FAILED_E(1010,       "VAMQP1010E"),
     ERROR_RESPONSE_NO_PROPERTY_E(1011,  "VAMQP1011E"),
+    ERROR_RESPONSE_UNEXPECTED_ERROR_E(1012, "VAMQP1012E"),
 
     VALIDATION_INTERNAL_ERROR_E(2001,   "VAMQP2001E"),
     VALIDATION_MESSAGE_IS_NULL_E(2002,  "VAMQP2002E"),
@@ -42,12 +42,7 @@ public enum RabbitMQMessageCode
     VALIDATION_STRING_IS_EMPTY_E(2004,  "VAMQP2004E"),
     ;
     
-
-    /*
-     * The path to the resource bundle
-     */
-    private static final ResourceBundle BUNDLE = 
-                ResourceBundle.getBundle(RabbitMQMessageBundle.class.getName());
+    private static final DefaultMessageFormatter FORMATTER = new DefaultMessageFormatter(RabbitMQMessageBundle.class);
     
     /*
      * The error code.
@@ -110,14 +105,7 @@ public enum RabbitMQMessageCode
      */
     public String getErrorText()
     {
-        try
-        {
-            return BUNDLE.getString(this.messageCode);
-            
-        } catch (MissingResourceException exception)
-        {
-            return this.messageCode;
-        }
+        return FORMATTER.getMessage(messageCode);
     }
     
 
@@ -132,23 +120,11 @@ public enum RabbitMQMessageCode
      */
     public String getMessageText(Object... params)
     {
-        String message = null;
-        
-        try
-        {
-            message = BUNDLE.getString(this.messageCode);
-            
-        } catch (MissingResourceException exception)
-        {
-            return this.messageCode;
-        }
-        
-        if ((params == null) || (params.length == 0)) 
-        {
-            return message;
-        }
-       
-        return MessageFormat.format(message, params);
+        return FORMATTER.getMessage(messageCode, params);
     }
-    
+
+    public LocalizedError getLocalizedError(Object... params)
+    {
+        return FORMATTER.getApplicationMessage(messageCode, params);
+    }
 }

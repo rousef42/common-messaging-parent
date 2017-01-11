@@ -4,17 +4,19 @@
  */
 package com.dell.cpsd.common.rabbitmq;
 
-import com.dell.cpsd.common.rabbitmq.message.HasErrorMessage;
+import com.dell.cpsd.common.rabbitmq.message.HasErrors;
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
+
+import java.util.List;
 
 /**
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class TestErrorMessage implements HasErrorMessage, HasMessageProperties<TestMessageProperties>
+public class TestErrorMessage implements HasMessageProperties<TestMessageProperties>, HasErrors<Error>
 {
     private TestMessageProperties messageProperties = new TestMessageProperties();
-    private String errorMessage;
+    private List<Error> errors;
 
     public TestMessageProperties getMessageProperties()
     {
@@ -26,13 +28,14 @@ public class TestErrorMessage implements HasErrorMessage, HasMessageProperties<T
         this.messageProperties = messageProperties;
     }
 
-    public String getErrorMessage()
+    public List<Error> getErrors()
     {
-        return errorMessage;
+        return errors;
     }
 
-    public void setErrorMessage(String errorMessage)
+    public void setErrors(List<Error> errors)
     {
-        this.errorMessage = errorMessage;
+        this.errors = errors;
     }
+
 }

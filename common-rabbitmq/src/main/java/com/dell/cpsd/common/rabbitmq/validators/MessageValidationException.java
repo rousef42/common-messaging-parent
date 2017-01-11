@@ -4,6 +4,8 @@
  */
 package com.dell.cpsd.common.rabbitmq.validators;
 
+import com.dell.cpsd.common.rabbitmq.exceptions.ApplicationException;
+
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ import java.util.List;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class MessageValidationException extends RuntimeException
+public class MessageValidationException extends ApplicationException
 {
     private static final long serialVersionUID = -2326041223674348892L;
 
@@ -21,7 +23,7 @@ public class MessageValidationException extends RuntimeException
 
     public MessageValidationException(ValidationResult validationResult)
     {
-        super(getFirstError(validationResult));
+        super(validationResult.getLocalizedErrors());
         this.validationResult = validationResult;
     }
 

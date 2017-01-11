@@ -5,6 +5,8 @@
 
 package com.dell.cpsd.common.rabbitmq.validators;
 
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,7 @@ public abstract class GenericMessageValidator<M> implements MessageValidator<M>
     /**
      * Implementation of message validation.
      *
-     * @param message the request message
+     * @param message          the request message
      * @param validationResult validation details to populate
      * @throws Exception the throwable
      */
@@ -47,7 +49,7 @@ public abstract class GenericMessageValidator<M> implements MessageValidator<M>
     {
         if (message == null)
         {
-            return failedValidationResult(VALIDATION_MESSAGE_IS_NULL_E.getMessageText());
+            return failedValidationResult(VALIDATION_MESSAGE_IS_NULL_E);
         }
 
         try
@@ -58,8 +60,8 @@ public abstract class GenericMessageValidator<M> implements MessageValidator<M>
         }
         catch (Exception e)
         {
-            String msg = VALIDATION_INTERNAL_ERROR_E.getMessageText(e.getMessage());
-            LOGGER.error(msg, e);
+            LocalizedError msg = VALIDATION_INTERNAL_ERROR_E.getLocalizedError(e.getMessage());
+            LOGGER.error(msg.getMessage(), e);
             return failedValidationResult(msg);
         }
     }
@@ -68,7 +70,7 @@ public abstract class GenericMessageValidator<M> implements MessageValidator<M>
     {
         if (value == null)
         {
-            validationResult.addError(VALIDATION_PROPERTY_IS_NULL_E.getMessageText(property));
+            validationResult.addError(VALIDATION_PROPERTY_IS_NULL_E, property);
         }
     }
 
@@ -76,14 +78,29 @@ public abstract class GenericMessageValidator<M> implements MessageValidator<M>
     {
         if (isBlank(value))
         {
-            validationResult.addError(VALIDATION_STRING_IS_EMPTY_E.getMessageText(property));
+            validationResult.addError(VALIDATION_STRING_IS_EMPTY_E, property);
         }
     }
 
+    @Deprecated
     protected ValidationResult failedValidationResult(String error)
     {
         ValidationResult result = new ValidationResult();
         result.addError(error);
+        return result;
+    }
+
+    protected ValidationResult failedValidationResult(LocalizedError message)
+    {
+        ValidationResult result = new ValidationResult();
+        result.addError(message);
+        return result;
+    }
+
+    protected ValidationResult failedValidationResult(LocalizedErrorCode errorProvider, Object... params)
+    {
+        ValidationResult result = new ValidationResult();
+        result.addError(errorProvider, params);
         return result;
     }
 }

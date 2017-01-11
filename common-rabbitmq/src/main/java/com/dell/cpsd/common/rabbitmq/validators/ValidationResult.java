@@ -5,9 +5,13 @@
 
 package com.dell.cpsd.common.rabbitmq.validators;
 
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorCode;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Validation result holder.
@@ -20,22 +24,64 @@ import java.util.List;
  */
 public class ValidationResult
 {
-    private List<String> errors = new ArrayList<>();
+    private List<LocalizedError> errors = new ArrayList<>();
 
-    public List<String> getErrors()
+    public List<LocalizedError> getLocalizedErrors()
     {
         return Collections.unmodifiableList(errors);
     }
 
-    public ValidationResult addErrors(List<String> newErrors)
+    public ValidationResult addError(LocalizedErrorCode localizedErrorCode, Object... params)
     {
-        this.errors.addAll(newErrors);
+        this.errors.add(localizedErrorCode.getLocalizedError(params));
         return this;
     }
 
-    public ValidationResult addError(String error)
+    public ValidationResult addError(LocalizedError error)
     {
         this.errors.add(error);
+        return this;
+    }
+
+    /**
+     * @return list of error messages
+     * @deprecated Use getLocalizedErrors() instead.
+     */
+    @Deprecated
+    public List<String> getErrors()
+    {
+        return errors
+                .stream()
+                .map(LocalizedError::getMessage)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @param newErrors error messages to add
+     * @return itself
+     * @deprecated Use addError(LocalizedError) instead.
+     */
+    @Deprecated
+    public ValidationResult addErrors(List<String> newErrors)
+    {
+        for (String error : newErrors)
+        {
+            addError(error);
+        }
+        return this;
+    }
+
+    /**
+     * @param error error message to add
+     * @return itself
+     * @deprecated Use addError(LocalizedError) instead.
+     */
+    @Deprecated
+    public ValidationResult addError(String error)
+    {
+        LocalizedError message = new LocalizedError();
+        message.setMessage(error);
+        this.errors.add(message);
         return this;
     }
 
@@ -50,7 +96,7 @@ public class ValidationResult
         final StringBuilder sb = new StringBuilder("ValidationResult{");
         sb.append("valid=").append(isValid());
         sb.append(", messages:\n");
-        for (final String message : errors)
+        for (LocalizedError message : errors)
         {
             sb.append(message);
             sb.append("\n");

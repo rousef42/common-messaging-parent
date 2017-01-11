@@ -23,8 +23,8 @@ public class DefaultMessageValidator<M extends HasMessageProperties<? extends Me
         validateNotNull(properties, "messageProperties", validationResult);
         if (properties != null)
         {
-            validateNotNull(properties.getCorrelationId(), "correlationId", validationResult);
-            validateNotNull(properties.getReplyTo(), "replyTo", validationResult);
+            validateNotEmpty(properties.getCorrelationId(), "correlationId", validationResult);
+            validateNotEmpty(properties.getReplyTo(), "replyTo", validationResult);
         }
     }
 }

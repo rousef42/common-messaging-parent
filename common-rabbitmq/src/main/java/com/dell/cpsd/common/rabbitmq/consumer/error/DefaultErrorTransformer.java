@@ -5,20 +5,26 @@
 package com.dell.cpsd.common.rabbitmq.consumer.error;
 
 import com.dell.cpsd.common.rabbitmq.exceptions.RabbitMQException;
-import com.dell.cpsd.common.rabbitmq.message.HasErrorMessage;
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorsProvider;
+import com.dell.cpsd.common.rabbitmq.message.ErrorContainer;
+import com.dell.cpsd.common.rabbitmq.message.HasErrors;
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
-import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_FAILED_E;
 import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_NO_PROPERTY_E;
+import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_UNEXPECTED_ERROR_E;
+import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
@@ -29,20 +35,28 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<? extends MessagePropertiesContainer> & HasErrorMessage>
+public class DefaultErrorTransformer<
+        ErrorMessage extends ErrorContainer,
+        ErrorResponseMessage extends HasMessageProperties<? extends MessagePropertiesContainer> & HasErrors<ErrorMessage>
+        >
         implements ErrorTransformer<HasMessageProperties<?>>
 {
     private static final Logger log = LoggerFactory.getLogger(DefaultErrorTransformer.class);
 
     public static final String ERROR_BINDING_TEMPLATE = "${handler.routingKey}.error.${request.replyTo}";
 
-    protected Supplier<ErrorMessage> errorMessageSupplier;
+    protected Supplier<ErrorResponseMessage> errorMessageSupplier;
+    protected Supplier<ErrorMessage> errorSupplier;
     protected String responseExchange;
     protected String replyTo;
 
-    public DefaultErrorTransformer(String responseExchange, String replyTo, Supplier<ErrorMessage> errorMessageSupplier)
+    public DefaultErrorTransformer(String responseExchange,
+                                   String replyTo,
+                                   Supplier<ErrorResponseMessage> errorMessageSupplier,
+                                   Supplier<ErrorMessage> errorSupplier)
     {
         this.errorMessageSupplier = errorMessageSupplier;
+        this.errorSupplier = errorSupplier;
         this.responseExchange = responseExchange;
         this.replyTo = replyTo;
     }
@@ -54,20 +68,22 @@ public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<?
         {
             return e;
         }
-        if (e instanceof MessageValidationException)
+        if (e instanceof LocalizedErrorsProvider)
         {
-            String errorText = ((MessageValidationException) e).getFirstError();
-            if (errorText != null)
-            {
-                return createResponseMessageException(errorText, e, context);
-            }
-            // Fallback to default error handling if for some reason there are no validation messages
+            List<LocalizedError> errors = ((LocalizedErrorsProvider) e).getLocalizedErrors();
+            return createResponseMessageException(errors, e, context);
         }
 
         return createResponseMessageException(e.getMessage(), e, context);
     }
 
     protected Exception createResponseMessageException(String errorText, Exception e, ErrorContext<HasMessageProperties<?>> context)
+    {
+        LocalizedError error = ERROR_RESPONSE_UNEXPECTED_ERROR_E.getLocalizedError(errorText);
+        return createResponseMessageException(asList(error), e, context);
+    }
+
+    protected Exception createResponseMessageException(List<LocalizedError> errors, Exception e, ErrorContext<HasMessageProperties<?>> context)
     {
         try
         {
@@ -76,8 +92,8 @@ public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<?
 
             String routingKey = createRoutingKey(context);
 
-            ErrorMessage message = errorMessageSupplier.get();
-            populateErrorMessage(errorText, requestMessage, message);
+            ErrorResponseMessage message = errorMessageSupplier.get();
+            populateErrorMessage(errors, requestMessage, message);
 
             return new ErrorResponseException(e, responseExchange, routingKey, message);
         }
@@ -120,13 +136,27 @@ public class DefaultErrorTransformer<ErrorMessage extends HasMessageProperties<?
                 .replace("${request.replyTo}", requestMessage.getMessageProperties().getReplyTo());
     }
 
-    protected void populateErrorMessage(String errorText, HasMessageProperties<?> requestMessage, ErrorMessage message)
+    protected void populateErrorMessage(List<LocalizedError> errors, HasMessageProperties<?> requestMessage, ErrorResponseMessage message)
     {
         MessagePropertiesContainer properties = message.getMessageProperties();
         properties.setCorrelationId(requestMessage.getMessageProperties().getCorrelationId());
         properties.setReplyTo(replyTo);
         properties.setTimestamp(new Date());
 
-        message.setErrorMessage(errorText);
+        List<ErrorMessage> errorMessages = new ArrayList<>();
+        for (LocalizedError localizedError : errors)
+        {
+            ErrorMessage errorMessage = errorSupplier.get();
+            populateErrorDetails(errorMessage, localizedError);
+            errorMessages.add(errorMessage);
+        }
+
+        message.setErrors(errorMessages);
+    }
+
+    protected void populateErrorDetails(ErrorMessage errorMessage, LocalizedError localizedError)
+    {
+        errorMessage.setCode(localizedError.getMessageCode());
+        errorMessage.setMessage(localizedError.getMessage());
     }
 }
