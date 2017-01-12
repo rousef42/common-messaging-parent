@@ -30,7 +30,6 @@ public class MessageDescription<M>
     private String              timestampProperty     = null;
     private String              routingKey            = null;
     private MessageContentType  contentType           = null;
-    private String              containerAlias        = null;
 
     public void setMessageClass(Class<M> messageClass)
     {
@@ -140,15 +139,5 @@ public class MessageDescription<M>
     public void setContentType(MessageContentType contentType)
     {
         this.contentType = contentType;
-    }
-
-    public String getContainerAlias()
-    {
-        return containerAlias;
-    }
-
-    public void setContainerAlias(String containerAlias)
-    {
-        this.containerAlias = containerAlias;
     }
 }

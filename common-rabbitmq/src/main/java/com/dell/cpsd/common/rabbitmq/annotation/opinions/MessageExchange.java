@@ -36,4 +36,11 @@ public @interface MessageExchange
      * @return
      */
     MessageExchangeType exchangeType() default MessageExchangeType.TOPIC;
+
+    /**
+     * routing key
+     *
+     * @return
+     */
+    String routingKey() default OpinionConstants.UNDEFINED;
 }

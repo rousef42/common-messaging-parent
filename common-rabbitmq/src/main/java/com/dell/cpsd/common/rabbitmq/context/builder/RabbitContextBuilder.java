@@ -129,15 +129,69 @@ public class RabbitContextBuilder
      */
     public <C> RabbitContextBuilder consumes(String queueName, boolean durable, Object listener, Class<C> messageClass)
     {
+        return consumes(queueName, durable, null, listener, messageClass);
+    }
+
+    /**
+     * Register a message class that is consumed
+     *
+     * @param messageClass
+     * @param queueName
+     * @param durable
+     * @param containerAlias
+     * @param listener
+     * @return
+     */
+    public <C> RabbitContextBuilder consumes(String queueName, boolean durable, String containerAlias, Object listener, Class<C> messageClass)
+    {
         MessageDescription<C> description = messageDescriptionFactory.createDescription(messageClass);
         descriptions.put(description.getType(), description);
 
         //If the container alias happens to be null, then all queues will get the same 'null' container
-        addQueueData(description.getContainerAlias(), queueName, listener);
+        addQueueData(containerAlias, queueName, listener);
 
         MessageBindingBuilder bindingBuilder = new MessageBindingBuilder(this, resolveRoutingKey(description, consumerPostfix));
         bindingBuilder.fromExchange(description.getExchange(), description.getExchangeType()).toQueue(queueName, durable);
         bindingBuilder.bind();
+
+        return this;
+    }
+
+    /**
+     * Register a produce message class and consumme class pair. This is useful because a listener queue will be bound with the
+     * producer routing key for replies
+     *
+     * @param requestClass
+     * @param replyClasses
+     * @param queueName
+     * @param durable
+     * @param containerAlias
+     * @param listener
+     * @return
+     */
+    public <P> RabbitContextBuilder requestsAndReplies(Class<P> requestClass, String queueName, boolean durable, String containerAlias,
+            Object listener, Class<?>... replyClasses)
+    {
+        produces(requestClass);
+
+        MessageDescription<P> requestDescription = messageDescriptionFactory.createDescription(requestClass);
+        descriptions.put(requestDescription.getType(), requestDescription);
+
+        for (Class<?> replyClass : replyClasses)
+        {
+            MessageDescription replyDescription = messageDescriptionFactory.createDescription(replyClass);
+            descriptions.put(replyDescription.getType(), replyDescription);
+
+            addQueueData(containerAlias, queueName, listener);
+
+            MessageBindingBuilder replyBindingBuilder = new MessageBindingBuilder(this,
+                    resolveRoutingKey(replyDescription.getStereotype(), requestDescription.getRoutingKey(), consumerPostfix));
+
+            Binding replyBinding = replyBindingBuilder.fromExchange(replyDescription.getExchange(), replyDescription.getExchangeType())
+                    .toQueue(queueName, durable).bind();
+
+            replyToMap.put(new RequestReplyKey(requestClass, replyClass), replyBinding.getRoutingKey());
+        }
 
         return this;
     }
@@ -156,28 +210,7 @@ public class RabbitContextBuilder
     public <P> RabbitContextBuilder requestsAndReplies(Class<P> requestClass, String queueName, boolean durable, Object listener,
             Class<?>... replyClasses)
     {
-        produces(requestClass);
-
-        MessageDescription<P> requestDescription = messageDescriptionFactory.createDescription(requestClass);
-        descriptions.put(requestDescription.getType(), requestDescription);
-
-        for (Class<?> replyClass : replyClasses)
-        {
-            MessageDescription replyDescription = messageDescriptionFactory.createDescription(replyClass);
-            descriptions.put(replyDescription.getType(), replyDescription);
-
-            addQueueData(replyDescription.getContainerAlias(), queueName, listener);
-
-            MessageBindingBuilder replyBindingBuilder = new MessageBindingBuilder(this,
-                    resolveRoutingKey(replyDescription.getStereotype(), requestDescription.getRoutingKey(), consumerPostfix));
-
-            Binding replyBinding = replyBindingBuilder.fromExchange(replyDescription.getExchange(), replyDescription.getExchangeType())
-                    .toQueue(queueName, durable).bind();
-
-            replyToMap.put(new RequestReplyKey(requestClass, replyClass), replyBinding.getRoutingKey());
-        }
-
-        return this;
+        return requestsAndReplies(requestClass, queueName, durable, null, listener, replyClasses);
     }
 
     /**

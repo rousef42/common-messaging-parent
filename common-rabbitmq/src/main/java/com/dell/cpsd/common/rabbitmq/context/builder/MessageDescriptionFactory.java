@@ -7,10 +7,8 @@ package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.rabbitmq.annotation.Message;
 import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageConsumer;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchange;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageProducer;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.OpinionConstants;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
@@ -40,7 +38,6 @@ public class MessageDescriptionFactory
         String routingKey = null;
         MessageStereotype stereotype = null;
         MessageContentType contentType = null;
-        String containerAlias = null;
 
         // Basic Message Information
         Message messageAnnotation = messageClass.getAnnotation(Message.class);
@@ -56,29 +53,9 @@ public class MessageDescriptionFactory
         {
             exchange = exchangeAnnotation.exchange();
             exchangeType = exchangeAnnotation.exchangeType();
-        }
-
-        // Opinion
-        MessageConsumer consumerAnnotation = messageClass.getAnnotation(MessageConsumer.class);
-        if (consumerAnnotation != null)
-        {
-            if (OpinionConstants.isDefined(consumerAnnotation.routingKey()))
+            if (OpinionConstants.isDefined(exchangeAnnotation.routingKey()))
             {
-                routingKey = consumerAnnotation.routingKey();
-            }
-            if (OpinionConstants.isDefined(consumerAnnotation.containerAlias()))
-            {
-                containerAlias = consumerAnnotation.containerAlias();
-            }
-        }
-
-        // Opinion
-        MessageProducer producerAnnotation = messageClass.getAnnotation(MessageProducer.class);
-        if (producerAnnotation != null)
-        {
-            if (OpinionConstants.isDefined(producerAnnotation.routingKey()))
-            {
-                routingKey = producerAnnotation.routingKey();
+                routingKey = exchangeAnnotation.routingKey();
             }
         }
 
@@ -117,7 +94,6 @@ public class MessageDescriptionFactory
         description.setType(type);
         description.setVersion(version);
         description.setContentType(contentType);
-        description.setContainerAlias(containerAlias);
         return description;
     }
 }

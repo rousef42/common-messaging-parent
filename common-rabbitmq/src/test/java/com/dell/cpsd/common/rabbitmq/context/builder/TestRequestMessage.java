@@ -6,9 +6,7 @@
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.rabbitmq.annotation.Message;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageConsumer;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchange;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageProducer;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,9 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since SINCE-TBD
  */
 @Message(value = "test.message.consumer", version = "1.0")
-@MessageExchange(exchange = "exchange.test")
-@MessageConsumer(routingKey = "binding.base")
-@MessageProducer(routingKey = "routing.base")
+@MessageExchange(exchange = "exchange.test", routingKey = "routing.base")
 @MessageRequest
 public class TestRequestMessage
 {

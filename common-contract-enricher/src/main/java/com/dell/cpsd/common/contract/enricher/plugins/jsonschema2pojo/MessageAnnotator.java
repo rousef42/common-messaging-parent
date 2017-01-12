@@ -16,10 +16,8 @@ package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo;
 
 import com.dell.cpsd.common.rabbitmq.annotation.Message;
 import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageConsumer;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchange;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageProducer;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageError;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
@@ -52,8 +50,6 @@ public class MessageAnnotator extends AbstractAnnotator
         {
             annotateMessage(clazz, meta);
             annotateExchangeOpinion(clazz, meta);
-            annotateConsumerOpinion(clazz, meta);
-            annotateProducerOpinion(clazz, meta);
             annotateStereotype(clazz, meta);
         }
     }
@@ -93,26 +89,6 @@ public class MessageAnnotator extends AbstractAnnotator
         }
     }
 
-    private void annotateProducerOpinion(JDefinedClass clazz, JsonNode meta)
-    {
-        JAnnotationUse producer = clazz.annotate(MessageProducer.class);
-        JsonNode routingKeyBase = meta.get("routingKey");
-        if (routingKeyBase != null)
-        {
-            producer.param("routingKey", routingKeyBase.asText());
-        }
-    }
-
-    private void annotateConsumerOpinion(JDefinedClass clazz, JsonNode meta)
-    {
-        JAnnotationUse consumer = clazz.annotate(MessageConsumer.class);
-        JsonNode bindingBase = meta.get("routingKey");
-        if (bindingBase != null)
-        {
-            consumer.param("routingKey", bindingBase.asText());
-        }
-    }
-
     private void annotateExchangeOpinion(JDefinedClass clazz, JsonNode meta)
     {
         JsonNode exchange = meta.get("exchange");
@@ -126,6 +102,12 @@ public class MessageAnnotator extends AbstractAnnotator
             if (exchangeType != null)
             {
                 exchangeAnnotation.param("exchangeType", MessageExchangeType.valueOf(exchangeType.asText().toUpperCase()));
+            }
+
+            JsonNode bindingBase = meta.get("routingKey");
+            if (bindingBase != null)
+            {
+                exchangeAnnotation.param("routingKey", bindingBase.asText());
             }
         }
     }
