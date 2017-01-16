@@ -78,6 +78,14 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
         return wrapper.getAggregate();
     }
 
+    public boolean checkIfCorrelationIdPresent(String correlationId)
+    {
+        if(aggregates.get(correlationId)!=null)
+            return true;
+        else
+            return false;
+    }
+
     protected void deleteOldAggregates()
     {
         final Date oldestAllowedCreationDate = DateUtils.addSeconds(new Date(), -timeToLiveSeconds);
