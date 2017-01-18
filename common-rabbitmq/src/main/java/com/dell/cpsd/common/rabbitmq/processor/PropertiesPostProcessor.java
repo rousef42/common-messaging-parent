@@ -83,7 +83,7 @@ public class PropertiesPostProcessor<M extends MessagePropertiesContainer> imple
             }
         }
         
-        messageProperties.setCorrelationIdString(this.properties.getCorrelationId());
+        messageProperties.setCorrelationIdString(correlationId);
         messageProperties.setReplyTo(this.properties.getReplyTo());
         
         return message;
