@@ -24,6 +24,7 @@
     <modules>
         <module>common-rabbitmq</module>
         <module>common-contract-enricher</module>
+        <module>common-testing</module>
     </modules>
 
     <dependencyManagement>

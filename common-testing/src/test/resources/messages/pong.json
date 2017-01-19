@@ -1,0 +1,7 @@
+{
+  "messageProperties": {
+    "timestamp": "2010-01-01T12:01:00Z",
+    "correlationId": "abcdabcd-abcd-abcd-abcd-abcdabcdabcd"
+  },
+  "message": "ho"
+}

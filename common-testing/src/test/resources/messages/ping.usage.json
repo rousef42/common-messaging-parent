@@ -1,0 +1,21 @@
+{
+  "configuration": {
+    "host": "localhost",
+    "exchange": "exchange.dell.cpsd.testing.request",
+    "routingKey": "dell.cpsd.testing.ping"
+  },
+  "properties": {
+    "headers": {
+      "__TypeId__": "com.dell.cpsd.ping"
+    },
+    "contentType": "application/json"
+  },
+  "body": {
+    "messageProperties": {
+      "timestamp": "2010-01-01T12:00:00Z",
+      "correlationId": "abcdabcd-abcd-abcd-abcd-abcdabcdabcd",
+      "replyTo": "pingsender"
+    },
+    "message": "hey"
+  }
+}
