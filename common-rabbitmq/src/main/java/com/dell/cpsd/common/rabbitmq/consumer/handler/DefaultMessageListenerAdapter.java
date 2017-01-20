@@ -14,6 +14,7 @@ import org.springframework.amqp.core.MessageProperties;
 
 import org.springframework.amqp.support.converter.MessageConverter;
 
+import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
 import com.dell.cpsd.common.rabbitmq.message.DefaultMessageProperties;
 
 /**
@@ -53,7 +54,7 @@ public class DefaultMessageListenerAdapter extends MessageListenerAdapter
     {
         final MessageProperties originalMessageProperties = originalMessage.getMessageProperties();
         
-        DefaultMessageProperties extractedMessageProperties = new DefaultMessageProperties();
+        MessagePropertiesContainer extractedMessageProperties = new DefaultMessageProperties();
         
         if (originalMessageProperties != null)
         {   
