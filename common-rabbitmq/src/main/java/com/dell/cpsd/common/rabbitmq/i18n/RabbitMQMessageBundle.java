@@ -28,7 +28,7 @@ public class RabbitMQMessageBundle extends ListResourceBundle
         {"VAMQP1002I", "VAMQP1002I Setting up AMQP connection factory values [{0}:{1}]"},
         {"VAMQP1003E", "VAMQP1003E AMQP failed to connect to [{0}]. Reason [{1}] "},
         {"VAMQP1004E", "VAMQP1004E There are no AMQP broker connections available."},
-        {"VAMQP1005E", "VAMQP1005E "},
+        //{"VAMQP1005E", "VAMQP1005E "},
         {"VAMQP1006E", "VAMQP1006E [{0}] Unhandled message received: [{1}]"},
         {"VAMQP1007E", "VAMQP1007E [{0}] AMQP acknowledgment error: [{1}]"},
         {"VAMQP1008E", "VAMQP1008E AMQP error (attempt {0}): [{1}]"},
