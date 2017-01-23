@@ -1,3 +1,8 @@
+/*
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * VCE Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.consumer.error;
 
 import com.dell.cpsd.common.rabbitmq.Error;
@@ -22,7 +27,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * <p>
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
 @SuppressWarnings("SameParameterValue")

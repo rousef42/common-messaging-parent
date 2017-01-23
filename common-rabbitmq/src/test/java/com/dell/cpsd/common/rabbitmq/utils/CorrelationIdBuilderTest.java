@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
  * VCE Confidential/Proprietary Information
  * </p>
  *
- * @since SINCE-TBD
+ * @since 1.1
  */
 public class CorrelationIdBuilderTest
 {

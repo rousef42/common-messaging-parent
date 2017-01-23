@@ -18,7 +18,7 @@ import org.junit.Test;
  * VCE Confidential/Proprietary Information
  * </p>
  *
- * @since SINCE-TBD
+ * @since 1.0
  */
 public class MessageDescriptionFactoryTest
 {

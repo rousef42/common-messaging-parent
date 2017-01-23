@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
  * <p>
  * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
+ * @since 1.1
  */
 public class RabbitMQMessageCodeTest
 {
@@ -118,7 +119,7 @@ public class RabbitMQMessageCodeTest
         {
             final String msgCode = code.getMessageCode().trim();
             final String msgText = code.getMessageText().trim();
-            assertNotEquals(msgCode + " is has no entry in bundle", msgCode, msgText);
+            assertNotEquals(msgCode + " has no entry in bundle", msgCode, msgText);
         }
     }
 

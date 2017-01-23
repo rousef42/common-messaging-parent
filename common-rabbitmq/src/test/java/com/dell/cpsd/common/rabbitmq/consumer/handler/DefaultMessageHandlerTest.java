@@ -1,3 +1,8 @@
+/*
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * VCE Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
 import com.dell.cpsd.common.rabbitmq.TestRequestMessage;
@@ -16,7 +21,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * <p>
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
 public class DefaultMessageHandlerTest

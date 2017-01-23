@@ -1,3 +1,8 @@
+/*
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * VCE Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
@@ -12,7 +17,9 @@ import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFaile
 import static org.mockito.Mockito.mock;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Message Recoverer test.
+ * <p>
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
 public class DefaultMessageRecovererTest

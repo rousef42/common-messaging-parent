@@ -1,3 +1,8 @@
+/*
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * VCE Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
@@ -17,7 +22,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Default retry policy test.
+ * <p>
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
 public class DefaultRetryPolicyTest

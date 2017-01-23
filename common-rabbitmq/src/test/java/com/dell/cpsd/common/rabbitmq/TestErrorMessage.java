@@ -10,8 +10,10 @@ import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import java.util.List;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * <p>
+ * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
+ * @since 1.0
  */
 public class TestErrorMessage implements HasMessageProperties<TestMessageProperties>, HasErrors<Error>
 {
