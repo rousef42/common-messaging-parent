@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.dell.cpsd.common.messaging</groupId>
         <artifactId>common-messaging-parent</artifactId>
@@ -12,6 +13,10 @@
     <description>An artifact with common messaging testing utilities. To be added only as a test dependency,
         should never be deployed in a production environment.
     </description>
+
+    <properties>
+        <qpid-version>0.28</qpid-version>
+    </properties>
 
     <dependencies>
         <!--  slf4j -->
@@ -40,6 +45,12 @@
         <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-broker</artifactId>
+            <version>${qpid-version}</version>
         </dependency>
 
         <dependency>
