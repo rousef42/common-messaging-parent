@@ -6,6 +6,7 @@
 package com.dell.cpsd.common.json.utils;
 
 import com.dell.cpsd.common.rabbitmq.utils.MessageLoader;
+import org.apache.commons.io.IOUtils;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.SchemaException;
 import org.everit.json.schema.ValidationException;
@@ -17,8 +18,10 @@ import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * JSON schema validation utils.
@@ -53,7 +56,10 @@ public final class JsonSchemaValidation
         try (final InputStream streamSchema = JsonSchemaValidation.class.getResourceAsStream(schemaResourcePath);
                 final InputStream streamExample = JsonSchemaValidation.class.getResourceAsStream(jsonResourcePath))
         {
-            return validateSchema(streamSchema, streamExample, includesDir);
+            final String originalContent = IOUtils.toString(streamExample);
+            final String body = MessageLoader.removeAmqpToolWrapper(originalContent);
+            final ByteArrayInputStream bodyIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+            return validateSchema(streamSchema, bodyIS, includesDir);
         }
         catch (final IOException e)
         {
@@ -111,7 +117,7 @@ public final class JsonSchemaValidation
 
     public static String readValidationException(final ValidationException e)
     {
-        final StringBuilder bld = new StringBuilder();
+        final StringBuilder bld = new StringBuilder(e.getMessage());
         e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(err ->
         {
             LOGGER.error(err);
