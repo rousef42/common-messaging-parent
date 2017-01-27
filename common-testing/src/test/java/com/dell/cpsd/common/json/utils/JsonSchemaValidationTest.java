@@ -38,6 +38,14 @@ public class JsonSchemaValidationTest
     }
 
     @Test
+    public void ValidateSchemaPositiveUsage() throws Exception
+    {
+        String messageName = "ping";
+        String errors = validateSchema(SCHEMA_DIR + messageName + ".jsd", EXAMPLE_DIR + messageName + ".usage.json", INCLUDES_DIR);
+        assertNull(errors, errors);
+    }
+
+    @Test
     public void ValidateSchemaNegative() throws Exception
     {
         String errors = validateSchema(SCHEMA_DIR + "ping.jsd", EXAMPLE_DIR + "pong.json", INCLUDES_DIR);
