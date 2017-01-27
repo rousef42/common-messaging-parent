@@ -16,6 +16,7 @@
 
     <properties>
         <qpid-version>0.28</qpid-version>
+        <test-everit-json-schema-version>1.4.1</test-everit-json-schema-version>
     </properties>
 
     <dependencies>
@@ -56,6 +57,19 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.everit.json</groupId>
+            <artifactId>org.everit.json.schema</artifactId>
+            <version>${test-everit-json-schema-version}</version>
+            <scope>provided</scope> <!-- there is something wrong with this jar -->
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
