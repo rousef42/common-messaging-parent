@@ -7,8 +7,10 @@ package com.dell.cpsd.common.rabbitmq;
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * <p>
+ * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
+ * @since 1.0
  */
 public class TestRequestMessage implements HasMessageProperties<TestMessageProperties>
 {

@@ -11,8 +11,8 @@ package com.dell.cpsd.common.rabbitmq.aggregate;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  *
- * @version TBD
- * @since TBD
+ * @version 1.0
+ * @since 1.0
  */
 public class TestMessage2
 {

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * VCE Confidential/Proprietary Information
  * </p>
  *
- * @since SINCE-TBD
+ * @since 1.0
  */
 @Message(value = "test.message.consumer", version = "1.0")
 @MessageExchange(exchange = "exchange.test", routingKey = "routing.base")

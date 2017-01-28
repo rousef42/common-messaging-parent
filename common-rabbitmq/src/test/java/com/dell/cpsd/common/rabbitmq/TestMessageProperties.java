@@ -9,8 +9,10 @@ import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
 import java.util.Date;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * <p>
+ * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
+ * @since 1.0
  */
 public class TestMessageProperties implements MessagePropertiesContainer
 {

@@ -1,3 +1,8 @@
+/*
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * VCE Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.exceptions;
 
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
@@ -8,7 +13,9 @@ import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFaile
 import static org.junit.Assert.assertSame;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Exception transformer test.
+ * <p>
+ * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
 public class ExceptionLogTransformerTest
