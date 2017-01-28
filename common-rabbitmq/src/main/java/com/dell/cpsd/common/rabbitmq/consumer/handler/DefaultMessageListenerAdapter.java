@@ -5,17 +5,12 @@
 
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
-import java.io.UnsupportedEncodingException;
-
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 
 import org.springframework.amqp.support.converter.MessageConverter;
-
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
-import com.dell.cpsd.common.rabbitmq.message.DefaultMessageProperties;
 
 /**
  * This is a default message listener adapter that invokes a message handler 
@@ -53,33 +48,6 @@ public class DefaultMessageListenerAdapter extends MessageListenerAdapter
             throws Exception 
     {
         final MessageProperties originalMessageProperties = originalMessage.getMessageProperties();
-        
-        MessagePropertiesContainer extractedMessageProperties = new DefaultMessageProperties();
-        
-        if (originalMessageProperties != null)
-        {   
-            String correlationId = originalMessageProperties.getCorrelationIdString();
-            
-            if ((correlationId == null) || (correlationId.isEmpty()))
-            {
-                byte[] array = originalMessageProperties.getCorrelationId();
-                
-                if (array != null)
-                {
-                    try
-                    {
-                        correlationId = new String(array, "UTF-8");
-                        
-                    } catch (UnsupportedEncodingException exception)
-                    { 
-                    }
-                }
-            }
-            
-            extractedMessageProperties.setCorrelationId(correlationId);
-            extractedMessageProperties.setTimestamp(originalMessageProperties.getTimestamp());
-            extractedMessageProperties.setReplyTo(originalMessageProperties.getReplyTo());
-        }
 
         // one argument is expected i.e. the message to invoke on the delegate 
         // handler.
@@ -89,7 +57,7 @@ public class DefaultMessageListenerAdapter extends MessageListenerAdapter
         
         System.arraycopy(arguments, 0, enrichedArguments, 0, size);
         
-        enrichedArguments[size] = extractedMessageProperties;
+        enrichedArguments[size] = originalMessageProperties;
         
         return super.invokeListenerMethod(methodName, enrichedArguments, originalMessage);
     }

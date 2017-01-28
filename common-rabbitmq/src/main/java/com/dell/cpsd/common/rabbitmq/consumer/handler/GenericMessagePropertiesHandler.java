@@ -13,7 +13,7 @@ import com.dell.cpsd.common.rabbitmq.consumer.LoggingUnhandledMessageHandler;
 
 import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import org.springframework.amqp.core.MessageProperties;
 
 /**
  * This is a generic handler base class for messages with message properties.
@@ -68,7 +68,7 @@ public abstract class GenericMessagePropertiesHandler<R extends Object, E extend
      * @since   1.0
      */
     protected abstract void executeOperation(final R requestMessage,
-            final MessagePropertiesContainer messageProperties) throws Throwable;
+            final MessageProperties messageProperties) throws Throwable;
 
     
     /**
@@ -81,7 +81,7 @@ public abstract class GenericMessagePropertiesHandler<R extends Object, E extend
      * @since   1.0
      */
     public void handleMessage(final R requestMessage, 
-                    final MessagePropertiesContainer messageProperties) throws E
+                    final MessageProperties messageProperties) throws E
     {
         try
         {

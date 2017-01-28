@@ -16,8 +16,6 @@ import org.springframework.amqp.core.MessagePostProcessor;
 
 import org.springframework.amqp.AmqpException;
 
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
-
 /**
  * The default message post processor to handle message properties.
  *
@@ -28,7 +26,7 @@ import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
  *
  * @since   SINCE-TDB
  */
-public class PropertiesPostProcessor<M extends MessagePropertiesContainer> implements MessagePostProcessor
+public class PropertiesPostProcessor<M extends MessageProperties> implements MessagePostProcessor
 {
     /**
      * The properties to use in post processing of the message.
@@ -70,21 +68,13 @@ public class PropertiesPostProcessor<M extends MessagePropertiesContainer> imple
           
         messageProperties.setTimestamp(this.properties.getTimestamp());
         
-        final String correlationId = this.properties.getCorrelationId();
+        final byte[] correlationId = this.properties.getCorrelationId();
+        messageProperties.setCorrelationId(correlationId);
+
+        messageProperties.setCorrelationIdString(this.properties.getCorrelationIdString());
         
-        if (correlationId != null)
-        {
-            try
-            {
-                messageProperties.setCorrelationId(correlationId.getBytes("UTF-8"));
-                
-            } catch (UnsupportedEncodingException exception)
-            {
-            }
-        }
-        
-        messageProperties.setCorrelationIdString(correlationId);
-        messageProperties.setReplyTo(this.properties.getReplyTo());
+        messageProperties.setReplyTo(this.properties.getReplyTo()); 
+        messageProperties.setExpiration(this.properties.getExpiration());
         
         return message;
     }
