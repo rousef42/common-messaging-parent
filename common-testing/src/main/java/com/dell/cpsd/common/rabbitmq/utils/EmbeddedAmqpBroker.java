@@ -5,6 +5,7 @@
 
 package com.dell.cpsd.common.rabbitmq.utils;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.qpid.server.Broker;
 import org.apache.qpid.server.BrokerOptions;
 import org.apache.qpid.server.model.VirtualHost;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -35,6 +37,7 @@ import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 public class EmbeddedAmqpBroker implements Closeable
 {
     private static final Logger LOGGER           = LoggerFactory.getLogger(MessageLoader.class);
+    public static final  String QPID             = "/qpid/";
     public static final  String FILE_PASS        = "passwd.properties";
     public static final  String FILE_QPID_CONFIG = "embedded-config.json";
 
@@ -53,12 +56,12 @@ public class EmbeddedAmqpBroker implements Closeable
     private void init() throws IOException, URISyntaxException
     {
         LOGGER.info("Initializing embedded broker");
+        OPTIONS.setConfigProperty("qpid.amqp.version", "0-91"); //Rabbit uses 0.91 AMQP protocol version
         OPTIONS.setConfigProperty("qpid.amqp_port", String.valueOf(PORT));
-        OPTIONS.setConfigProperty("qpid.pass_file", findResourceFilePath(FILE_PASS));
         final Path tmpPath = Files.createTempDirectory("embeddedBroker");
         OPTIONS.setConfigProperty("qpid.work_dir", tmpPath.toAbsolutePath().toString());
-        OPTIONS.setConfigProperty("qpid.amqp.version", "0-9"); //Rabbit uses 0.9 AMQP protocol version
-        OPTIONS.setInitialConfigurationLocation(findResourceUrlPath(FILE_QPID_CONFIG));
+        OPTIONS.setConfigProperty("qpid.pass_file", copyAndReturnPassFile(tmpPath.toAbsolutePath().toString())); // This option doesn't like URL
+        OPTIONS.setInitialConfigurationLocation(findQpidConfigUrl()); // URL is ok here
     }
 
     private void start() throws Exception
@@ -67,18 +70,19 @@ public class EmbeddedAmqpBroker implements Closeable
         BROKER.startup(OPTIONS);
     }
 
-    private String findResourceUrlPath(final String fileName) throws IOException
+    private String findQpidConfigUrl() throws IOException
     {
-        final URL url = EmbeddedAmqpBroker.class.getResource("/qpid/" + fileName);
+        final URL url = EmbeddedAmqpBroker.class.getResource(QPID + FILE_QPID_CONFIG);
         final String path = url.toExternalForm();
         return path;
     }
 
-    private String findResourceFilePath(final String fileName) throws IOException, URISyntaxException
+    private String copyAndReturnPassFile(final String destinationDir) throws IOException, URISyntaxException
     {
-        final URL url = EmbeddedAmqpBroker.class.getResource("/qpid/" + fileName);
-        final File file = new File(url.toURI());
-        return file.getAbsolutePath();
+        final URL url = EmbeddedAmqpBroker.class.getResource(QPID + FILE_PASS);
+        final File dest = new File(destinationDir + File.separator + FILE_PASS);
+        FileUtils.copyURLToFile(url, dest);
+        return dest.getAbsolutePath();
     }
 
     public Broker getQpidBroker()
