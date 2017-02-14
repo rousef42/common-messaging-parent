@@ -16,4 +16,16 @@ package com.dell.cpsd.common.rabbitmq.aggregate;
  */
 public class TestMessage1
 {
+    private String id = null;
+
+    public TestMessage1(final String id)
+    {
+        this.id = id;
+    }
+
+    @Override
+    public String toString()
+    {
+        return id;
+    }
 }
