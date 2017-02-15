@@ -29,13 +29,13 @@ public class TestMessagesAggregate implements Aggregate
 
     public void setMessage1(final TestMessage1 message1)
     {
-        System.out.println("Setting message1");
+        System.out.println("Setting Message1: " + message1);
         this.message1 = message1;
     }
 
     public void setMessage2(final TestMessage2 message2)
     {
-        System.out.println("Setting message2");
+        System.out.println("Setting Message2: " + message2);
         this.message2 = message2;
     }
 }
