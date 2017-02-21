@@ -153,8 +153,8 @@ public class MessageAggregatorTest
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
 
         SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(2, completedGroupsCounter),
-                AggregationStrategies.getReleaseStrategy(AggregationStrategies.RELEASE_STRATEGIES.MESSAGE_COUNT, 2),
-                AggregationStrategies.getCorrelationStrategy(AggregationStrategies.CORRELATION_STRATEGIES.GROUP_SUBMESSAGES));
+                ReleaseStrategies.messageCountReleaseStrategy(2),
+                CorrelationStrategies.subGroupCorrelationStrategy());
 
         Map<String, Object> headers = new HashMap();
         headers.put("correlation-id", "a");
@@ -197,8 +197,9 @@ public class MessageAggregatorTest
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
 
         SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(4, completedGroupsCounter),
-                AggregationStrategies.getReleaseStrategy(AggregationStrategies.RELEASE_STRATEGIES.TIMEOUT_COUNT, 4, 20000L),
-                AggregationStrategies.getCorrelationStrategy(AggregationStrategies.CORRELATION_STRATEGIES.GROUP_SUBMESSAGES));
+                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(4,20000L),
+                CorrelationStrategies.subGroupCorrelationStrategy());
+                
 
         Map<String, Object> headers = new HashMap();
         headers.put("correlation-id", "a");
@@ -243,8 +244,8 @@ public class MessageAggregatorTest
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
 
         SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(4, completedGroupsCounter),
-                AggregationStrategies.getReleaseStrategy(AggregationStrategies.RELEASE_STRATEGIES.TIMEOUT_COUNT, 10, timeoutTime),
-                AggregationStrategies.getCorrelationStrategy(AggregationStrategies.CORRELATION_STRATEGIES.GROUP_SUBMESSAGES));
+                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(10, timeoutTime),
+                CorrelationStrategies.subGroupCorrelationStrategy());
 
         Map<String, Object> headers = new HashMap();
         headers.put("correlation-id", "a");
