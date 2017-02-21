@@ -6,6 +6,13 @@
 package com.dell.cpsd.common.rabbitmq.aggregate;
 
 import org.junit.Test;
+import org.springframework.integration.aggregator.DefaultAggregatingMessageGroupProcessor;
+import org.springframework.messaging.support.GenericMessage;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -139,4 +146,154 @@ public class MessageAggregatorTest
         deprecated = true;
     }
 
+    @Test
+    public void testSpringMessageAggregatorMessageCount()
+    {
+        //Keep track of the completed groups
+        final List<Boolean> completedGroupsCounter = new ArrayList<>();
+
+        SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(2, completedGroupsCounter),
+                ReleaseStrategies.messageCountReleaseStrategy(2),
+                CorrelationStrategies.subGroupCorrelationStrategy());
+
+        Map<String, Object> headers = new HashMap();
+        headers.put("correlation-id", "a");
+        headers.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message = new GenericMessage<>(new TestMessage1("a1"), headers);
+
+        Map<String, Object> headers2 = new HashMap();
+        headers2.put("correlation-id", "b");
+        headers2.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message2 = new GenericMessage<>(new TestMessage1("b1"), headers2);
+
+        Map<String, Object> headers3 = new HashMap();
+        headers3.put("correlation-id", "a$1234");
+        headers3.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message3 = new GenericMessage<>(new TestMessage1("a2"), headers3);
+
+        Map<String, Object> headers4 = new HashMap();
+        headers4.put("correlation-id", "b$1234");
+        headers4.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message4 = new GenericMessage<>(new TestMessage1("b2"), headers4);
+
+        handler.getSendChannel().send(message);
+        System.out.println("Sent 1");
+        handler.getSendChannel().send(message2);
+        System.out.println("Sent 2");
+        handler.getSendChannel().send(message3);
+        System.out.println("Sent 3");
+        handler.getSendChannel().send(message4);
+        System.out.println("Sent 4");
+
+        assertTrue(completedGroupsCounter.size() == 2);
+    }
+
+    @Test
+    public void testSpringMessageAggregatorMessageTimeoutCount()
+    {
+        DefaultAggregatingMessageGroupProcessor processor = new DefaultAggregatingMessageGroupProcessor();
+
+        //Keep track of the completed groups
+        final List<Boolean> completedGroupsCounter = new ArrayList<>();
+
+        SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(4, completedGroupsCounter),
+                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(4,20000L),
+                CorrelationStrategies.subGroupCorrelationStrategy());
+                
+
+        Map<String, Object> headers = new HashMap();
+        headers.put("correlation-id", "a");
+        headers.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message = new GenericMessage<>(new TestMessage1("a1"), headers);
+
+        Map<String, Object> headers2 = new HashMap();
+        headers2.put("correlation-id", "a$1");
+        headers2.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message2 = new GenericMessage<>(new TestMessage1("a2"), headers2);
+
+        Map<String, Object> headers3 = new HashMap();
+        headers3.put("correlation-id", "a$2");
+        headers3.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message3 = new GenericMessage<>(new TestMessage1("a3"), headers3);
+
+        Map<String, Object> headers4 = new HashMap();
+        headers4.put("correlation-id", "a$3");
+        headers4.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message4 = new GenericMessage<>(new TestMessage1("a4"), headers4);
+
+        handler.getSendChannel().send(message);
+        System.out.println("Sent 1");
+        handler.getSendChannel().send(message2);
+        System.out.println("Sent 2");
+        handler.getSendChannel().send(message3);
+        System.out.println("Sent 3");
+        handler.getSendChannel().send(message4);
+        System.out.println("Sent 4");
+
+        assertTrue(completedGroupsCounter.size() == 1);
+    }
+
+    @Test
+    public void testSpringMessageAggregatorTimeoutCount()
+    {
+        DefaultAggregatingMessageGroupProcessor processor = new DefaultAggregatingMessageGroupProcessor();
+        
+        final long timeoutTime=5000L;
+
+        //Keep track of the completed groups
+        final List<Boolean> completedGroupsCounter = new ArrayList<>();
+
+        SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(4, completedGroupsCounter),
+                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(10, timeoutTime),
+                CorrelationStrategies.subGroupCorrelationStrategy());
+
+        Map<String, Object> headers = new HashMap();
+        headers.put("correlation-id", "a");
+        headers.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message = new GenericMessage<>(new TestMessage1("a1"), headers);
+
+        Map<String, Object> headers2 = new HashMap();
+        headers2.put("correlation-id", "a$1");
+        headers2.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message2 = new GenericMessage<>(new TestMessage1("a2"), headers2);
+
+        Map<String, Object> headers3 = new HashMap();
+        headers3.put("correlation-id", "a$2");
+        headers3.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message3 = new GenericMessage<>(new TestMessage1("a3"), headers3);
+
+        Map<String, Object> headers4 = new HashMap();
+        headers4.put("correlation-id", "a$3");
+        headers4.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message4 = new GenericMessage<>(new TestMessage1("a4"), headers4);
+
+        handler.getSendChannel().send(message);
+        System.out.println("Sent 1");
+        handler.getSendChannel().send(message2);
+        System.out.println("Sent 2");
+        handler.getSendChannel().send(message3);
+        System.out.println("Sent 3");
+        handler.getSendChannel().send(message4);
+        System.out.println("Sent 4");
+
+        //Wait for the expiry
+        try
+        {
+            Thread.sleep(timeoutTime);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        
+        //This message triggers the release based on timeout.
+        Map<String, Object> headers5 = new HashMap();
+        headers5.put("correlation-id", "a$4");
+        headers5.put("output-channel", "mychannel");
+        GenericMessage<TestMessage1> message5 = new GenericMessage<>(new TestMessage1("a5"), headers4);
+        handler.getSendChannel().send(message);
+        System.out.println("Sent 5");
+
+        assertTrue(completedGroupsCounter.size() == 1);
+    }
 }
