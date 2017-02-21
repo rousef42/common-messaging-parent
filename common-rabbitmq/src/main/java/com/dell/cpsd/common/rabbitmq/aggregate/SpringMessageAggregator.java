@@ -27,18 +27,18 @@ import org.springframework.messaging.MessageHandler;
  */
 public class SpringMessageAggregator extends AggregatingMessageHandler
 {
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringMessageAggregator.class);
 
     //Messages are received from this channel
-    DirectChannel c;
+    DirectChannel incomingMessageChannel;
 
-    //Messages are sent to this channel
-    DirectChannel c2;
+    //An aggregated message is sent out from the aggregator to the next handler via this channel.
+    DirectChannel aggregatedMessageOutputChannel;
 
-    public SpringMessageAggregator(final DefaultAggregatingMessageGroupProcessor defaultAggregatingMessageGroupProcessor,
-            MessageHandler outputHandler, ReleaseStrategy releaseStrategy, CorrelationStrategy correlationStrategy)
+    public SpringMessageAggregator(MessageHandler outputHandler, ReleaseStrategy releaseStrategy, CorrelationStrategy correlationStrategy)
     {
-        super(defaultAggregatingMessageGroupProcessor);
+        super(new DefaultAggregatingMessageGroupProcessor());
 
         //Set up the situation for when aggregation is complete (relies on the ComponentsAndCredentials, like it does in the SimpleMessageAggregator
         this.setReleaseStrategy(releaseStrategy);
@@ -53,22 +53,22 @@ public class SpringMessageAggregator extends AggregatingMessageHandler
         //TODO: I haven't set a timeout yet because it doesn't seem to work with GroupExpressionTimeOut
         //setGroupExpressionTimeout(?)
 
-        c = new DirectChannel();
-        c2 = new DirectChannel();
+        incomingMessageChannel = new DirectChannel();
+        aggregatedMessageOutputChannel = new DirectChannel();
 
         //channel out to MyHandler
-        setOutputChannel(c2);
+        setOutputChannel(aggregatedMessageOutputChannel);
 
         //SpringMessageAggregator listens on this channel for messages
-        c.subscribe(this);
+        incomingMessageChannel.subscribe(this);
 
         //DiscoveryHandler subscribes to the output channel.
-        c2.subscribe(outputHandler);
+        aggregatedMessageOutputChannel.subscribe(outputHandler);
     }
 
     //Method used by handlers
     public DirectChannel getSendChannel()
     {
-        return c;
+        return incomingMessageChannel;
     }
 }
