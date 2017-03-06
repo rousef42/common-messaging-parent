@@ -109,12 +109,28 @@ public class RabbitContextBuilder
      */
     public <P> RabbitContextBuilder produces(Class<P> produceClass)
     {
+        // Create durable exchanage by default
+        return produces(produceClass, true);
+    }
+
+    /**
+     * Register a message class that is produced
+     *
+     * @param produceClass
+     * @return
+     */
+    public <P> RabbitContextBuilder produces(Class<P> produceClass, boolean durable)
+    {
         MessageDescription<P> produceDescription = messageDescriptionFactory.createDescription(produceClass);
         descriptions.put(produceDescription.getType(), produceDescription);
         MessageExchangeBuilder builder = new MessageExchangeBuilder(this, produceDescription.getExchange(),
                 produceDescription.getExchangeType());
-        builder.exchange();
 
+        if (durable)
+        {
+            builder.durable();
+        }
+        builder.exchange();
         return this;
     }
 
@@ -603,7 +619,16 @@ public class RabbitContextBuilder
 
         public MessageBindingBuilder fromExchange(String exchangeName, MessageExchangeType exchangeType)
         {
+            // Durable by default
+            return fromExchange(exchangeName, exchangeType, true);
+        }
+
+        public MessageBindingBuilder fromExchange(String exchangeName, MessageExchangeType exchangeType, boolean durable)
+        {
             exchangeBuilder = new MessageExchangeBuilder(contextBuilder, exchangeName, exchangeType);
+            if (durable) {
+                exchangeBuilder.durable();
+            }
             return this;
         }
 
