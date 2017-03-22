@@ -14,6 +14,7 @@ import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageRequest;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
 import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
 
 /**
@@ -26,6 +27,14 @@ import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
  */
 public class MessageDescriptionFactory
 {
+    public static final String PROVIDER_ID_PLACEHOLDER = "{providerId}";
+    private ApplicationConfiguration applicationConfiguration;
+
+    public MessageDescriptionFactory(ApplicationConfiguration applicationConfiguration)
+    {
+        this.applicationConfiguration = applicationConfiguration;
+    }
+
     public <M> MessageDescription<M> createDescription(Class<M> messageClass)
     {
         String type = null;
@@ -51,7 +60,7 @@ public class MessageDescriptionFactory
         MessageExchange exchangeAnnotation = messageClass.getAnnotation(MessageExchange.class);
         if (exchangeAnnotation != null)
         {
-            exchange = exchangeAnnotation.exchange();
+            exchange = applicationFlavouredExchange(exchangeAnnotation.exchange());
             exchangeType = exchangeAnnotation.exchangeType();
             if (OpinionConstants.isDefined(exchangeAnnotation.routingKey()))
             {
@@ -95,5 +104,18 @@ public class MessageDescriptionFactory
         description.setVersion(version);
         description.setContentType(contentType);
         return description;
+    }
+
+    private String applicationFlavouredExchange(String exchange)
+    {
+        if (exchange != null)
+        {
+            if (exchange.contains(PROVIDER_ID_PLACEHOLDER))
+            {
+                // This can be tuned later if necessary
+                return exchange.replace("{providerId}", applicationConfiguration.getApplicationName());
+            }
+        }
+        return exchange;
     }
 }

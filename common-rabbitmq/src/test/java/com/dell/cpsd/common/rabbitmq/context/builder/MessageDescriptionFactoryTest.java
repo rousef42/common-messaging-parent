@@ -8,6 +8,7 @@ package com.dell.cpsd.common.rabbitmq.context.builder;
 import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
 import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
 import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class MessageDescriptionFactoryTest
     @Test
     public void testCreate()
     {
-        MessageDescriptionFactory factory = new MessageDescriptionFactory();
+        MessageDescriptionFactory factory = new MessageDescriptionFactory(new ApplicationConfiguration(null, null, null));
         MessageDescription description = factory.createDescription(TestRequestMessage.class);
 
         Assert.assertEquals("test.message.consumer", description.getType());
@@ -39,5 +40,14 @@ public class MessageDescriptionFactoryTest
         Assert.assertEquals("routing.base", description.getRoutingKey());
         Assert.assertEquals(MessageStereotype.REQUEST, description.getStereotype());
         Assert.assertEquals(MessageContentType.CLEAR, description.getContentType());
+    }
+
+    @Test
+    public void testFlavour()
+    {
+        MessageDescriptionFactory factory = new MessageDescriptionFactory(
+                new ApplicationConfiguration("appName", "appUuid", "appHostName"));
+        MessageDescription description = factory.createDescription(FlavouredTestRequestMessage.class);
+        Assert.assertEquals("exchange.test.appName.something", description.getExchange());
     }
 }

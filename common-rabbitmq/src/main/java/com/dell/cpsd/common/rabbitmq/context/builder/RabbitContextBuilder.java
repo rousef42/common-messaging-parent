@@ -28,6 +28,7 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.AbstractJsonMessageConverter;
 import org.springframework.amqp.support.converter.ClassMapper;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -81,8 +82,8 @@ public class RabbitContextBuilder
     final List<RabbitContextAware>        contextAwares         = new ArrayList<>();
     final Map<RequestReplyKey, String>    replyToMap            = new HashMap<>();
 
-    private MessageDescriptionFactory messageDescriptionFactory = new MessageDescriptionFactory();
-    private ContainerFactory          containerFactory          = new ContainerFactory();
+    private MessageDescriptionFactory messageDescriptionFactory = null;
+    private ContainerFactory          containerFactory          = null;
 
     private ConnectionFactory        rabbitConnectionFactory;
     private ApplicationConfiguration applicationConfiguration;
@@ -99,6 +100,9 @@ public class RabbitContextBuilder
         this.rabbitConnectionFactory = rabbitConnectionFactory;
         this.applicationConfiguration = configuration;
         this.consumerPostfix = configuration.getApplicationName() + "." + configuration.getHostName();
+
+        this.messageDescriptionFactory = new MessageDescriptionFactory(configuration);
+        this.containerFactory = new ContainerFactory();
     }
 
     /**
@@ -246,7 +250,7 @@ public class RabbitContextBuilder
         RabbitAdmin admin = new RabbitAdmin(rabbitConnectionFactory);
 
         ClassMapper mapper = createClassMapper();
-        MessageConverter converter = createMessageConverter(mapper);
+        AbstractJsonMessageConverter converter = createMessageConverter(mapper);
 
         RetryTemplate retryTemplate = createRetryTemplate();
         RabbitTemplate rabbitTemplate = createRabbitTemplate(converter, retryTemplate);
@@ -262,7 +266,7 @@ public class RabbitContextBuilder
             containers.add(container);
         });
 
-        RabbitContext context = new RabbitContext(consumerPostfix, admin, rabbitTemplate, exchanges.values(), queues.values(),
+        RabbitContext context = new RabbitContext(consumerPostfix, admin, rabbitTemplate, converter, exchanges.values(), queues.values(),
                 bindings.values(), descriptions.values(), containers, replyToMap);
 
         // Set the context in anything that has been added as a RabbitContextAware
@@ -364,7 +368,7 @@ public class RabbitContextBuilder
         return retryTemplate;
     }
 
-    private MessageConverter createMessageConverter(ClassMapper mapper)
+    private AbstractJsonMessageConverter createMessageConverter(ClassMapper mapper)
     {
         Jackson2JsonMessageConverter messageConverter = new Jackson2JsonMessageConverter();
         messageConverter.setClassMapper(mapper);
@@ -529,7 +533,7 @@ public class RabbitContextBuilder
                 case HEADERS:
                     return ExchangeBuilder.headersExchange(name);
                 case FANOUT:
-                    return ExchangeBuilder.headersExchange(name);
+                    return ExchangeBuilder.fanoutExchange(name);
             }
             return null;
         }
