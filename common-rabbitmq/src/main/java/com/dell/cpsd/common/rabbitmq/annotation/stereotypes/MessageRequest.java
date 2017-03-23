@@ -23,7 +23,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MessageRequest
 {
-    String replyToProperty() default "reply-to";
-
     MessageStereotype stereotype() default MessageStereotype.REQUEST;
 }

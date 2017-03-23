@@ -7,15 +7,17 @@ package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.rabbitmq.annotation.Message;
 import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchange;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.OpinionConstants;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageRequest;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
 import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
 import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,43 +30,53 @@ import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
 public class MessageDescriptionFactory
 {
     public static final String PROVIDER_ID_PLACEHOLDER = "{providerId}";
-    private ApplicationConfiguration applicationConfiguration;
 
-    public MessageDescriptionFactory(ApplicationConfiguration applicationConfiguration)
+    private final ApplicationConfiguration applicationConfiguration;
+    private final Map<String, MessageMetaData> metaDatas = new HashMap<>();
+
+    public MessageDescriptionFactory(ApplicationConfiguration applicationConfiguration, Collection<MessageMetaData> metaDatas)
     {
         this.applicationConfiguration = applicationConfiguration;
+        if (metaDatas != null)
+        {
+            metaDatas.forEach(metaData -> this.metaDatas.put(metaData.getMessage(), metaData));
+        }
     }
 
     public <M> MessageDescription<M> createDescription(Class<M> messageClass)
     {
         String type = null;
         String version = null;
-        String exchange = null;
-        MessageExchangeType exchangeType = null;
-        String correlationIdProperty = null;
-        String replyToProperty = null;
-        String timestampProperty = null;
-        String routingKey = null;
         MessageStereotype stereotype = null;
         MessageContentType contentType = null;
+
+        String exchange = null;
+        MessageExchangeType exchangeType = null;
+        String routingKey = null;
 
         // Basic Message Information
         Message messageAnnotation = messageClass.getAnnotation(Message.class);
         type = messageAnnotation.value();
         version = messageAnnotation.version();
-        correlationIdProperty = messageAnnotation.correlationIdProperty();
-        timestampProperty = messageAnnotation.timestampProperty();
         contentType = messageAnnotation.content();
 
         // Opinion
-        MessageExchange exchangeAnnotation = messageClass.getAnnotation(MessageExchange.class);
-        if (exchangeAnnotation != null)
+        MessageMetaData metaData = metaDatas.get(type);
+        if (metaData != null)
         {
-            exchange = applicationFlavouredExchange(exchangeAnnotation.exchange());
-            exchangeType = exchangeAnnotation.exchangeType();
-            if (OpinionConstants.isDefined(exchangeAnnotation.routingKey()))
+            exchange = applicationFlavouredExchange(metaData.getExchange());
+            if (!StringUtils.isBlank(metaData.getExchangeType()))
             {
-                routingKey = exchangeAnnotation.routingKey();
+                exchangeType = MessageExchangeType.valueOf(metaData.getExchangeType());
+            }
+            else
+            {
+                exchangeType = MessageExchangeType.TOPIC;
+            }
+
+            if (!StringUtils.isBlank(metaData.getRoutingKey()))
+            {
+                routingKey = metaData.getRoutingKey();
             }
         }
 
@@ -72,7 +84,6 @@ public class MessageDescriptionFactory
         MessageRequest requestAnnotation = messageClass.getAnnotation(MessageRequest.class);
         if (requestAnnotation != null)
         {
-            replyToProperty = requestAnnotation.replyToProperty();
             stereotype = requestAnnotation.stereotype();
         }
 
@@ -91,15 +102,11 @@ public class MessageDescriptionFactory
         }
 
         MessageDescription<M> description = new MessageDescription<M>();
-        description.setCorrelationIdProperty(correlationIdProperty);
         description.setExchange(exchange);
         description.setExchangeType(exchangeType);
         description.setMessageClass(messageClass);
         description.setRoutingKey(routingKey);
-        description.setReplyToProperty(replyToProperty);
-        description.setCorrelationIdProperty(correlationIdProperty);
         description.setStereotype(stereotype);
-        description.setTimestampProperty(timestampProperty);
         description.setType(type);
         description.setVersion(version);
         description.setContentType(contentType);

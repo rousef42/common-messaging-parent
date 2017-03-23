@@ -6,8 +6,8 @@
 package com.dell.cpsd.common.rabbitmq.context;
 
 import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
+import com.dell.cpsd.common.rabbitmq.context.builder.MessageExchangeType;
 
 /**
  * <p>
@@ -25,9 +25,6 @@ public class MessageDescription<M>
     private String              version               = null;
     private String              exchange              = null;
     private MessageExchangeType exchangeType          = null;
-    private String              correlationIdProperty = null;
-    private String              replyToProperty       = null;
-    private String              timestampProperty     = null;
     private String              routingKey            = null;
     private MessageContentType  contentType           = null;
 
@@ -66,26 +63,6 @@ public class MessageDescription<M>
         this.exchangeType = exchangeType;
     }
 
-    public void setCorrelationIdProperty(String correlationIdProperty)
-    {
-        this.correlationIdProperty = correlationIdProperty;
-    }
-
-    public void setReplyToProperty(String replyToProperty)
-    {
-        this.replyToProperty = replyToProperty;
-    }
-
-    public String getTimestampProperty()
-    {
-        return timestampProperty;
-    }
-
-    public void setTimestampProperty(String timestampProperty)
-    {
-        this.timestampProperty = timestampProperty;
-    }
-
     public String getRoutingKey()
     {
         return routingKey;
@@ -119,16 +96,6 @@ public class MessageDescription<M>
     public MessageExchangeType getExchangeType()
     {
         return exchangeType;
-    }
-
-    public String getCorrelationIdProperty()
-    {
-        return correlationIdProperty;
-    }
-
-    public String getReplyToProperty()
-    {
-        return replyToProperty;
     }
 
     public MessageContentType getContentType()

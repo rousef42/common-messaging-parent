@@ -1,4 +1,4 @@
-package com.dell.cpsd.common.rabbitmq.annotation.opinions;
+package com.dell.cpsd.common.rabbitmq.context.builder;
 
 /**
  * <p>
