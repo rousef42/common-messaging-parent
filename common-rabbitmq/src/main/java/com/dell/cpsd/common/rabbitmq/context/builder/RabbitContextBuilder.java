@@ -5,18 +5,14 @@
 
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
-import com.dell.cpsd.common.logging.ILogger;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
 import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
 import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
 import com.dell.cpsd.common.rabbitmq.context.RabbitContext;
 import com.dell.cpsd.common.rabbitmq.context.RabbitContextAware;
 import com.dell.cpsd.common.rabbitmq.context.RequestReplyKey;
-import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.dell.cpsd.common.rabbitmq.message.DefaultMessageConverterFactory;
+import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyFactory;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
@@ -28,18 +24,17 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.AbstractJsonMessageConverter;
 import org.springframework.amqp.support.converter.ClassMapper;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -61,17 +56,6 @@ import java.util.Set;
  */
 public class RabbitContextBuilder
 {
-    private static final ILogger LOGGER           = RabbitMQLoggingManager.getLogger(RabbitContextBuilder.class);
-    /*
-     * The retry template information for the client.
-     */
-    private static final int     MAX_ATTEMPTS     = 10;
-    private static final int     INITIAL_INTERVAL = 100;
-    private static final double  MULTIPLIER       = 2.0;
-    private static final int     MAX_INTERVAL     = 50000;
-
-    private static final String ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
-
     final Map<String, Exchange>           exchanges             = new HashMap<>();
     final Map<String, Queue>              queues                = new HashMap<>();
     final Map<String, Binding>            bindings              = new HashMap<>();
@@ -81,8 +65,8 @@ public class RabbitContextBuilder
     final List<RabbitContextAware>        contextAwares         = new ArrayList<>();
     final Map<RequestReplyKey, String>    replyToMap            = new HashMap<>();
 
-    private MessageDescriptionFactory messageDescriptionFactory = new MessageDescriptionFactory();
-    private ContainerFactory          containerFactory          = new ContainerFactory();
+    private MessageDescriptionFactory messageDescriptionFactory = null;
+    private ContainerFactory          containerFactory          = null;
 
     private ConnectionFactory        rabbitConnectionFactory;
     private ApplicationConfiguration applicationConfiguration;
@@ -96,9 +80,36 @@ public class RabbitContextBuilder
      */
     public RabbitContextBuilder(ConnectionFactory rabbitConnectionFactory, ApplicationConfiguration configuration)
     {
+        this(rabbitConnectionFactory, configuration, Collections.emptyList());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param rabbitConnectionFactory
+     * @param configuration
+     */
+    public RabbitContextBuilder(ConnectionFactory rabbitConnectionFactory, ApplicationConfiguration configuration, File file)
+    {
+        this(rabbitConnectionFactory, configuration, new MessageMetaDataReader().read(file));
+    }
+
+    /**
+     * Constructor
+     *
+     * @param rabbitConnectionFactory
+     * @param configuration
+     * @param metaDatas
+     */
+    public RabbitContextBuilder(ConnectionFactory rabbitConnectionFactory, ApplicationConfiguration configuration,
+            Collection<MessageMetaData> metaDatas)
+    {
         this.rabbitConnectionFactory = rabbitConnectionFactory;
         this.applicationConfiguration = configuration;
         this.consumerPostfix = configuration.getApplicationName() + "." + configuration.getHostName();
+
+        this.messageDescriptionFactory = new MessageDescriptionFactory(configuration, metaDatas);
+        this.containerFactory = new ContainerFactory();
     }
 
     /**
@@ -246,7 +257,7 @@ public class RabbitContextBuilder
         RabbitAdmin admin = new RabbitAdmin(rabbitConnectionFactory);
 
         ClassMapper mapper = createClassMapper();
-        MessageConverter converter = createMessageConverter(mapper);
+        AbstractJsonMessageConverter converter = createMessageConverter(mapper);
 
         RetryTemplate retryTemplate = createRetryTemplate();
         RabbitTemplate rabbitTemplate = createRabbitTemplate(converter, retryTemplate);
@@ -262,7 +273,7 @@ public class RabbitContextBuilder
             containers.add(container);
         });
 
-        RabbitContext context = new RabbitContext(consumerPostfix, admin, rabbitTemplate, exchanges.values(), queues.values(),
+        RabbitContext context = new RabbitContext(consumerPostfix, admin, rabbitTemplate, converter, exchanges.values(), queues.values(),
                 bindings.values(), descriptions.values(), containers, replyToMap);
 
         // Set the context in anything that has been added as a RabbitContextAware
@@ -349,38 +360,12 @@ public class RabbitContextBuilder
 
     private RetryTemplate createRetryTemplate()
     {
-        RetryTemplate retryTemplate = new RetryTemplate();
-
-        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
-        backOffPolicy.setInitialInterval(INITIAL_INTERVAL);
-        backOffPolicy.setMultiplier(MULTIPLIER);
-        backOffPolicy.setMaxInterval(MAX_INTERVAL);
-
-        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-        retryPolicy.setMaxAttempts(MAX_ATTEMPTS);
-        retryTemplate.setBackOffPolicy(backOffPolicy);
-        retryTemplate.setRetryPolicy(retryPolicy);
-
-        return retryTemplate;
+        return DefaultRetryPolicyFactory.makeRabbitTemplateRetry();
     }
 
-    private MessageConverter createMessageConverter(ClassMapper mapper)
+    private AbstractJsonMessageConverter createMessageConverter(ClassMapper mapper)
     {
-        Jackson2JsonMessageConverter messageConverter = new Jackson2JsonMessageConverter();
-        messageConverter.setClassMapper(mapper);
-        messageConverter.setCreateMessageIds(true);
-
-        final ObjectMapper objectMapper = new ObjectMapper();
-
-        // use ISO8601 format for dates
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        objectMapper.setDateFormat(new SimpleDateFormat(ISO8601_DATE_FORMAT));
-
-        // ignore properties we don't need or aren't expecting
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        messageConverter.setJsonObjectMapper(objectMapper);
-
-        return messageConverter;
+        return (AbstractJsonMessageConverter)DefaultMessageConverterFactory.makeMessageConverter(mapper);
     }
 
     private ClassMapper createClassMapper()
@@ -529,7 +514,7 @@ public class RabbitContextBuilder
                 case HEADERS:
                     return ExchangeBuilder.headersExchange(name);
                 case FANOUT:
-                    return ExchangeBuilder.headersExchange(name);
+                    return ExchangeBuilder.fanoutExchange(name);
             }
             return null;
         }

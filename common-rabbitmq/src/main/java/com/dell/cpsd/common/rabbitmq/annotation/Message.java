@@ -38,20 +38,6 @@ public @interface Message
     String version();
 
     /**
-     * message correlationId property
-     *
-     * @return
-     */
-    String correlationIdProperty() default "correlationId";
-
-    /**
-     * message timestamp property
-     *
-     * @return
-     */
-    String timestampProperty() default "timestamp";
-
-    /**
      * Content type
      *
      * @return

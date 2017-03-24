@@ -15,6 +15,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -30,7 +31,8 @@ public class RabbitContextBuilderTest
     @Test
     public void testConsumeRequest()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"),
+                Arrays.asList(new MessageMetaData("test.message.request", "asdf", null, "routing.base")));
         builder.consumes("queue1", false, new Object(), TestRequestMessage.class);
         RabbitContext context = builder.build();
 
@@ -54,7 +56,8 @@ public class RabbitContextBuilderTest
     @Test
     public void testProduceRequest()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"),
+                Arrays.asList(new MessageMetaData("test.message.request", "asdf", null, "routing.base")));
         builder.produces(TestRequestMessage.class);
         RabbitContext context = builder.build();
 
@@ -75,7 +78,8 @@ public class RabbitContextBuilderTest
     @Test
     public void testConsumeReply()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"),
+                Arrays.asList(new MessageMetaData("test.message.reply", "asdf", null, "routing.base")));
         builder.consumes("queue1", false, new Object(), TestReplyMessage.class);
         RabbitContext context = builder.build();
 
@@ -100,7 +104,8 @@ public class RabbitContextBuilderTest
     @Test
     public void testProduceReply()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"),
+                Arrays.asList(new MessageMetaData("test.message.reply", "asdf", null, "routing.base")));
         builder.produces(TestReplyMessage.class);
         RabbitContext context = builder.build();
 
@@ -121,7 +126,10 @@ public class RabbitContextBuilderTest
     @Test
     public void testRequestAndReply()
     {
-        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"));
+        RabbitContextBuilder builder = new RabbitContextBuilder(new RabbitMQConnectionFactory(), appConfig("appXXX"),
+                Arrays.asList(new MessageMetaData("test.message.request", "asdf", null, "routing.base"),
+                        new MessageMetaData("test.message.reply", "asdf", null, "routing.base")));
+
         builder.requestsAndReplies(TestRequestMessage.class, "requestReply", false, new Object(), TestReplyMessage.class);
         RabbitContext context = builder.build();
 

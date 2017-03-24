@@ -16,8 +16,6 @@ package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo;
 
 import com.dell.cpsd.common.rabbitmq.annotation.Message;
 import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchange;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchangeType;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageError;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
@@ -49,7 +47,6 @@ public class MessageAnnotator extends AbstractAnnotator
         if (meta != null)
         {
             annotateMessage(clazz, meta);
-            annotateExchangeOpinion(clazz, meta);
             annotateStereotype(clazz, meta);
         }
     }
@@ -85,29 +82,6 @@ public class MessageAnnotator extends AbstractAnnotator
             if (timestampProperty != null)
             {
                 messageAnnotation.param("timestampProperty", timestampProperty.asText());
-            }
-        }
-    }
-
-    private void annotateExchangeOpinion(JDefinedClass clazz, JsonNode meta)
-    {
-        JsonNode exchange = meta.get("exchange");
-        JAnnotationUse exchangeAnnotation = null;
-        if (exchange != null)
-        {
-            exchangeAnnotation = clazz.annotate(MessageExchange.class);
-            exchangeAnnotation.param("exchange", exchange.asText());
-
-            JsonNode exchangeType = meta.get("exchangeType");
-            if (exchangeType != null)
-            {
-                exchangeAnnotation.param("exchangeType", MessageExchangeType.valueOf(exchangeType.asText().toUpperCase()));
-            }
-
-            JsonNode bindingBase = meta.get("routingKey");
-            if (bindingBase != null)
-            {
-                exchangeAnnotation.param("routingKey", bindingBase.asText());
             }
         }
     }

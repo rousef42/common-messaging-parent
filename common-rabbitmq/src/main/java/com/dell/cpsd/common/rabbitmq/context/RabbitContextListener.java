@@ -5,7 +5,6 @@
 
 package com.dell.cpsd.common.rabbitmq.context;
 
-import org.springframework.amqp.core.Binding;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -65,6 +64,8 @@ public class RabbitContextListener implements ApplicationListener<ApplicationCon
 
                 inject(configurableApplicationContext, rabbitContext.getRabbitTemplate());
                 inject(configurableApplicationContext, rabbitContext.getAdmin());
+                inject(configurableApplicationContext, rabbitContext.getMessageConverter());
+                inject(configurableApplicationContext, rabbitContext.getMessageConverter().getClassMapper());
             }
         }
     }

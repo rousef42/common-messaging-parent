@@ -11,6 +11,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
+import org.springframework.amqp.support.converter.AbstractJsonMessageConverter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,9 +28,10 @@ import java.util.Map;
  */
 public class RabbitContext
 {
-    private final String         contextUuid;
-    private final RabbitAdmin    admin;
-    private final RabbitTemplate rabbitTemplate;
+    private final String                       contextUuid;
+    private final RabbitAdmin                  admin;
+    private final RabbitTemplate               rabbitTemplate;
+    private final AbstractJsonMessageConverter messageConverter;
 
     private final Collection<Exchange>                 exchanges         = new ArrayList<>();
     private final Collection<Queue>                    queues            = new ArrayList<>();
@@ -38,13 +40,15 @@ public class RabbitContext
     private final Map<Class, MessageDescription>       descriptionLookup = new HashMap<>();
     private final Map<RequestReplyKey, String>         replyToLookup     = new HashMap<>();
 
-    public RabbitContext(String contextUuid, RabbitAdmin admin, RabbitTemplate rabbitTemplate, Collection<Exchange> exchanges,
-            Collection<Queue> queues, Collection<Binding> bindings, Collection<MessageDescription> descriptions,
-            Collection<MessageListenerContainer> containers, Map<RequestReplyKey, String> replyToLookup)
+    public RabbitContext(String contextUuid, RabbitAdmin admin, RabbitTemplate rabbitTemplate, AbstractJsonMessageConverter messageConverter,
+            Collection<Exchange> exchanges, Collection<Queue> queues, Collection<Binding> bindings,
+            Collection<MessageDescription> descriptions, Collection<MessageListenerContainer> containers,
+            Map<RequestReplyKey, String> replyToLookup)
     {
         this.contextUuid = contextUuid;
         this.admin = admin;
         this.rabbitTemplate = rabbitTemplate;
+        this.messageConverter = messageConverter;
 
         addAll(this.exchanges, exchanges);
         addAll(this.queues, queues);
@@ -96,6 +100,11 @@ public class RabbitContext
     public RabbitTemplate getRabbitTemplate()
     {
         return rabbitTemplate;
+    }
+
+    public AbstractJsonMessageConverter getMessageConverter()
+    {
+        return messageConverter;
     }
 
     public Collection<Exchange> getExchanges()

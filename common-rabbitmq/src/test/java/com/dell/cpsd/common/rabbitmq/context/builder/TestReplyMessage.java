@@ -6,7 +6,6 @@
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
 import com.dell.cpsd.common.rabbitmq.annotation.Message;
-import com.dell.cpsd.common.rabbitmq.annotation.opinions.MessageExchange;
 import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @since 1.0
  */
-@Message(value = "test.message.consumer", version = "1.0")
-@MessageExchange(exchange = "exchange.test", routingKey = "routing.base")
+@Message(value = "test.message.reply", version = "1.0")
 @MessageReply
 public class TestReplyMessage
 {
