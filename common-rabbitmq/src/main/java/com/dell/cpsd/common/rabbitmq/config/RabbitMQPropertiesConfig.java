@@ -166,4 +166,29 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     {
         return environment.getProperty("application.name", "");
     }
+
+    @Bean
+    public String trustStorePassphrase() {
+        return null;
+    }
+
+    @Bean
+    public String keyStorePassPhrase() {
+        return null;
+    }
+
+    @Bean
+    public String keyStorePath() {
+        return null;
+    }
+    @Bean
+    public String trustStorePath() {
+        return null;
+    }
+
+
+    @Bean
+    public String tlsVersion() {
+        return null;
+    }
 }

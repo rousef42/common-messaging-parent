@@ -118,4 +118,31 @@ public interface IRabbitMqPropertiesConfig
      */
     String applicationName();
 
+    /**
+     * This returns the name of the passphrase. The name of
+     * the property is <code>passphrase</code>
+     * @return The passphrase
+     *
+     * @since   SINCE-TBD
+     */
+    String trustStorePassphrase();
+
+    /**
+     * This returns the name of the keyPassPhrase. The name of
+     * the property is <code>keyPassPhrase</code>
+     * @return The passphrase
+     *
+     * @since   SINCE-TBD
+     */
+    String keyStorePassPhrase();
+
+
+    String keyStorePath();
+
+
+    String trustStorePath();
+
+
+    String tlsVersion();
+
 }
