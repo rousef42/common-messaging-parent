@@ -145,4 +145,7 @@ public interface IRabbitMqPropertiesConfig
 
     String tlsVersion();
 
+
+    Boolean isSslEnabled();
+
 }

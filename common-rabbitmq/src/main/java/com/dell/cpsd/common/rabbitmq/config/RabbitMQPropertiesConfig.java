@@ -191,4 +191,9 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     public String tlsVersion() {
         return null;
     }
+
+    @Bean
+    public Boolean isSslEnabled() {
+        return null;
+    }
 }
