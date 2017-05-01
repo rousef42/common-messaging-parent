@@ -181,11 +181,11 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     public String keyStorePath() {
         return null;
     }
+
     @Bean
     public String trustStorePath() {
         return null;
     }
-
 
     @Bean
     public String tlsVersion() {

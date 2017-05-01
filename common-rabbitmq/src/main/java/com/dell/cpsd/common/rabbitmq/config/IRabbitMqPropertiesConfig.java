@@ -119,33 +119,44 @@ public interface IRabbitMqPropertiesConfig
     String applicationName();
 
     /**
-     * This returns the name of the passphrase. The name of
-     * the property is <code>passphrase</code>
-     * @return The passphrase
-     *
-     * @since   SINCE-TBD
+     * This returns the pass phrase of the trustStore. The name of
+     * the property is <code>trustStorePassphrase</code>
+     * @return The trustStorePassphrase
      */
     String trustStorePassphrase();
 
     /**
-     * This returns the name of the keyPassPhrase. The name of
-     * the property is <code>keyPassPhrase</code>
-     * @return The passphrase
-     *
-     * @since   SINCE-TBD
+     * This returns the passPhrase of the keyStore. The name of
+     * the property is <code>keyStorePassPhrase</code>
+     * @return The keyStorePassPhrase
      */
     String keyStorePassPhrase();
 
-
+    /**
+     * This returns the path of the keyStore. The name of
+     * the property is <code>keyStorePath</code>
+     * @return The keyStorePath
+     */
     String keyStorePath();
 
-
+    /**
+     * This returns the path of the trustStore. The name of
+     * the property is <code>trustStorePath</code>
+     * @return The trustStorePath
+     */
     String trustStorePath();
 
-
+    /**
+     * This returns the version of the tls. The name of
+     * the property is <code>tlsVersion</code>
+     * @return The tlsVersion
+     */
     String tlsVersion();
 
-
+    /**
+     * This returns the status of SSL. The name of
+     * the property is <code>isSslEnabled</code>
+     * @return The isSslEnabled
+     */
     Boolean isSslEnabled();
-
 }
