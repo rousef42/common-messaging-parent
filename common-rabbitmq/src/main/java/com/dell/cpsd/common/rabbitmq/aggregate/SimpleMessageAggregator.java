@@ -149,6 +149,16 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
         LOGGER.info("Removing old (>{}s) aggregate: {}", timeToLiveSeconds, aggregate);
     }
 
+    protected int getTimeToLiveSeconds()
+    {
+        return timeToLiveSeconds;
+    }
+
+    protected void setTimeToLiveSeconds(final int timeToLiveSeconds)
+    {
+        this.timeToLiveSeconds = timeToLiveSeconds;
+    }
+
     private class AggregateWrapper
     {
         private M    aggregate    = null;
@@ -168,15 +178,5 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
         {
             return creationDate;
         }
-    }
-
-    protected int getTimeToLiveSeconds()
-    {
-        return timeToLiveSeconds;
-    }
-
-    protected void setTimeToLiveSeconds(final int timeToLiveSeconds)
-    {
-        this.timeToLiveSeconds = timeToLiveSeconds;
     }
 }

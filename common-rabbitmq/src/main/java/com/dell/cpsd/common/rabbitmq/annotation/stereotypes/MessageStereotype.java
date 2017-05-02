@@ -15,5 +15,8 @@ package com.dell.cpsd.common.rabbitmq.annotation.stereotypes;
  */
 public enum MessageStereotype
 {
-    REQUEST, REPLY, EVENT, ERROR;
+    REQUEST,
+    REPLY,
+    EVENT,
+    ERROR;
 }

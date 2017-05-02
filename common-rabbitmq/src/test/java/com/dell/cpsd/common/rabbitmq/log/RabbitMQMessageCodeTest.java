@@ -22,6 +22,7 @@ import static org.junit.Assert.fail;
  * <p>
  * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
+ *
  * @since 1.1
  */
 public class RabbitMQMessageCodeTest

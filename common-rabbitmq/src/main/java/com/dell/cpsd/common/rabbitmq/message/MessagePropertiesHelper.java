@@ -5,41 +5,38 @@
 
 package com.dell.cpsd.common.rabbitmq.message;
 
-import java.util.Date;
+import org.springframework.amqp.core.MessageProperties;
 
 import java.io.UnsupportedEncodingException;
-
-import org.springframework.amqp.core.MessageProperties;
+import java.util.Date;
 
 /**
  * This helper class for message properties.
- * 
+ * <p>
  * <p>
  * <p/>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * <p/>
- * 
- * @since   1.0
+ *
+ * @since 1.0
  */
 public class MessagePropertiesHelper
 {
     /**
      * This makes a <code>MessageProperties</code> with the specified properties.
-     * 
-     * @param   timestamp       The timestamp.
-     * @param   correlationId   The correlation identifier.
-     * @param   replyTo         The reply to destination.
-     * 
-     * @since   1.0
+     *
+     * @param timestamp     The timestamp.
+     * @param correlationId The correlation identifier.
+     * @param replyTo       The reply to destination.
+     * @since 1.0
      */
-    public static MessageProperties makeMessageProperties(final Date timestamp, 
-            final String correlationId, final String replyTo)
+    public static MessageProperties makeMessageProperties(final Date timestamp, final String correlationId, final String replyTo)
     {
         final MessageProperties messageProperties = new MessageProperties();
-        
+
         messageProperties.setTimestamp(timestamp);
         messageProperties.setCorrelationIdString(correlationId);
-        
+
         if (correlationId != null)
         {
             try
@@ -51,22 +48,19 @@ public class MessagePropertiesHelper
             {
             }
         }
-        
+
         messageProperties.setReplyTo(replyTo);
-        
+
         return messageProperties;
     }
-    
-    
+
     /**
      * This returns the correalation identifier in the message properties, or
      * null.
-     * 
-     * @param   messageProperties   The message properties.
-     * 
-     * @return  The correlation identifier, or null.
-     * 
-     * @since   1.0
+     *
+     * @param messageProperties The message properties.
+     * @return The correlation identifier, or null.
+     * @since 1.0
      */
     public static String getCorrelationId(final MessageProperties messageProperties)
     {
@@ -74,7 +68,7 @@ public class MessagePropertiesHelper
         {
             return null;
         }
-        
+
         String correlationId = messageProperties.getCorrelationIdString();
 
         if ((correlationId == null) || (correlationId.isEmpty()))
@@ -92,7 +86,7 @@ public class MessagePropertiesHelper
                 }
             }
         }
-        
+
         return correlationId;
     }
 }

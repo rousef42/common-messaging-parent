@@ -68,6 +68,7 @@ public class CorrelationIdBuilderTest
         assertEquals("a1", bld.removeLast().removeLast().readLast());
         assertEquals("a1", bld.build());
     }
+
     @Test
     public void buildEmpty() throws Exception
     {

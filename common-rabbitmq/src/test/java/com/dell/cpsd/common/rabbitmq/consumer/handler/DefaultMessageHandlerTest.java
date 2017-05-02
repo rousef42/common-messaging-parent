@@ -28,9 +28,9 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 public class DefaultMessageHandlerTest
 {
     DefaultMessageHandler<TestRequestMessage> handler;
-    TestRequestMessage message;
-    MessageValidator<TestRequestMessage> validator;
-    Consumer<TestRequestMessage> messageConsumer;
+    TestRequestMessage                        message;
+    MessageValidator<TestRequestMessage>      validator;
+    Consumer<TestRequestMessage>              messageConsumer;
     ErrorTransformer<HasMessageProperties<?>> errorTransformer;
 
     @Before
@@ -56,16 +56,11 @@ public class DefaultMessageHandlerTest
     @Test(expected = ExpectedResponseException.class)
     public void handleMessage_validationError() throws Exception
     {
-        ValidationResult validationResult = new ValidationResult()
-                .addError("test validation error");
+        ValidationResult validationResult = new ValidationResult().addError("test validation error");
 
-        Mockito
-                .when(validator.validate(message))
-                .thenReturn(validationResult);
+        Mockito.when(validator.validate(message)).thenReturn(validationResult);
 
-        Mockito
-                .when(errorTransformer.transform(any(MessageValidationException.class), any()))
-                .thenReturn(new ExpectedResponseException());
+        Mockito.when(errorTransformer.transform(any(MessageValidationException.class), any())).thenReturn(new ExpectedResponseException());
 
         handler.handleMessage(message);
     }
@@ -73,17 +68,11 @@ public class DefaultMessageHandlerTest
     @Test(expected = ExpectedResponseException.class)
     public void handleMessage_executionError() throws Exception
     {
-        Mockito
-                .when(validator.validate(message))
-                .thenReturn(new ValidationResult());
+        Mockito.when(validator.validate(message)).thenReturn(new ValidationResult());
 
-        Mockito
-                .doThrow(new TestMessageException())
-                .when(messageConsumer).accept(message);
+        Mockito.doThrow(new TestMessageException()).when(messageConsumer).accept(message);
 
-        Mockito
-                .when(errorTransformer.transform(any(TestMessageException.class), any()))
-                .thenReturn(new ExpectedResponseException());
+        Mockito.when(errorTransformer.transform(any(TestMessageException.class), any())).thenReturn(new ExpectedResponseException());
 
         handler.handleMessage(message);
     }
@@ -91,9 +80,7 @@ public class DefaultMessageHandlerTest
     @Test
     public void handleMessage() throws Exception
     {
-        Mockito
-                .when(validator.validate(message))
-                .thenReturn(new ValidationResult());
+        Mockito.when(validator.validate(message)).thenReturn(new ValidationResult());
 
         handler.handleMessage(message);
 

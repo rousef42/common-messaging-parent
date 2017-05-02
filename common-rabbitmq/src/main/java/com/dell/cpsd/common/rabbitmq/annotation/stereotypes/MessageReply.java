@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * <p/>
  * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  *
- * @since   SINCE-TDB
+ * @since SINCE-TDB
  */
 @Documented
 @Target(ElementType.TYPE)

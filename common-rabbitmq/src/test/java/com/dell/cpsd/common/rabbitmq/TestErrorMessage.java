@@ -2,6 +2,7 @@
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq;
 
 import com.dell.cpsd.common.rabbitmq.message.HasErrors;
@@ -13,6 +14,7 @@ import java.util.List;
  * <p>
  * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
+ *
  * @since 1.0
  */
 public class TestErrorMessage implements HasMessageProperties<TestMessageProperties>, HasErrors<Error>

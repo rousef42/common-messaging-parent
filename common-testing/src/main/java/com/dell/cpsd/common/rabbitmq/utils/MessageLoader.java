@@ -28,10 +28,9 @@ import static org.junit.Assert.fail;
  */
 public class MessageLoader
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageLoader.class);
-
     public static final String APPLICATION_JSON = "application/json";
     public static final String TYPE_ID          = "__TypeId__";
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageLoader.class);
 
     private MessageLoader()
     {

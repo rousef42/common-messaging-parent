@@ -10,5 +10,8 @@ package com.dell.cpsd.common.rabbitmq.context.builder;
  */
 public enum MessageExchangeType
 {
-    DIRECT, TOPIC, FANOUT, HEADERS;
+    DIRECT,
+    TOPIC,
+    FANOUT,
+    HEADERS;
 }

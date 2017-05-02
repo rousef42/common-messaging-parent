@@ -2,6 +2,7 @@
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq.retrypolicy.exception;
 
 /**
@@ -27,11 +28,9 @@ public class ResponseDetails
     @Override
     public String toString()
     {
-        return "ResponseDetails{" +
-                "exchange='" + exchange + '\'' +
-                ", routingKey='" + routingKey + '\'' +
-                ", body=" + (body == null ? null : body.getClass().getSimpleName()) +
-                '}';
+        return "ResponseDetails{" + "exchange='" + exchange + '\'' + ", routingKey='" + routingKey + '\'' + ", body=" + (body == null ?
+                null :
+                body.getClass().getSimpleName()) + '}';
     }
 
     public String getExchange()

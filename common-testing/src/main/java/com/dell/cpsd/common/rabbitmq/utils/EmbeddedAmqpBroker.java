@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -36,11 +35,10 @@ import static org.springframework.util.SocketUtils.findAvailableTcpPort;
  */
 public class EmbeddedAmqpBroker implements Closeable
 {
-    private static final Logger LOGGER           = LoggerFactory.getLogger(MessageLoader.class);
     public static final  String QPID             = "/qpid/";
     public static final  String FILE_PASS        = "passwd.properties";
     public static final  String FILE_QPID_CONFIG = "embedded-config.json";
-
+    private static final Logger LOGGER           = LoggerFactory.getLogger(MessageLoader.class);
     private static final int           PORT    = findAvailableTcpPort();
     private static final BrokerOptions OPTIONS = new BrokerOptions();
     private static final Broker        BROKER  = new Broker();
@@ -53,6 +51,25 @@ public class EmbeddedAmqpBroker implements Closeable
         start();
     }
 
+    /**
+     * Should be changed to Spring bean.
+     */
+    public static EmbeddedAmqpBroker getInstance() throws Exception
+    {
+        if (instance == null)
+        {
+            synchronized (EmbeddedAmqpBroker.class)
+            {
+                if (instance == null)
+                {
+                    instance = new EmbeddedAmqpBroker();
+                }
+            }
+        }
+        return instance;
+
+    }
+
     private void init() throws IOException, URISyntaxException
     {
         LOGGER.info("Initializing embedded broker");
@@ -60,7 +77,8 @@ public class EmbeddedAmqpBroker implements Closeable
         OPTIONS.setConfigProperty("qpid.amqp_port", String.valueOf(PORT));
         final Path tmpPath = Files.createTempDirectory("embeddedBroker");
         OPTIONS.setConfigProperty("qpid.work_dir", tmpPath.toAbsolutePath().toString());
-        OPTIONS.setConfigProperty("qpid.pass_file", copyAndReturnPassFile(tmpPath.toAbsolutePath().toString())); // This option doesn't like URL
+        OPTIONS.setConfigProperty("qpid.pass_file",
+                copyAndReturnPassFile(tmpPath.toAbsolutePath().toString())); // This option doesn't like URL
         OPTIONS.setInitialConfigurationLocation(findQpidConfigUrl()); // URL is ok here
     }
 
@@ -115,24 +133,5 @@ public class EmbeddedAmqpBroker implements Closeable
     {
         close();
         super.finalize();
-    }
-
-    /**
-     * Should be changed to Spring bean.
-     */
-    public static EmbeddedAmqpBroker getInstance() throws Exception
-    {
-        if (instance == null)
-        {
-            synchronized (EmbeddedAmqpBroker.class)
-            {
-                if (instance == null)
-                {
-                    instance = new EmbeddedAmqpBroker();
-                }
-            }
-        }
-        return instance;
-
     }
 }

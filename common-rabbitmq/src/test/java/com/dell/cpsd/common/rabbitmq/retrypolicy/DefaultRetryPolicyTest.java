@@ -48,10 +48,7 @@ public class DefaultRetryPolicyTest
     @Test
     public void registerThrowable_MessageValidationException() throws Exception
     {
-        Exception e = new MessageValidationException(
-                new ValidationResult()
-                        .addError("Test validation error")
-        );
+        Exception e = new MessageValidationException(new ValidationResult().addError("Test validation error"));
 
         assertAttemptsCount(1, e);
     }

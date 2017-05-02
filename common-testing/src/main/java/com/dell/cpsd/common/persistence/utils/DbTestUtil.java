@@ -36,15 +36,6 @@ public class DbTestUtil
     }
 
     /**
-     * Remove content of all user's tables data.
-     * Does not delete table definitions.
-     */
-    public void cleanDb()
-    {
-        LOGGER.warn("This implementataion is not removing any data.");
-    }
-
-    /**
      * Factory.
      */
     public static DbTestUtil create(final EntityManager em, String dbType)
@@ -62,5 +53,14 @@ public class DbTestUtil
             LOGGER.error("Unknown DB type: " + dbType);
             return new DbTestUtil(em);
         }
+    }
+
+    /**
+     * Remove content of all user's tables data.
+     * Does not delete table definitions.
+     */
+    public void cleanDb()
+    {
+        LOGGER.warn("This implementataion is not removing any data.");
     }
 }

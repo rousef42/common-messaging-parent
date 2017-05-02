@@ -2,6 +2,7 @@
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
@@ -31,10 +32,8 @@ public class ResponseMessageRetryPolicy extends SimpleRetryPolicy
             return context.getRetryCount() < maxRetryCount;
         }
 
-        log.warn(
-                "Policy is used for a wrong exception: {}. Falling back to SimpleRetryPolicy.",
-                (t == null ? null : t.getClass().getSimpleName())
-        );
+        log.warn("Policy is used for a wrong exception: {}. Falling back to SimpleRetryPolicy.",
+                (t == null ? null : t.getClass().getSimpleName()));
         return super.canRetry(context);
     }
 }

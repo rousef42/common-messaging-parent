@@ -2,6 +2,7 @@
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action;
 
 import com.sun.codemodel.JClass;
@@ -22,7 +23,7 @@ import static java.util.Arrays.asList;
 public class AddInterface implements ClassAction
 {
     protected List<String> requiredProperties;
-    protected String interfaceName;
+    protected String       interfaceName;
 
     public AddInterface(String requiredProperty, String interfaceName)
     {

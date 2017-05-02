@@ -10,8 +10,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.amqp.core.Message;
 
-import static org.junit.Assert.*;
-import static com.dell.cpsd.common.rabbitmq.utils.MessageLoader.*;
+import static com.dell.cpsd.common.rabbitmq.utils.MessageLoader.loadFromResources;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Message loader test.

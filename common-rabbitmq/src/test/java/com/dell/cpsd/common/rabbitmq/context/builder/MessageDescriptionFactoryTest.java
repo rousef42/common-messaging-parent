@@ -45,9 +45,9 @@ public class MessageDescriptionFactoryTest
     @Test
     public void testFlavour()
     {
-        MessageDescriptionFactory factory = new MessageDescriptionFactory(
-                new ApplicationConfiguration("appName", "appUuid", "appHostName"),
-                Arrays.asList(new MessageMetaData("test.message.request", "exchange.test.{providerId}.something", "TOPIC", "routing.base")));
+        MessageDescriptionFactory factory = new MessageDescriptionFactory(new ApplicationConfiguration("appName", "appUuid", "appHostName"),
+                Arrays.asList(
+                        new MessageMetaData("test.message.request", "exchange.test.{providerId}.something", "TOPIC", "routing.base")));
         MessageDescription description = factory.createDescription(TestRequestMessage.class);
         Assert.assertEquals("exchange.test.appName.something", description.getExchange());
     }

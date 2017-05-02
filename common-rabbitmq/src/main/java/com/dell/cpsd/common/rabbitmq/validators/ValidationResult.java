@@ -50,10 +50,7 @@ public class ValidationResult
     @Deprecated
     public List<String> getErrors()
     {
-        return errors
-                .stream()
-                .map(LocalizedError::getMessage)
-                .collect(Collectors.toList());
+        return errors.stream().map(LocalizedError::getMessage).collect(Collectors.toList());
     }
 
     /**

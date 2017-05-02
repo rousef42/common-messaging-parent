@@ -22,7 +22,7 @@ public class MessageMetaDataReader
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageMetaDataReader.class);
 
-    private final        ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public List<MessageMetaData> read(File file)
     {

@@ -2,6 +2,7 @@
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq.retrypolicy.exception;
 
 /**
@@ -14,10 +15,10 @@ package com.dell.cpsd.common.rabbitmq.retrypolicy.exception;
  */
 public class ResponseMessageException extends RuntimeException
 {
-    private static final long serialVersionUID = -5837101839767033032L;
-    private static final int DEFAULT_RETRY_COUNT = 0;
+    private static final long serialVersionUID    = -5837101839767033032L;
+    private static final int  DEFAULT_RETRY_COUNT = 0;
 
-    private final int maxRetryCount;
+    private final int             maxRetryCount;
     private final ResponseDetails responseDetails;
 
     public ResponseMessageException(Throwable cause, String exchange, String routingKey, Object body)
@@ -45,10 +46,7 @@ public class ResponseMessageException extends RuntimeException
     @Override
     public String toString()
     {
-        return "ResponseMessageException{" +
-                "responseDetails=" + responseDetails +
-                ", cause=" + getCause() +
-                '}';
+        return "ResponseMessageException{" + "responseDetails=" + responseDetails + ", cause=" + getCause() + '}';
     }
 
     public int getMaxRetryCount()

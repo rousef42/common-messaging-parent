@@ -35,8 +35,8 @@ import static org.junit.Assert.assertSame;
 public class DefaultErrorTransformerTest
 {
     DefaultErrorTransformer<Error, TestErrorMessage> transformer;
-    TestRequestMessage requestMessage;
-    ErrorContext<HasMessageProperties<?>> context;
+    TestRequestMessage                               requestMessage;
+    ErrorContext<HasMessageProperties<?>>            context;
 
     @Before
     public void setUp() throws Exception
@@ -127,9 +127,7 @@ public class DefaultErrorTransformerTest
 
     private LocalizedError error(String code, String message)
     {
-        return new LocalizedError()
-                .setMessageCode(code)
-                .setMessage(message);
+        return new LocalizedError().setMessageCode(code).setMessage(message);
     }
 
     protected void assertResponseDetails(String expectedErrorMessage, ErrorResponseException result)

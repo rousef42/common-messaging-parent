@@ -24,8 +24,7 @@ import java.util.UUID;
  *
  * @since SINCE-TBD
  */
-public class DelegatingMessageHandler extends LoggingUnhandledMessageHandler
-        implements RabbitContextAware
+public class DelegatingMessageHandler extends LoggingUnhandledMessageHandler implements RabbitContextAware
 {
     /*
      * The logger for this class.

@@ -19,19 +19,14 @@ import com.dell.cpsd.common.rabbitmq.context.builder.MessageExchangeType;
  */
 public class MessageDescription<M>
 {
-    private Class<M>            messageClass          = null;
-    private MessageStereotype   stereotype            = null;
-    private String              type                  = null;
-    private String              version               = null;
-    private String              exchange              = null;
-    private MessageExchangeType exchangeType          = null;
-    private String              routingKey            = null;
-    private MessageContentType  contentType           = null;
-
-    public void setMessageClass(Class<M> messageClass)
-    {
-        this.messageClass = messageClass;
-    }
+    private Class<M>            messageClass = null;
+    private MessageStereotype   stereotype   = null;
+    private String              type         = null;
+    private String              version      = null;
+    private String              exchange     = null;
+    private MessageExchangeType exchangeType = null;
+    private String              routingKey   = null;
+    private MessageContentType  contentType  = null;
 
     public MessageStereotype getStereotype()
     {
@@ -41,26 +36,6 @@ public class MessageDescription<M>
     public void setStereotype(MessageStereotype stereotype)
     {
         this.stereotype = stereotype;
-    }
-
-    public void setType(String type)
-    {
-        this.type = type;
-    }
-
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
-
-    public void setExchange(String exchange)
-    {
-        this.exchange = exchange;
-    }
-
-    public void setExchangeType(MessageExchangeType exchangeType)
-    {
-        this.exchangeType = exchangeType;
     }
 
     public String getRoutingKey()
@@ -78,9 +53,19 @@ public class MessageDescription<M>
         return messageClass;
     }
 
+    public void setMessageClass(Class<M> messageClass)
+    {
+        this.messageClass = messageClass;
+    }
+
     public String getType()
     {
         return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
     }
 
     public String getVersion()
@@ -88,14 +73,29 @@ public class MessageDescription<M>
         return version;
     }
 
+    public void setVersion(String version)
+    {
+        this.version = version;
+    }
+
     public String getExchange()
     {
         return exchange;
     }
 
+    public void setExchange(String exchange)
+    {
+        this.exchange = exchange;
+    }
+
     public MessageExchangeType getExchangeType()
     {
         return exchangeType;
+    }
+
+    public void setExchangeType(MessageExchangeType exchangeType)
+    {
+        this.exchangeType = exchangeType;
     }
 
     public MessageContentType getContentType()

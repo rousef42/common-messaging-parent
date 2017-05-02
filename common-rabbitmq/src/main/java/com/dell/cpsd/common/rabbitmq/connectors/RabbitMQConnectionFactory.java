@@ -5,67 +5,56 @@
 
 package com.dell.cpsd.common.rabbitmq.connectors;
 
-import java.net.URI;
-
-import javax.annotation.PostConstruct;
-
+import com.dell.cpsd.common.logging.ILogger;
 import com.dell.cpsd.common.rabbitmq.exceptions.RabbitMQConnectionException;
-
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
+import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.amqp.rabbit.connection.ConnectionListener;
 
-import com.rabbitmq.client.ConnectionFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
-import com.dell.cpsd.common.logging.ILogger;
-
-import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
-import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
+import javax.annotation.PostConstruct;
 
 /**
  * This class is a connection factory extending <code>CachingConnectionFactory
- * </code> to facilitate the connection to RabbitMQ available in the environment. 
- *
+ * </code> to facilitate the connection to RabbitMQ available in the environment.
+ * <p>
  * <p/>
  * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  *
  * @version 1.0
- * 
- * @since   SINCE-TDB
+ * @since SINCE-TDB
  */
 public final class RabbitMQConnectionFactory extends CachingConnectionFactory
 {
     // TODO : consolidate with prepositioning common library 
-    
+
     /*
      * Logger for this class.
      */
-    private static final ILogger LOGGER = 
-            RabbitMQLoggingManager.getLogger(RabbitMQConnectionFactory.class);
+    private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(RabbitMQConnectionFactory.class);
 
     /*
      * RabbitMQ host used for the connection. 
-     * */ 
+     * */
     private String host;
 
     /*
      * RabbitMQ password. 
      */
     private String password;
-    
+
     /*
      * RabbitMQ username. 
      */
-    private String username;  
-    
+    private String username;
+
     /*
      * RabbitMQ port. Default value 5672. 
-     */ 
+     */
     private int port;
-    
+
     /*
      * RabbitMQ virtual host.
      */
@@ -76,35 +65,27 @@ public final class RabbitMQConnectionFactory extends CachingConnectionFactory
      */
     private Integer heartbeat;
 
-    
     /**
      * RabbitMQConnectionFactory constructor.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @since SINCE-TBD
      */
     public RabbitMQConnectionFactory()
     {
         super(new ConnectionFactory());
     }
-    
 
     /**
      * RabbitMQConnectionFactory constructor.
-     * 
-     * @param   host            RabbitMQ host used for the connection. 
-     * @param   password        RabbitMQ password. 
-     * @param   port            RabbitMQ port.
-     * @param   virtualHost     RabbitMQ virtual host.
-     * @param   username        RabbitMQ username.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @param host        RabbitMQ host used for the connection.
+     * @param password    RabbitMQ password.
+     * @param port        RabbitMQ port.
+     * @param virtualHost RabbitMQ virtual host.
+     * @param username    RabbitMQ username.
+     * @since SINCE-TBD
      */
-    public RabbitMQConnectionFactory(
-            String host,
-            String password,
-            int port,
-            String virtualHost,
-            String username)
+    public RabbitMQConnectionFactory(String host, String password, int port, String virtualHost, String username)
     {
         super(new ConnectionFactory());
 
@@ -114,32 +95,28 @@ public final class RabbitMQConnectionFactory extends CachingConnectionFactory
         this.virtualHost = virtualHost;
         this.username = username;
 
-        try 
+        try
         {
             this.init();
         }
         catch (RabbitMQConnectionException exception)
         {
             Object[] lparams = {exception.getMessage()};
-            LOGGER.error(RabbitMQMessageCode.CONNECTION_FACTORY_INIT_E.getMessageCode(),
-                         lparams, exception);
+            LOGGER.error(RabbitMQMessageCode.CONNECTION_FACTORY_INIT_E.getMessageCode(), lparams, exception);
         }
     }
-    
-    
+
     /**
      * Initializes the connection factory object's host, port and credentials
-     * 
-     * @throws  RabbitMQConnectionException
-     * 
-     * @since   SINCE-TBD
+     *
+     * @throws RabbitMQConnectionException
+     * @since SINCE-TBD
      */
     @PostConstruct
     protected void init() throws RabbitMQConnectionException
     {
         Object[] lparams = {this.host, "" + this.port};
-        LOGGER.info(RabbitMQMessageCode.CONNECTION_FACTORY_INIT_I.getMessageCode(),
-                    lparams);
+        LOGGER.info(RabbitMQMessageCode.CONNECTION_FACTORY_INIT_I.getMessageCode(), lparams);
 
         setHost(this.host);
         setPort(this.port);
@@ -153,7 +130,7 @@ public final class RabbitMQConnectionFactory extends CachingConnectionFactory
             @Override
             public void onCreate(Connection connection)
             {
-                if(LOGGER.isDebugEnabled())
+                if (LOGGER.isDebugEnabled())
                 {
                     LOGGER.debug("Created AMQP connection");
                 }
@@ -162,7 +139,7 @@ public final class RabbitMQConnectionFactory extends CachingConnectionFactory
             @Override
             public void onClose(Connection connection)
             {
-                if(LOGGER.isDebugEnabled())
+                if (LOGGER.isDebugEnabled())
                 {
                     LOGGER.debug("Closing AMQP connection");
                 }

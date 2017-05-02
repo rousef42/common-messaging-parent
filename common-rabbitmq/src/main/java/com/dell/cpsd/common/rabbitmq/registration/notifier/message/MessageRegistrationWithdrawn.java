@@ -9,7 +9,6 @@ import com.dell.cpsd.common.rabbitmq.annotation.Message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
@@ -23,10 +22,10 @@ import java.util.List;
 public class MessageRegistrationWithdrawn
 {
     @JsonProperty("correlationId")
-    private String       correlationId;
+    private String correlationId;
 
     @JsonProperty("timestamp")
-    private Date   timestamp;
+    private Date timestamp;
 
     @JsonProperty("registrationId")
     private String registrationId;

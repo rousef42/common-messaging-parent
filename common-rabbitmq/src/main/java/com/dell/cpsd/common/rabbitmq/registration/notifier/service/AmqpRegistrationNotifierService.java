@@ -26,7 +26,8 @@ public class AmqpRegistrationNotifierService extends AbstractRegistrationNotifie
     private String         routingKey;
     private ObjectMapper   objectMapper;
 
-    public AmqpRegistrationNotifierService(ObjectMapper objectMapper, RabbitTemplate template, String notificationExchange, String routingKey)
+    public AmqpRegistrationNotifierService(ObjectMapper objectMapper, RabbitTemplate template, String notificationExchange,
+            String routingKey)
     {
         this.objectMapper = objectMapper;
         this.template = template;

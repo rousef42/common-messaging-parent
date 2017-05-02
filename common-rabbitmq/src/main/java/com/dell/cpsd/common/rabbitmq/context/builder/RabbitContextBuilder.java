@@ -169,7 +169,8 @@ public class RabbitContextBuilder
      * @param listener
      * @return
      */
-    public <C> RabbitContextBuilder consumes(String queueName, boolean durable, String containerAlias, Object listener, Class<C> messageClass)
+    public <C> RabbitContextBuilder consumes(String queueName, boolean durable, String containerAlias, Object listener,
+            Class<C> messageClass)
     {
         MessageDescription<C> description = messageDescriptionFactory.createDescription(messageClass);
         descriptions.put(description.getType(), description);
@@ -365,7 +366,7 @@ public class RabbitContextBuilder
 
     private AbstractJsonMessageConverter createMessageConverter(ClassMapper mapper)
     {
-        return (AbstractJsonMessageConverter)DefaultMessageConverterFactory.makeMessageConverter(mapper);
+        return (AbstractJsonMessageConverter) DefaultMessageConverterFactory.makeMessageConverter(mapper);
     }
 
     private ClassMapper createClassMapper()
@@ -611,7 +612,8 @@ public class RabbitContextBuilder
         public MessageBindingBuilder fromExchange(String exchangeName, MessageExchangeType exchangeType, boolean durable)
         {
             exchangeBuilder = new MessageExchangeBuilder(contextBuilder, exchangeName, exchangeType);
-            if (durable) {
+            if (durable)
+            {
                 exchangeBuilder.durable();
             }
             return this;

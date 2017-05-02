@@ -83,9 +83,11 @@ public class ApplicationContextRegistrationListener implements ApplicationListen
 
             if (entry.getMessageExchanges() != null)
             {
-                entry.getMessageExchanges().forEach(m -> {
+                entry.getMessageExchanges().forEach(m ->
+                {
                     exchangeMap.put(m.getName(), m);
-                    m.getBindings().forEach(b -> {
+                    m.getBindings().forEach(b ->
+                    {
                         List<BindingDataDto> exchangeBinding = exchangeToBindingMap.get(m.getName());
                         if (exchangeBinding == null)
                         {
@@ -99,8 +101,10 @@ public class ApplicationContextRegistrationListener implements ApplicationListen
 
             if (entry.getMessageQueues() != null)
             {
-                entry.getMessageQueues().forEach(q -> {
-                    bindings.stream().filter(b -> q.getName().equals(b.getDestination())).forEach(b -> {
+                entry.getMessageQueues().forEach(q ->
+                {
+                    bindings.stream().filter(b -> q.getName().equals(b.getDestination())).forEach(b ->
+                    {
                         MessageExchangeDto exchange = exchangeMap.get(b.getExchange());
                         if (exchange == null)
                         {
@@ -127,7 +131,8 @@ public class ApplicationContextRegistrationListener implements ApplicationListen
             }
 
             MessageRegistrationDto enrichedEntry = new MessageRegistrationDto(entry.getServiceName(), entry.getMessageClass(),
-                    entry.getMessageType(), entry.getMessageVersion(), entry.getMessageSchema(), messageExchanges, entry.getMessageQueues());
+                    entry.getMessageType(), entry.getMessageVersion(), entry.getMessageSchema(), messageExchanges,
+                    entry.getMessageQueues());
 
             registrations.add(enrichedEntry);
             registrationNotifierService.notify(enrichedEntry);

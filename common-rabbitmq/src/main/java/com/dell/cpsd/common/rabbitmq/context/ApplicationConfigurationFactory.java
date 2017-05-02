@@ -19,15 +19,23 @@ import java.util.UUID;
  */
 public class ApplicationConfigurationFactory
 {
+    private static ApplicationConfigurationFactory INSTANCE = null;
     private final String instanceUuid;
     private final String hostName;
-
-    private static ApplicationConfigurationFactory INSTANCE = null;
 
     private ApplicationConfigurationFactory()
     {
         this.hostName = resolveHostName();
         this.instanceUuid = UUID.randomUUID().toString();
+    }
+
+    public static ApplicationConfigurationFactory getInstance()
+    {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new ApplicationConfigurationFactory();
+        }
+        return INSTANCE;
     }
 
     public ApplicationConfiguration createApplicationConfiguration(String applicationName)
@@ -46,14 +54,5 @@ public class ApplicationConfigurationFactory
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static ApplicationConfigurationFactory getInstance()
-    {
-        if (INSTANCE == null)
-        {
-            INSTANCE = new ApplicationConfigurationFactory();
-        }
-        return INSTANCE;
     }
 }

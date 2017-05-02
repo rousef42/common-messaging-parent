@@ -22,41 +22,33 @@ import java.util.List;
  * @since SINCE-TBD
  */
 @Message(value = "common.message.registration.notified", version = "1.0")
-@JsonPropertyOrder({
-        "correlationId",
-        "timestamp",
-        "registrationId",
-        "serviceName",
-        "messageType",
-        "messageVersion",
-        "messageExchanges",
-        "messageSchema"
-})
+@JsonPropertyOrder({"correlationId", "timestamp", "registrationId", "serviceName", "messageType", "messageVersion", "messageExchanges",
+        "messageSchema"})
 public class MessageRegistrationNotified
 {
     @JsonProperty("correlationId")
-    private String       correlationId;
+    private String correlationId;
 
     @JsonProperty("timestamp")
-    private Date   timestamp;
+    private Date timestamp;
 
     @JsonProperty("registrationId")
-    private String       registrationId;
+    private String registrationId;
 
     @JsonProperty("serviceName")
-    private String       serviceName;
+    private String serviceName;
 
     @JsonProperty("messageType")
-    private String       messageType;
+    private String messageType;
 
     @JsonProperty("messageVersion")
-    private String       messageVersion;
+    private String messageVersion;
 
     @JsonProperty("messageExchanges")
     private List<MessageExchange> messageExchanges;
 
     @JsonProperty("messageSchema")
-    private JsonSchema   schema;
+    private JsonSchema schema;
 
     public MessageRegistrationNotified(String correlationId, Date timestamp, String registrationId, String serviceName, String messageType,
             String messageVersion, JsonSchema schema, List<MessageExchange> messageExchanges)
