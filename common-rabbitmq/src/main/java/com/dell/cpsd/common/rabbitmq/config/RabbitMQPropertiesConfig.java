@@ -6,20 +6,18 @@
 package com.dell.cpsd.common.rabbitmq.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.core.env.Environment;
 
 /**
  * Configuration for common RabbitMQ properties.
- *
+ * <p>
  * <p/>
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * <p/>
-
- * @since   SINCE-TBD
+ *
+ * @since SINCE-TBD
  */
 @Configuration
 public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
@@ -30,55 +28,49 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
      */
     @Autowired
     protected Environment environment;
-    
+
     /**
      * RabbitMQPropertiesConfig constructor.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @since SINCE-TBD
      */
     public RabbitMQPropertiesConfig()
     {
         super();
     }
 
-    
     /**
-     * This returns the rabbit host name. The name of the property is 
+     * This returns the rabbit host name. The name of the property is
      * <code>remote.dell.amqp.rabbitHostname</code>.
-     * 
-     * @return  The rabbit host name.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit host name.
+     * @since SINCE-TBD
      */
     @Bean
     public String rabbitHostname()
     {
         return environment.getRequiredProperty("remote.dell.amqp.rabbitHostname");
     }
-    
-    
+
     /**
      * This returns the secondary host names. The name of the property is
      * <code>remote.dell.secondaries.amqp.rabbitHostname</code>.
-     * 
-     * @return  The secondary rabbit host names.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The secondary rabbit host names.
+     * @since SINCE-TBD
      */
-    @Bean 
+    @Bean
     public String secondaryHostnames()
     {
         return environment.getProperty("remote.dell.secondaries.amqp.rabbitHostname", "");
     }
 
-    
     /**
      * This returns the rabbit amqp port number. The name of the property is
      * <code>remote.dell.amqp.rabbitPort</code>.
-     * 
-     * @return  The rabbit port number.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit port number.
+     * @since SINCE-TBD
      */
     @Bean
     public Integer rabbitPort()
@@ -86,29 +78,25 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
         return environment.getProperty("remote.dell.amqp.rabbitPort", Integer.class, 5672);
     }
 
-    
     /**
      * This returns the rabbit broker password. The name of the property is
      * <code>remote.dell.amqp.rabbitPassword</code>.
-     * 
-     * @return  The rabbit broker password.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit broker password.
+     * @since SINCE-TBD
      */
     @Bean
     public String rabbitPassword()
     {
         return environment.getProperty("remote.dell.amqp.rabbitPassword", "");
     }
-    
-    
+
     /**
      * This returns the rabbit user name. The name of the property is
      * <code>remote.dell.amqp.rabbitUsername</code>.
-     * 
-     * @return  The rabbit user name.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit user name.
+     * @since SINCE-TBD
      */
     @Bean
     public String rabbitUsername()
@@ -116,14 +104,12 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
         return environment.getProperty("remote.dell.amqp.rabbitUsername", "");
     }
 
-    
     /**
      * This returns the rabbit virtual host name. The name of the property is
      * <code>remote.dell.amqp.rabbitVirtualHost</code>.
-     * 
-     * @return  The rabbit virtual hostname.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit virtual hostname.
+     * @since SINCE-TBD
      */
     @Bean
     public String rabbitVirtualHost()
@@ -131,14 +117,12 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
         return environment.getRequiredProperty("remote.dell.amqp.rabbitVirtualHost");
     }
 
-    
     /**
      * This returns the rabbit heartbeat interval. The name of the property is
      * <code>remote.dell.amqp.rabbitRequestedHeartbeat</code>.
-     * 
-     * @return  The rabbit heartbeat interval.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit heartbeat interval.
+     * @since SINCE-TBD
      */
     @Bean
     public Integer rabbitRequestedHeartbeat()
@@ -146,14 +130,12 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
         return environment.getProperty("remote.dell.amqp.rabbitRequestedHeartbeat", Integer.class, 0);
     }
 
-
     /**
-     * This returns the name of the data center. The name of the property is 
+     * This returns the name of the data center. The name of the property is
      * <code>data.center</code>.
-     * 
-     * @return  The name of the data center.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The name of the data center.
+     * @since SINCE-TBD
      */
     @Bean
     public String dataCenter()
@@ -168,32 +150,39 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     }
 
     @Bean
-    public String trustStorePassphrase() {
-        return null;
+    public String trustStorePassphrase()
+    {
+        return environment.getProperty("remote.dell.amqp.rabbitTrustStorePassphrase", "");
     }
 
     @Bean
-    public String keyStorePassPhrase() {
-        return null;
+    public String keyStorePassPhrase()
+    {
+        return environment.getProperty("remote.dell.amqp.rabbitKeyStorePassPhrase", "");
     }
 
     @Bean
-    public String keyStorePath() {
-        return null;
+    public String keyStorePath()
+    {
+        return environment.getProperty("remote.dell.amqp.rabbitKeyStorePath", "");
     }
 
     @Bean
-    public String trustStorePath() {
-        return null;
+    public String trustStorePath()
+    {
+        return environment.getProperty("remote.dell.amqp.rabbitTrustStorePath", "");
     }
 
     @Bean
-    public String tlsVersion() {
-        return null;
+    public String tlsVersion()
+    {
+
+        return environment.getProperty("remote.dell.amqp.rabbitTlsVersion", "");
     }
 
     @Bean
-    public Boolean isSslEnabled() {
-        return null;
+    public Boolean isSslEnabled()
+    {
+        return Boolean.valueOf(environment.getProperty("remote.dell.amqp.rabbitIsSslEnabled", Boolean.FALSE.toString()));
     }
 }

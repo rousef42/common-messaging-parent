@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class AddInterfaceTest
 {
-    AddInterface action;
+    AddInterface  action;
     JDefinedClass jClass;
 
     @Before

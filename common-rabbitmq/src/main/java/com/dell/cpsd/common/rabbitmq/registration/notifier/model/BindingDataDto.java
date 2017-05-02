@@ -38,14 +38,20 @@ public class BindingDataDto
     public boolean equals(Object o)
     {
         if (this == o)
+        {
             return true;
+        }
         if (o == null || getClass() != o.getClass())
+        {
             return false;
+        }
 
         BindingDataDto that = (BindingDataDto) o;
 
         if (queueName != null ? !queueName.equals(that.queueName) : that.queueName != null)
+        {
             return false;
+        }
         return routingKey != null ? routingKey.equals(that.routingKey) : that.routingKey == null;
 
     }

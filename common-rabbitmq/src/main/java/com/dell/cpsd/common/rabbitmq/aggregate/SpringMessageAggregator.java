@@ -27,7 +27,7 @@ import org.springframework.messaging.MessageHandler;
  */
 public class SpringMessageAggregator extends AggregatingMessageHandler
 {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringMessageAggregator.class);
 
     //Messages are received from this channel

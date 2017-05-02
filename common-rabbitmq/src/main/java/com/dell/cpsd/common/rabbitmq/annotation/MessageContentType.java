@@ -10,5 +10,6 @@ package com.dell.cpsd.common.rabbitmq.annotation;
  */
 public enum MessageContentType
 {
-    CLEAR, SENSITIVE;
+    CLEAR,
+    SENSITIVE;
 }

@@ -2,6 +2,7 @@
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq.consumer.error;
 
 import com.dell.cpsd.common.rabbitmq.exceptions.RabbitMQException;
@@ -35,25 +36,18 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class DefaultErrorTransformer<
-        ErrorMessage extends ErrorContainer,
-        ErrorResponseMessage extends HasMessageProperties<? extends MessagePropertiesContainer> & HasErrors<ErrorMessage>
-        >
+public class DefaultErrorTransformer<ErrorMessage extends ErrorContainer, ErrorResponseMessage extends HasMessageProperties<? extends MessagePropertiesContainer> & HasErrors<ErrorMessage>>
         implements ErrorTransformer<HasMessageProperties<?>>
 {
-    private static final Logger log = LoggerFactory.getLogger(DefaultErrorTransformer.class);
-
     public static final String ERROR_BINDING_TEMPLATE = "${handler.routingKey}.error.${request.replyTo}";
-
+    private static final Logger log = LoggerFactory.getLogger(DefaultErrorTransformer.class);
     protected Supplier<ErrorResponseMessage> errorMessageSupplier;
-    protected Supplier<ErrorMessage> errorSupplier;
-    protected String responseExchange;
-    protected String replyTo;
+    protected Supplier<ErrorMessage>         errorSupplier;
+    protected String                         responseExchange;
+    protected String                         replyTo;
 
-    public DefaultErrorTransformer(String responseExchange,
-                                   String replyTo,
-                                   Supplier<ErrorResponseMessage> errorMessageSupplier,
-                                   Supplier<ErrorMessage> errorSupplier)
+    public DefaultErrorTransformer(String responseExchange, String replyTo, Supplier<ErrorResponseMessage> errorMessageSupplier,
+            Supplier<ErrorMessage> errorSupplier)
     {
         this.errorMessageSupplier = errorMessageSupplier;
         this.errorSupplier = errorSupplier;
@@ -83,7 +77,8 @@ public class DefaultErrorTransformer<
         return createResponseMessageException(asList(error), e, context);
     }
 
-    protected Exception createResponseMessageException(List<LocalizedError> errors, Exception e, ErrorContext<HasMessageProperties<?>> context)
+    protected Exception createResponseMessageException(List<LocalizedError> errors, Exception e,
+            ErrorContext<HasMessageProperties<?>> context)
     {
         try
         {
@@ -131,8 +126,7 @@ public class DefaultErrorTransformer<
     protected String createRoutingKey(ErrorContext<HasMessageProperties<?>> context) throws RabbitMQException
     {
         HasMessageProperties<?> requestMessage = context.getRequestMessage();
-        return ERROR_BINDING_TEMPLATE
-                .replace("${handler.routingKey}", context.getErrorRoutingKeyPrefix())
+        return ERROR_BINDING_TEMPLATE.replace("${handler.routingKey}", context.getErrorRoutingKeyPrefix())
                 .replace("${request.replyTo}", requestMessage.getMessageProperties().getReplyTo());
     }
 

@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
  * <p/>
  *
- * @since   1.0
+ * @since 1.0
  */
 public class ContainerIdHelper
 {
@@ -23,20 +23,18 @@ public class ContainerIdHelper
      * The container identifier
      */
     private static final String CONTAINER_ID = "container.id";
-    
 
     /**
-     * This returns the container id or host name if the container id is not 
+     * This returns the container id or host name if the container id is not
      * set.
      *
-     * @return  The container id or host name.
-     * 
-     * @since   1.0
+     * @return The container id or host name.
+     * @since 1.0
      */
     public static String getContainerId()
     {
         String containerId = System.getProperty(CONTAINER_ID);
-        
+
         if (containerId == null)
         {
             try
@@ -48,7 +46,7 @@ public class ContainerIdHelper
                 throw new RuntimeException("Failed to resolve the container id or host name.", e);
             }
         }
-        
+
         return containerId;
     }
 }

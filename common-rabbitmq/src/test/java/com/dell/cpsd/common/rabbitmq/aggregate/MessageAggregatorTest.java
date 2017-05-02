@@ -153,8 +153,7 @@ public class MessageAggregatorTest
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
 
         SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(2, completedGroupsCounter),
-                ReleaseStrategies.messageCountReleaseStrategy(2),
-                CorrelationStrategies.subGroupCorrelationStrategy());
+                ReleaseStrategies.messageCountReleaseStrategy(2), CorrelationStrategies.subGroupCorrelationStrategy());
 
         Map<String, Object> headers = new HashMap();
         headers.put("correlation-id", "a");
@@ -197,9 +196,7 @@ public class MessageAggregatorTest
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
 
         SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(4, completedGroupsCounter),
-                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(4,20000L),
-                CorrelationStrategies.subGroupCorrelationStrategy());
-                
+                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(4, 20000L), CorrelationStrategies.subGroupCorrelationStrategy());
 
         Map<String, Object> headers = new HashMap();
         headers.put("correlation-id", "a");
@@ -237,15 +234,14 @@ public class MessageAggregatorTest
     public void testSpringMessageAggregatorTimeoutCount()
     {
         DefaultAggregatingMessageGroupProcessor processor = new DefaultAggregatingMessageGroupProcessor();
-        
-        final long timeoutTime=5000L;
+
+        final long timeoutTime = 5000L;
 
         //Keep track of the completed groups
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
 
         SpringMessageAggregator handler = new SpringMessageAggregator(new TestOutputHandler(4, completedGroupsCounter),
-                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(10, timeoutTime),
-                CorrelationStrategies.subGroupCorrelationStrategy());
+                ReleaseStrategies.timeoutOrThresholdReleaseStrategy(10, timeoutTime), CorrelationStrategies.subGroupCorrelationStrategy());
 
         Map<String, Object> headers = new HashMap();
         headers.put("correlation-id", "a");
@@ -285,7 +281,7 @@ public class MessageAggregatorTest
         {
             e.printStackTrace();
         }
-        
+
         //This message triggers the release based on timeout.
         Map<String, Object> headers5 = new HashMap();
         headers5.put("correlation-id", "a$4");

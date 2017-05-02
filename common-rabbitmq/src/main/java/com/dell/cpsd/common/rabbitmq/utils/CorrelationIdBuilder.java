@@ -29,7 +29,7 @@ public class CorrelationIdBuilder
      * Sections separator character.
      */
     public static final String SEPARATOR_REGEX = "\\$";
-    public static final String SEPARATOR = "$";
+    public static final String SEPARATOR       = "$";
 
     private List<String> sections = new ArrayList<>();
 

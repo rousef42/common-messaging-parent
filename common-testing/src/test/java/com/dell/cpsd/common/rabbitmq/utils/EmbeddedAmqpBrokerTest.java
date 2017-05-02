@@ -34,6 +34,21 @@ public class EmbeddedAmqpBrokerTest
 
     private static EmbeddedAmqpBroker embedded;
 
+    @BeforeClass
+    public static void setUpClass() throws Exception
+    {
+        embedded = EmbeddedAmqpBroker.getInstance();
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception
+    {
+        if (embedded != null)
+        {
+            embedded.close();
+        }
+    }
+
     @Test
     public void testEmbeddedBrokerStarts() throws Exception
     {
@@ -84,20 +99,5 @@ public class EmbeddedAmqpBrokerTest
         final String message = "Ping";
         template.convertAndSend(PING_EXCHANGE, ROUTING_KEY_ALL, message);
         cf.destroy();
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception
-    {
-        embedded = EmbeddedAmqpBroker.getInstance();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception
-    {
-        if (embedded != null)
-        {
-            embedded.close();
-        }
     }
 }

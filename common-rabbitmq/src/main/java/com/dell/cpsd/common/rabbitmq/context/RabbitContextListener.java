@@ -56,7 +56,7 @@ public class RabbitContextListener implements ApplicationListener<ApplicationCon
 
             if (context instanceof ConfigurableApplicationContext)
             {
-                ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext)context;
+                ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) context;
                 injectAll(configurableApplicationContext, rabbitContext.getExchanges());
                 injectAll(configurableApplicationContext, rabbitContext.getQueues());
                 injectAll(configurableApplicationContext, rabbitContext.getBindings());
@@ -86,7 +86,7 @@ public class RabbitContextListener implements ApplicationListener<ApplicationCon
 
             if (bean instanceof InitializingBean)
             {
-                InitializingBean initializingBean = (InitializingBean)bean;
+                InitializingBean initializingBean = (InitializingBean) bean;
                 try
                 {
                     initializingBean.afterPropertiesSet();
@@ -99,7 +99,7 @@ public class RabbitContextListener implements ApplicationListener<ApplicationCon
 
             if (bean instanceof ApplicationContextAware)
             {
-                ApplicationContextAware contextAware = (ApplicationContextAware)bean;
+                ApplicationContextAware contextAware = (ApplicationContextAware) bean;
                 try
                 {
                     contextAware.setApplicationContext(context);

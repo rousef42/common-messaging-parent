@@ -15,7 +15,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
  * &copy; 2016 VCE Company, LLC. All rights reserved.
  * VCE Confidential/Proprietary Information
  * </p>
- *
+ * <p>
  * This OpinionatedRabbitTemplate can be used to send messages based on the opinions
  * of the RabbitContext
  *

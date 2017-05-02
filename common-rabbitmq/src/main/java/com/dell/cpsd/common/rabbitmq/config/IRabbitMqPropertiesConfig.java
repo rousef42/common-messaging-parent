@@ -7,12 +7,12 @@ package com.dell.cpsd.common.rabbitmq.config;
 
 /**
  * Configuration for common RabbitMQ properties.
- *
+ * <p>
  * <p/>
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * <p/>
-
- * @since   SINCE-TBD
+ *
+ * @since SINCE-TBD
  */
 public interface IRabbitMqPropertiesConfig
 {
@@ -23,104 +23,90 @@ public interface IRabbitMqPropertiesConfig
     String ROUTING_KEY_SEPARATOR = "|";
 
     /**
-     * This returns the rabbit host name. The name of the property is 
+     * This returns the rabbit host name. The name of the property is
      * <code>remote.dell.amqp.rabbitHostname</code>.
-     * 
-     * @return  The rabbit host name.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit host name.
+     * @since SINCE-TBD
      */
     public String rabbitHostname();
-    
-    
+
     /**
      * This returns the secondary host names. The name of the property is
      * <code>remote.dell.secondaries.amqp.rabbitHostname</code>.
-     * 
-     * @return  The secondary rabbit host names.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The secondary rabbit host names.
+     * @since SINCE-TBD
      */
     public String secondaryHostnames();
 
-    
     /**
      * This returns the rabbit amqp port number. The name of the property is
      * <code>remote.dell.amqp.rabbitPort</code>.
-     * 
-     * @return  The rabbit port number.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit port number.
+     * @since SINCE-TBD
      */
     public Integer rabbitPort();
 
-    
     /**
      * This returns the rabbit broker password. The name of the property is
      * <code>remote.dell.amqp.rabbitPassword</code>.
-     * 
-     * @return  The rabbit broker password.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit broker password.
+     * @since SINCE-TBD
      */
     public String rabbitPassword();
-    
-    
+
     /**
      * This returns the rabbit user name. The name of the property is
      * <code>remote.dell.amqp.rabbitUsername</code>.
-     * 
-     * @return  The rabbit user name.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit user name.
+     * @since SINCE-TBD
      */
     public String rabbitUsername();
 
-    
     /**
      * This returns the rabbit virtual host name. The name of the property is
      * <code>remote.dell.amqp.rabbitVirtualHost</code>.
-     * 
-     * @return  The rabbit virtual hostname.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit virtual hostname.
+     * @since SINCE-TBD
      */
     public String rabbitVirtualHost();
 
-    
     /**
      * This returns the rabbit heartbeat interval. The name of the property is
      * <code>remote.dell.amqp.rabbitRequestedHeartbeat</code>.
-     * 
-     * @return  The rabbit heartbeat interval.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The rabbit heartbeat interval.
+     * @since SINCE-TBD
      */
     public Integer rabbitRequestedHeartbeat();
 
-
     /**
-     * This returns the name of the data center. The name of the property is 
+     * This returns the name of the data center. The name of the property is
      * <code>data.center</code>.
-     * 
-     * @return  The name of the data center.
-     * 
-     * @since   SINCE-TBD
+     *
+     * @return The name of the data center.
+     * @since SINCE-TBD
      */
     public String dataCenter();
 
     /**
      * This returns the name of the service or application name. The name of
      * the property is <code>application.name</code>
-     * @return The Application/Service Name
      *
-     * @since   SINCE-TBD
+     * @return The Application/Service Name
+     * @since SINCE-TBD
      */
     String applicationName();
 
     /**
      * This returns the pass phrase of the trustStore. The name of
      * the property is <code>trustStorePassphrase</code>
+     *
      * @return The trustStorePassphrase
      */
     String trustStorePassphrase();
@@ -128,6 +114,7 @@ public interface IRabbitMqPropertiesConfig
     /**
      * This returns the passPhrase of the keyStore. The name of
      * the property is <code>keyStorePassPhrase</code>
+     *
      * @return The keyStorePassPhrase
      */
     String keyStorePassPhrase();
@@ -135,6 +122,7 @@ public interface IRabbitMqPropertiesConfig
     /**
      * This returns the path of the keyStore. The name of
      * the property is <code>keyStorePath</code>
+     *
      * @return The keyStorePath
      */
     String keyStorePath();
@@ -142,6 +130,7 @@ public interface IRabbitMqPropertiesConfig
     /**
      * This returns the path of the trustStore. The name of
      * the property is <code>trustStorePath</code>
+     *
      * @return The trustStorePath
      */
     String trustStorePath();
@@ -149,6 +138,7 @@ public interface IRabbitMqPropertiesConfig
     /**
      * This returns the version of the tls. The name of
      * the property is <code>tlsVersion</code>
+     *
      * @return The tlsVersion
      */
     String tlsVersion();
@@ -156,6 +146,7 @@ public interface IRabbitMqPropertiesConfig
     /**
      * This returns the status of SSL. The name of
      * the property is <code>isSslEnabled</code>
+     *
      * @return The isSslEnabled
      */
     Boolean isSslEnabled();

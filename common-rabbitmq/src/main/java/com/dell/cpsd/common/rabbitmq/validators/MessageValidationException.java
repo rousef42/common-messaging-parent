@@ -2,6 +2,7 @@
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq.validators;
 
 import com.dell.cpsd.common.rabbitmq.exceptions.ApplicationException;
@@ -27,16 +28,6 @@ public class MessageValidationException extends ApplicationException
         this.validationResult = validationResult;
     }
 
-    public ValidationResult getValidationResult()
-    {
-        return validationResult;
-    }
-
-    public String getFirstError()
-    {
-        return getFirstError(validationResult);
-    }
-
     private static String getFirstError(ValidationResult result)
     {
         if (result == null)
@@ -49,5 +40,15 @@ public class MessageValidationException extends ApplicationException
             return null;
         }
         return errors.get(0);
+    }
+
+    public ValidationResult getValidationResult()
+    {
+        return validationResult;
+    }
+
+    public String getFirstError()
+    {
+        return getFirstError(validationResult);
     }
 }

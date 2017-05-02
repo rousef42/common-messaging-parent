@@ -40,9 +40,9 @@ public class RabbitContext
     private final Map<Class, MessageDescription>       descriptionLookup = new HashMap<>();
     private final Map<RequestReplyKey, String>         replyToLookup     = new HashMap<>();
 
-    public RabbitContext(String contextUuid, RabbitAdmin admin, RabbitTemplate rabbitTemplate, AbstractJsonMessageConverter messageConverter,
-            Collection<Exchange> exchanges, Collection<Queue> queues, Collection<Binding> bindings,
-            Collection<MessageDescription> descriptions, Collection<MessageListenerContainer> containers,
+    public RabbitContext(String contextUuid, RabbitAdmin admin, RabbitTemplate rabbitTemplate,
+            AbstractJsonMessageConverter messageConverter, Collection<Exchange> exchanges, Collection<Queue> queues,
+            Collection<Binding> bindings, Collection<MessageDescription> descriptions, Collection<MessageListenerContainer> containers,
             Map<RequestReplyKey, String> replyToLookup)
     {
         this.contextUuid = contextUuid;

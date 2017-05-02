@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class RegistrationAwareClassMapper extends DefaultClassMapper implements MessageRegistrationAware
 {
-    private String serviceName;
+    private String  serviceName;
     private boolean autoRegister;
 
     private Map<String, MessageRegistrationDto> classRegistrations = new HashMap<>();
@@ -81,10 +81,10 @@ public class RegistrationAwareClassMapper extends DefaultClassMapper implements 
     public class MessageRegistrationBuilder
     {
         private RegistrationAwareClassMapper classMapper;
-        private String serviceName;
-        private Class<?> expectedClass;
+        private String                       serviceName;
+        private Class<?>                     expectedClass;
         private List<MessageExchangeDto> exchanges = new ArrayList<>();
-        private List<MessageQueueDto> queues = new ArrayList<>();
+        private List<MessageQueueDto>    queues    = new ArrayList<>();
 
         public MessageRegistrationBuilder(RegistrationAwareClassMapper classMapper, String serviceName, Class<?> expectedClass)
         {
@@ -118,8 +118,7 @@ public class RegistrationAwareClassMapper extends DefaultClassMapper implements 
             messageAnnotationProcessor.process((messageType, messageClass) ->
             {
                 JsonSchema schema = createSchema(expectedClass);
-                result.add(new MessageRegistrationDto(serviceName, messageClass, messageType, "1.0",
-                        schema, exchanges, queues));
+                result.add(new MessageRegistrationDto(serviceName, messageClass, messageType, "1.0", schema, exchanges, queues));
             }, expectedClass);
 
             MessageRegistrationDto dto = result.iterator().next();

@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
 public class AddGenericInterfaceTest
 {
     AddGenericInterface action;
-    JCodeModel codeModel;
-    JDefinedClass jClass;
+    JCodeModel          codeModel;
+    JDefinedClass       jClass;
 
     @Before
     public void setUp() throws Exception

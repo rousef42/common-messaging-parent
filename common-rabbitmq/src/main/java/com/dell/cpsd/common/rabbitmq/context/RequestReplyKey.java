@@ -28,14 +28,20 @@ public class RequestReplyKey
     public boolean equals(Object o)
     {
         if (this == o)
+        {
             return true;
+        }
         if (o == null || getClass() != o.getClass())
+        {
             return false;
+        }
 
         RequestReplyKey that = (RequestReplyKey) o;
 
         if (request != null ? !request.equals(that.request) : that.request != null)
+        {
             return false;
+        }
         return reply != null ? reply.equals(that.reply) : that.reply == null;
 
     }

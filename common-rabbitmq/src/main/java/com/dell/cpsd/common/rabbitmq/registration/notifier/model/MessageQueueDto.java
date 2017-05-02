@@ -5,8 +5,6 @@
 
 package com.dell.cpsd.common.rabbitmq.registration.notifier.model;
 
-import java.util.List;
-
 /**
  * <p>
  * &copy; 2016 VCE Company, LLC. All rights reserved.

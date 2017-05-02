@@ -25,8 +25,8 @@ import static org.mockito.Mockito.mock;
 public class DefaultMessageRecovererTest
 {
     DefaultMessageRecoverer recoverer;
-    RabbitTemplate rabbitTemplate;
-    Message message;
+    RabbitTemplate          rabbitTemplate;
+    Message                 message;
 
     @Before
     public void setUp() throws Exception
@@ -45,9 +45,7 @@ public class DefaultMessageRecovererTest
 
         recoverer.recover(message, e);
 
-        Mockito
-                .verify(rabbitTemplate)
-                .convertAndSend("test-exchange", "test-case", "test-body");
+        Mockito.verify(rabbitTemplate).convertAndSend("test-exchange", "test-case", "test-body");
     }
 
     @Test
@@ -64,15 +62,11 @@ public class DefaultMessageRecovererTest
     public void recover_wrappedException() throws Exception
     {
         Exception cause = new Exception("Test error");
-        Exception e = new ListenerExecutionFailedException(
-                "Wrapper",
-                new ResponseMessageException(cause, "test-exchange", "test-case", "test-body")
-        );
+        Exception e = new ListenerExecutionFailedException("Wrapper",
+                new ResponseMessageException(cause, "test-exchange", "test-case", "test-body"));
 
         recoverer.recover(message, e);
 
-        Mockito
-                .verify(rabbitTemplate)
-                .convertAndSend("test-exchange", "test-case", "test-body");
+        Mockito.verify(rabbitTemplate).convertAndSend("test-exchange", "test-case", "test-body");
     }
 }

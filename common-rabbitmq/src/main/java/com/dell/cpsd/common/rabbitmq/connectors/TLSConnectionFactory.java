@@ -12,16 +12,18 @@ import java.security.KeyStore;
 /**
  * Created by varadr1 on 4/27/17.
  */
-public class TLSConnectionFactory  extends ConnectionFactory{
+public class TLSConnectionFactory extends ConnectionFactory
+{
 
-
-    public TLSConnectionFactory(IRabbitMqPropertiesConfig rabbitMqPropertiesConfig){
+    public TLSConnectionFactory(IRabbitMqPropertiesConfig rabbitMqPropertiesConfig)
+    {
         init(rabbitMqPropertiesConfig);
     }
 
-    public void init(IRabbitMqPropertiesConfig rabbitMqPropertiesConfig) {
-        try {
-            System.out.print("TLSConnectionFactory-init-1");
+    public void init(IRabbitMqPropertiesConfig rabbitMqPropertiesConfig)
+    {
+        try
+        {
             char[] keyStorePassphrase = rabbitMqPropertiesConfig.keyStorePassPhrase().toCharArray();
             KeyStore ks = KeyStore.getInstance("PKCS12");
             ks.load(new FileInputStream(rabbitMqPropertiesConfig.keyStorePath()), keyStorePassphrase);
@@ -43,7 +45,8 @@ public class TLSConnectionFactory  extends ConnectionFactory{
             this.setPort(rabbitMqPropertiesConfig.rabbitPort());
             this.useSslProtocol(c);
         }
-        catch (Exception ex){
+        catch (Exception ex)
+        {
             System.out.print(ex);
         }
     }

@@ -2,6 +2,7 @@
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq.consumer.error;
 
 /**
@@ -13,7 +14,7 @@ package com.dell.cpsd.common.rabbitmq.consumer.error;
  */
 public class ErrorContext<M>
 {
-    protected M requestMessage;
+    protected M      requestMessage;
     protected String errorRoutingKeyPrefix;
 
     public ErrorContext(M requestMessage, String errorRoutingKeyPrefix)

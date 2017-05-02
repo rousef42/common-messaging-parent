@@ -15,5 +15,6 @@ package com.dell.cpsd.common.rabbitmq.registration.notifier.model;
  */
 public enum MessageDirectionType
 {
-    PRODUCE, CONSUME;
+    PRODUCE,
+    CONSUME;
 }

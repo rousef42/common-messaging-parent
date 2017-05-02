@@ -58,10 +58,8 @@ public class ExceptionLogTransformerTest
     public void transform_listenerAndErrorResponseException() throws Exception
     {
         RuntimeException cause = new RuntimeException();
-        ListenerExecutionFailedException e = new ListenerExecutionFailedException(
-                "",
-                new ErrorResponseException(cause, "exchange", "key", "body")
-        );
+        ListenerExecutionFailedException e = new ListenerExecutionFailedException("",
+                new ErrorResponseException(cause, "exchange", "key", "body"));
 
         assertSame(cause, transformer.transform(e));
     }

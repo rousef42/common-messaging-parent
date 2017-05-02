@@ -2,6 +2,7 @@
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * VCE Confidential/Proprietary Information
  */
+
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
 import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorContext;
@@ -22,26 +23,26 @@ import org.springframework.amqp.core.Message;
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public abstract class DefaultMessageHandler<M extends HasMessageProperties<? extends MessagePropertiesContainer>> implements MessageHandler<M>
+public abstract class DefaultMessageHandler<M extends HasMessageProperties<? extends MessagePropertiesContainer>>
+        implements MessageHandler<M>
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    protected Class<M> messageClass;
-    protected MessageValidator<M> validator;
-    protected String errorRoutingKeyPrefix;
+    protected Class<M>                                  messageClass;
+    protected MessageValidator<M>                       validator;
+    protected String                                    errorRoutingKeyPrefix;
     protected ErrorTransformer<HasMessageProperties<?>> errorTransformer;
 
-
-    protected abstract void executeOperation(M message) throws Exception;
-
     public DefaultMessageHandler(Class<M> messageClass, MessageValidator<M> validator, String errorRoutingKeyPrefix,
-                                 ErrorTransformer<HasMessageProperties<?>> errorTransformer)
+            ErrorTransformer<HasMessageProperties<?>> errorTransformer)
     {
         this.messageClass = messageClass;
         this.validator = validator;
         this.errorRoutingKeyPrefix = errorRoutingKeyPrefix;
         this.errorTransformer = errorTransformer;
     }
+
+    protected abstract void executeOperation(M message) throws Exception;
 
     @Override
     public boolean canHandle(Message message, Object body)
@@ -54,29 +55,18 @@ public abstract class DefaultMessageHandler<M extends HasMessageProperties<? ext
     {
         try
         {
-            log.info(
-                    "Received message {} with correlationId [{}]",
-                    message.getClass().getSimpleName(),
-                    getCorrelationId(message)
-            );
+            log.info("Received message {} with correlationId [{}]", message.getClass().getSimpleName(), getCorrelationId(message));
 
             validate(message);
             executeOperation(message);
 
-            log.info(
-                    "Finished processing message {} with correlationId [{}]",
-                    message.getClass().getSimpleName(),
-                    getCorrelationId(message)
-            );
+            log.info("Finished processing message {} with correlationId [{}]", message.getClass().getSimpleName(),
+                    getCorrelationId(message));
         }
         catch (Exception e)
         {
-            log.error(
-                    "Failed to process message {} with correlationId [{}]: {}",
-                    message.getClass().getSimpleName(),
-                    getCorrelationId(message),
-                    e.getMessage()
-            );
+            log.error("Failed to process message {} with correlationId [{}]: {}", message.getClass().getSimpleName(),
+                    getCorrelationId(message), e.getMessage());
             handleError(e, message);
         }
     }

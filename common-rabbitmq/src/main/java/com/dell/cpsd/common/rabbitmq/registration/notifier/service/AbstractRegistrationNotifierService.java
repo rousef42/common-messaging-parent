@@ -31,14 +31,15 @@ import java.util.stream.Collectors;
  */
 public class AbstractRegistrationNotifierService
 {
-    private static final ILogger LOGGER =
-            RabbitMQLoggingManager.getLogger(AbstractRegistrationNotifierService.class);
+    private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(AbstractRegistrationNotifierService.class);
 
     protected MessageRegistrationNotified transformNotified(MessageRegistrationDto entry)
     {
         return new MessageRegistrationNotified(UUID.randomUUID().toString(), Calendar.getInstance().getTime(), entry.getRegistrationId(),
                 entry.getServiceName(), entry.getMessageType(), entry.getMessageVersion(), entry.getMessageSchema(),
-                entry.getMessageExchanges() == null ? null : entry.getMessageExchanges().stream().map(this::transformMessageExchange).collect(Collectors.toList()));
+                entry.getMessageExchanges() == null ?
+                        null :
+                        entry.getMessageExchanges().stream().map(this::transformMessageExchange).collect(Collectors.toList()));
     }
 
     protected MessageRegistrationWithdrawn transformWithdrawn(MessageRegistrationDto entry)
@@ -48,8 +49,9 @@ public class AbstractRegistrationNotifierService
 
     protected MessageExchange transformMessageExchange(MessageExchangeDto exchange)
     {
-        return new MessageExchange(exchange.getName(), String.valueOf(exchange.getDirection()),
-                exchange.getBindings() == null ? null : exchange.getBindings().stream().map(this::transformBindingData).collect(Collectors.toList()));
+        return new MessageExchange(exchange.getName(), String.valueOf(exchange.getDirection()), exchange.getBindings() == null ?
+                null :
+                exchange.getBindings().stream().map(this::transformBindingData).collect(Collectors.toList()));
     }
 
     protected MessageBinding transformBindingData(BindingDataDto binding)
