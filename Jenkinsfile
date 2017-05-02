@@ -34,7 +34,7 @@ pipeline {
                 }
             }
             steps {
-                sh "mvn clean deploy"
+                sh "mvn clean deploy -Dinternal-repos"
             }
         }
         stage('SonarQube Analysis') {
