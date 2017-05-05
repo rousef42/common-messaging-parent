@@ -34,7 +34,7 @@ pipeline {
                 }
             }
             steps {
-                sh "mvn clean deploy -Dinternal-repos -DskipTests -DskipITs"
+                sh "mvn deploy -Dinternal-repos -DskipTests -DskipITs"
             }
         }
         stage('SonarQube Analysis') {
