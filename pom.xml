@@ -5,12 +5,12 @@
     <packaging>pom</packaging>
     <groupId>com.dell.cpsd.common.messaging</groupId>
     <artifactId>common-messaging-parent</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
 
     <parent>
         <groupId>com.dell.cpsd</groupId>
         <artifactId>root-parent</artifactId>
-        <version>0.2.3</version>
+        <version>0.2.4</version>
     </parent>
 
     <scm>
