@@ -23,31 +23,42 @@ public class TLSConnectionFactory extends ConnectionFactory
     public void init(IRabbitMqPropertiesConfig rabbitMqPropertiesConfig)
     {
         try
+
         {
-            char[] keyStorePassphrase = rabbitMqPropertiesConfig.keyStorePassPhrase().toCharArray();
-            KeyStore ks = KeyStore.getInstance("PKCS12");
-            ks.load(new FileInputStream(rabbitMqPropertiesConfig.keyStorePath()), keyStorePassphrase);
+            System.out.println("Inside TLS connection factory");
+            System.out.println("rabbitMqPropertiesConfig.trustStorePathTest()--------------->"+rabbitMqPropertiesConfig.trustStorePathTest());
 
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-            kmf.init(ks, keyStorePassphrase);
+            System.out.println("rabbitMqPropertiesConfig.keyStorePathTest()----------------->"+rabbitMqPropertiesConfig.keyStorePathTest());
 
-            char[] trustPassphrase = rabbitMqPropertiesConfig.trustStorePassphrase().toCharArray();
-            KeyStore tks = KeyStore.getInstance("JKS");
-            tks.load(new FileInputStream(rabbitMqPropertiesConfig.trustStorePath()), trustPassphrase);
+        char[] keyStorePassphrase = rabbitMqPropertiesConfig.keyStorePassPhrase().toCharArray();
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        ks.load(new FileInputStream(rabbitMqPropertiesConfig.keyStorePath()), keyStorePassphrase);
 
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-            tmf.init(tks);
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+        kmf.init(ks, keyStorePassphrase);
 
-            SSLContext c = SSLContext.getInstance(rabbitMqPropertiesConfig.tlsVersion());
-            c.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+            System.out.println("keyStorePassphrase----------------->"+new String(keyStorePassphrase));
 
-            this.setHost(rabbitMqPropertiesConfig.rabbitHostname());
-            this.setPort(rabbitMqPropertiesConfig.rabbitPort());
-            this.useSslProtocol(c);
-        }
+        char[] trustPassphrase = rabbitMqPropertiesConfig.trustStorePassphrase().toCharArray();
+        KeyStore tks = KeyStore.getInstance("JKS");
+        tks.load(new FileInputStream(rabbitMqPropertiesConfig.trustStorePath()), trustPassphrase);
+
+            System.out.println("trustPassphrase----------------->"+new String(trustPassphrase));
+
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+        tmf.init(tks);
+
+        SSLContext c = SSLContext.getInstance(rabbitMqPropertiesConfig.tlsVersion());
+        c.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+
+        this.setHost(rabbitMqPropertiesConfig.rabbitHostname());
+        this.setPort(rabbitMqPropertiesConfig.rabbitPort());
+        this.useSslProtocol(c);
+    }
         catch (Exception ex)
         {
-            System.out.print(ex);
+           System.out.println("exception in TLSconnectionFactory"+ex);
+           ex.printStackTrace();
         }
     }
 }
