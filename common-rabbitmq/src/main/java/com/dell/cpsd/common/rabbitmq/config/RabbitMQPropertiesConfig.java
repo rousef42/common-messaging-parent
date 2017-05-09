@@ -185,17 +185,4 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     {
         return Boolean.valueOf(environment.getProperty("remote.dell.amqp.rabbitIsSslEnabled", Boolean.FALSE.toString()));
     }
-
-    @Bean
-    public String keyStorePathTest() {
-        return environment.getProperty("remote.dell.amqp.rabbitKeyStorePath.test", "");
-    }
-
-    @Bean
-    public String trustStorePathTest()
-    {
-        return environment.getProperty("remote.dell.amqp.rabbitTrustStorePath.test", "");
-    }
-
-
 }

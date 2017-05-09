@@ -150,9 +150,4 @@ public interface IRabbitMqPropertiesConfig
      * @return The isSslEnabled
      */
     Boolean isSslEnabled();
-
-
-    String keyStorePathTest();
-
-    String trustStorePathTest();
 }
