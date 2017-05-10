@@ -28,5 +28,14 @@
             <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
-
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/../</directory>
+                <includes>
+                    <include>Binaries-License.md</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
 </project>

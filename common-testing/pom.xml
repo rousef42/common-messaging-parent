@@ -132,6 +132,17 @@
                 <version>${maven-failsafe-plugin.version}</version>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/../</directory>
+                <includes>
+                    <include>Binaries-License.md</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
 </project>
