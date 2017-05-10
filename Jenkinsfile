@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                sh "mvn -U clean install -DskipTests -DskipITs"
+                sh "mvn -U clean install -DskipTests=true -DskipITs"
             }
         }
         stage('Unit Testing') {
@@ -30,11 +30,11 @@ pipeline {
         stage('Deploy') {
             when {
                 expression {
-                    return env.BRANCH_NAME ==~ /master|release\/.*/
+                    return env.BRANCH_NAME ==~ /develop|release\/.*/
                 }
             }
             steps {
-                sh "mvn deploy -Dinternal-repos -DskipTests -DskipITs"
+                sh "mvn deploy -Dinternal-repos -DskipTests=true -DskipITs"
             }
         }
         stage('SonarQube Analysis') {
