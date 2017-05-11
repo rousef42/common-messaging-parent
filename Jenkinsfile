@@ -56,7 +56,6 @@ pipeline {
         }
         stage('NexB Scan') {
             steps {
-                sh "mvn clean"
                 doNexbScanning()
             }
         }        
