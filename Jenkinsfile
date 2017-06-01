@@ -59,7 +59,12 @@ pipeline {
                 sh "mvn clean"
                 doNexbScanning()
             }
-        }        
+        }
+        stage('PasswordScan') {
+		    steps {
+			    doPwScan()
+		    }
+	    }
     }
     post {
         always{
