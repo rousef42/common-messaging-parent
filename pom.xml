@@ -1,14 +1,19 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
         <!--
         Copyright (c) 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
      -->
 
-    <groupId>com.dell.cpsd.common.messaging</groupId>
-    <packaging>pom</packaging>
-    <artifactId>common-messaging-parent</artifactId>
-    <version>1.3-SNAPSHOT</version>
+       <groupId>com.dell.cpsd.common.messaging</groupId>
+       <packaging>pom</packaging>
+       <artifactId>common-messaging-parent</artifactId>
+       <version>1.3-SNAPSHOT</version>
+       <packaging>pom</packaging>
+    
+       <name>Common Messaging Parent</name>
+       <description>Common messaging project for Dell CPSD</description>
+       <url>https://github.com/dellemc-symphony/common-messaging-parent</url>
 
     <parent>
         <groupId>com.dell.cpsd</groupId>
@@ -37,12 +42,42 @@
                          <organizationUrl>https://github.com/giddyelysium</organizationUrl>
                  </developer>
                  <developer>
+                        <name>Robert Dubisz</name>
+                        <email>robert.dubisz@dell.com</email>
+                        <organization>com.dell.cpsd</organization>
+                        <organizationUrl>https://github.com/RobertDubiszDell</organizationUrl>
+                </developer>
+                <developer>
                          <name>Jeff Cheng</name>
                          <email>jeffery.cheng@dell.com</email>
                          <organization>com.dell.cpsd</organization>
                          <organizationUrl>https://github.com/jccheng78</organizationUrl>
                  </developer>
                  <developer>
+                        <name>Rajesh Kumar Varada</name>
+                        <email>rajeshkumar.varada@dell.com</email>
+                        <organization>com.dell.cpsd</organization>
+                        <organizationUrl>https://github.com/RajeshKumarVarada</organizationUrl>
+                </developer>
+                <developer>
+                        <name>Amit Kumar</name>
+                        <email>amit.kumar9@dell.com</email>
+                        <organization>com.dell.cpsd</organization>
+                        <organizationUrl>https://github.com/kumara189</organizationUrl>
+                </developer>
+                <developer>
+                        <name>Fergal McMahon</name>
+                        <email>fergal.mcmahon@dell.com</email>
+                        <organization>com.dell.cpsd</organization>
+                        <organizationUrl>https://github.com/FergalmcmVCE</organizationUrl>
+                </developer>
+                <developer>
+                        <name>Karteek Chenna</name>
+                        <email>karteek.chenna@dell.com</email>
+                        <organization>com.dell.cpsd</organization>
+                        <organizationUrl>https://github.com/karteekch</organizationUrl>
+                </developer>
+                <developer>
                          <name>Bheemesh Sannapareddi</name>
                          <email>b.sannapareddi@dell.com</email>
                          <organization>com.dell.cpsd</organization>
