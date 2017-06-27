@@ -1,16 +1,16 @@
-# The following is the defined listing within CPSD that we do not include in our Source Code Repositories. 
-# This list will be updated when new file types are identified that we do not want to contribute to the Version Control System.
-
-# Packaged Files and Binaries
+# Packaged Files and Binaries #
+###############################
 *.jar
 *.war
 *.ear
 
-# Log Files and Crash Dumps
+# Log Files and Crash Dumps #
+#############################
 *.log
 hs_err_pid*
 
-# IDE Explicit Files
+# IDE Explicit Files #
+######################
 .idea
 *.iml
 .settings
@@ -20,12 +20,27 @@ hs_err_pid*
 nb-configuration.xml
 nbactions.xml
 
-# Specific Maven Content
+# Specific Maven Content #
+##########################
 target/
-# Java
+
+# Java #
+########
 *.class
 
-# General Content
+# Build Packagaing #
+####################
+packer_cache
+packer-vmware-iso
+
+# General Content #
+###################
 Thumbs.db
 desktop.ini
-*.DS_Store
+.DS_Store
+.DS_Store?
+
+# Vim detritus #
+################
+*~
+*.swp

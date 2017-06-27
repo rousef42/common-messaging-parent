@@ -74,7 +74,6 @@ pipeline {
         }
         stage('NexB Scan') {
             steps {
-                sh "rm -rf .repo"
                 doNexbScanning()
            }
         }
