@@ -34,7 +34,7 @@
                         <organization>com.dell.cpsd</organization>
                         <organizationUrl>https://github.com/rousef42</organizationUrl>
                 </developer>
-                 <developer>
+                <developer>
                         <name>Desmond Collins</name>
                         <email>desmond.collins@dell.com</email>
                         <organization>com.dell.cpsd</organization>
@@ -54,7 +54,7 @@
                 </developer>
                 <developer>
                         <name>Rajesh Kumar Varada</name>
-                        <email>rajeshkumar.varada@dell.com/email>
+                        <email>rajeshkumar.varada@dell.com</email>
                         <organization>com.dell.cpsd</organization>
                         <organizationUrl>https://github.com/RajeshKumarVarada</organizationUrl>
                 </developer>
