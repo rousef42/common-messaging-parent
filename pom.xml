@@ -1,11 +1,12 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-<!--
-    Copyright (c) 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- -->
-    
+        <!--
+        Copyright (c) 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+     -->
+
        <groupId>com.dell.cpsd.common.messaging</groupId>
+       <packaging>pom</packaging>
        <artifactId>common-messaging-parent</artifactId>
        <version>1.3-SNAPSHOT</version>
        <packaging>pom</packaging>
@@ -14,45 +15,45 @@
        <description>Common messaging project for Dell CPSD</description>
        <url>https://github.com/dellemc-symphony/common-messaging-parent</url>
 
-       <parent>
-            <groupId>com.dell.cpsd</groupId>
-            <artifactId>root-parent</artifactId>
-            <version>0.2.5</version>
-       </parent>
+    <parent>
+        <groupId>com.dell.cpsd</groupId>
+        <artifactId>root-parent</artifactId>
+        <version>0.2.5</version>
+    </parent>
 
-       <licenses>
-                <license>
-                        <name>Eclipse Public License - v 1.0</name>
-                        <url>http://www.eclipse.org/legal/epl-v10.html</url>
-                </license>
-        </licenses>
+         <licenses>
+                 <license>
+                         <name>Eclipse Public License - v 1.0</name>
+                         <url>http://www.eclipse.org/legal/epl-v10.html</url>
+                 </license>
+         </licenses>
 
-        <developers>
-                <developer>
-                        <name>Frank Rouse</name>
-                        <email>frank.rouse@dell.com</email>
-                        <organization>com.dell.cpsd</organization>
-                        <organizationUrl>https://github.com/rousef42</organizationUrl>
-                </developer>
-                <developer>
-                        <name>Desmond Collins</name>
-                        <email>desmond.collins@dell.com</email>
-                        <organization>com.dell.cpsd</organization>
-                        <organizationUrl>https://github.com/giddyelysium</organizationUrl>
-                </developer>
-                <developer>
+         <developers>
+                 <developer>
+                         <name>Frank Rouse</name>
+                         <email>frank.rouse@dell.com</email>
+                         <organization>com.dell.cpsd</organization>
+                         <organizationUrl>https://github.com/rousef42</organizationUrl>
+                 </developer>
+                  <developer>
+                         <name>Desmond Collins</name>
+                         <email>desmond.collins@dell.com</email>
+                         <organization>com.dell.cpsd</organization>
+                         <organizationUrl>https://github.com/giddyelysium</organizationUrl>
+                 </developer>
+                 <developer>
                         <name>Robert Dubisz</name>
                         <email>robert.dubisz@dell.com</email>
                         <organization>com.dell.cpsd</organization>
                         <organizationUrl>https://github.com/RobertDubiszDell</organizationUrl>
                 </developer>
                 <developer>
-                        <name>Jeff Cheng</name>
-                        <email>jeffery.cheng@dell.com</email>
-                        <organization>com.dell.cpsd</organization>
-                        <organizationUrl>https://github.com/jccheng78</organizationUrl>
-                </developer>
-                <developer>
+                         <name>Jeff Cheng</name>
+                         <email>jeffery.cheng@dell.com</email>
+                         <organization>com.dell.cpsd</organization>
+                         <organizationUrl>https://github.com/jccheng78</organizationUrl>
+                 </developer>
+                 <developer>
                         <name>Rajesh Kumar Varada</name>
                         <email>rajeshkumar.varada@dell.com</email>
                         <organization>com.dell.cpsd</organization>
@@ -77,60 +78,60 @@
                         <organizationUrl>https://github.com/karteekch</organizationUrl>
                 </developer>
                 <developer>
-                        <name>Bheemesh Sannapareddi</name>
-                        <email>b.sannapareddi@dell.com</email>
-                        <organization>com.dell.cpsd</organization>
-                        <organizationUrl>https://github.com/sannab2</organizationUrl>
-                </developer>
-        </developers>
+                         <name>Bheemesh Sannapareddi</name>
+                         <email>b.sannapareddi@dell.com</email>
+                         <organization>com.dell.cpsd</organization>
+                         <organizationUrl>https://github.com/sannab2</organizationUrl>
+                 </developer>
+         </developers>
 
-        <scm>
-                <connection>scm:git:https://github.com/dellemc-symphony/common-messaging-parent.git</connection>
-                <developerConnection>scm:git:https://github.com/dellemc-symphony/common-messaging-parent.git</developerConnection>
-                <url>https://github.com/dellemc-symphony/common-messaging-parent/tree/master</url>
-                <tag>HEAD</tag>
-        </scm>
-        
-        <modules>
-            <module>common-rabbitmq</module>
-            <module>common-contract-enricher</module>
-            <module>common-testing</module>
-        </modules>
+         <scm>
+                 <connection>scm:git:https://github.com/dellemc-symphony/common-messaging-parent.git</connection>
+                 <developerConnection>scm:git:https://github.com/dellemc-symphony/common-messaging-parent.git</developerConnection>
+                 <url>https://github.com/dellemc-symphony/common-messaging-parent/tree/master</url>
+                 <tag>HEAD</tag>
+         </scm>
 
-        <dependencyManagement>
-            <dependencies>
-              <dependency>
-                    <groupId>com.dell.cpsd</groupId>
-                    <artifactId>common-dependencies</artifactId>
-                    <version>1.1</version>
-                    <scope>import</scope>
-                    <type>pom</type>
-                </dependency>
-                <dependency>
-                    <groupId>com.dell.cpsd.common.messaging</groupId>
-                    <artifactId>common-rabbitmq</artifactId>
-                    <version>${project.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.dell.cpsd.common.messaging</groupId>
-                    <artifactId>common-contract-enricher</artifactId>
-                    <version>${project.version}</version>
-                </dependency>
-            </dependencies>
-        </dependencyManagement>
+    <modules>
+        <module>common-rabbitmq</module>
+        <module>common-contract-enricher</module>
+        <module>common-testing</module>
+    </modules>
 
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.2</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.dell.cpsd</groupId>
+                <artifactId>common-dependencies</artifactId>
+                <version>1.1</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.dell.cpsd.common.messaging</groupId>
+                <artifactId>common-rabbitmq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dell.cpsd.common.messaging</groupId>
+                <artifactId>common-contract-enricher</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

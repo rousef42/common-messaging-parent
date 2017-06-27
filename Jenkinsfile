@@ -1,5 +1,5 @@
 UPSTREAM_JOBS_LIST = [
-    "vce-symphony/common-dependencies/${env.BRANCH_NAME}"
+    "dellemc-symphony/common-dependencies/${env.BRANCH_NAME}"
 ]
 UPSTREAM_JOBS = UPSTREAM_JOBS_LIST.join(',')
 
