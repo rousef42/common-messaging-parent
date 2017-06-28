@@ -6,7 +6,6 @@
      -->
 
        <groupId>com.dell.cpsd.common.messaging</groupId>
-       <packaging>pom</packaging>
        <artifactId>common-messaging-parent</artifactId>
        <version>1.3-SNAPSHOT</version>
        <packaging>pom</packaging>
