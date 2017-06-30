@@ -23,9 +23,8 @@ Please mark with an [X] and fill in all items that relate to your issue:
 - [ ] This is an improvement to code quality
 
 ---
-
-**Please describe your changes below:**  
-(Note: A clear description of changes is required to approve any Pull Requests)
+**Please describe your changes below:**
+(Note: A clear description of changes is required to approve any pull requests)
 
 _"Changed the implementation for verification because..."_
 

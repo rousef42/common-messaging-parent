@@ -1,3 +1,7 @@
+/**
+ * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ */
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action;
 
 import com.sun.codemodel.JClass;
@@ -15,7 +19,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * <p>
+ * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class AddGenericInterfaceTest
