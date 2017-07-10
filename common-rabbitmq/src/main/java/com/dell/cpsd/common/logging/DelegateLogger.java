@@ -5,11 +5,11 @@
 
 package com.dell.cpsd.common.logging;
 
-import org.slf4j.Logger;
-
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import org.slf4j.Logger;
 
 /**
  * This is an <code>ILogger</code> delegate for a <code>Log</code>.
@@ -222,7 +222,7 @@ public class DelegateLogger implements ILogger
     {
         String msg = this.formatMessage(message);
 
-        this.logger.error(message, thrown);
+        this.logger.error(msg, thrown);
 
         return msg;
     }
@@ -240,7 +240,7 @@ public class DelegateLogger implements ILogger
     {
         String msg = this.formatMessage(message, params);
 
-        this.logger.error(message, thrown);
+        this.logger.error(msg, thrown);
 
         return msg;
     }
