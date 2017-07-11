@@ -9,13 +9,13 @@ import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 
 /**
  * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since 1.0
  */
-@Message(value = "test.message.request", version = "1.0")
-public class TestRequestMessage implements HasMessageProperties<TestMessageProperties>
+@Message(value = "test.message.reply", version = "1.0")
+public class TestReplyMessage implements HasMessageProperties<TestMessageProperties>
 {
     private TestMessageProperties messageProperties = new TestMessageProperties();
 
