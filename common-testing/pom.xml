@@ -18,7 +18,7 @@
 
 
     <properties>
-        <qpid-version>6.1.4</qpid-version>
+        <qpid-version>0.28</qpid-version>
         <test-everit-json-schema-version>1.5.1</test-everit-json-schema-version>
     </properties>
 
