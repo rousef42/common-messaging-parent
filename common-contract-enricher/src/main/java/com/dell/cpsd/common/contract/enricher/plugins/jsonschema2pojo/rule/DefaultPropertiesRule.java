@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule;
@@ -22,7 +22,8 @@ import static java.util.Arrays.asList;
  * Adds MessagePropertiesContainer interface to generated class if it has necessary properties.
  * <p>
  * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class DefaultPropertiesRule extends PropertiesRule

@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo;
@@ -13,8 +13,9 @@ import org.jsonschema2pojo.rules.RuleFactory;
 /**
  * Provides factory to create default rules.
  * <p>
- * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ <p>
+ * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class DefaultRuleFactory extends RuleFactory
