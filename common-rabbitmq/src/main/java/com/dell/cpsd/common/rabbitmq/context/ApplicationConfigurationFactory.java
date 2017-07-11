@@ -17,7 +17,7 @@ import java.util.UUID;
  *
  * @since SINCE-TBD
  */
-public class ApplicationConfigurationFactory
+public final class ApplicationConfigurationFactory
 {
     private static ApplicationConfigurationFactory INSTANCE = null;
     private final String instanceUuid;

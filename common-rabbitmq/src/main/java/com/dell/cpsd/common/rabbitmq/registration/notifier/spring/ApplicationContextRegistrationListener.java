@@ -54,10 +54,10 @@ public class ApplicationContextRegistrationListener implements ApplicationListen
 
             if (event instanceof ContextRefreshedEvent)
             {
-                Map<String, MessageRegistrationAware> registrations = context.getBeansOfType(MessageRegistrationAware.class);
+                Map<String, MessageRegistrationAware> msgRegistrations = context.getBeansOfType(MessageRegistrationAware.class);
                 Map<String, Binding> bindings = context.getBeansOfType(Binding.class);
 
-                for (Map.Entry<String, MessageRegistrationAware> registration : registrations.entrySet())
+                for (Map.Entry<String, MessageRegistrationAware> registration : msgRegistrations.entrySet())
                 {
                     MessageRegistrationAware messageRegistration = registration.getValue();
                     if (messageRegistration.isAutoRegister())

@@ -5,12 +5,7 @@
 
 package com.dell.cpsd.common.rabbitmq.utils;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.qpid.server.Broker;
-import org.apache.qpid.server.BrokerOptions;
-import org.apache.qpid.server.model.VirtualHost;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 
 import java.io.Closeable;
 import java.io.File;
@@ -20,7 +15,12 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.springframework.util.SocketUtils.findAvailableTcpPort;
+import org.apache.commons.io.FileUtils;
+import org.apache.qpid.server.Broker;
+import org.apache.qpid.server.BrokerOptions;
+import org.apache.qpid.server.model.VirtualHost;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Embedded AMQP message broker for integration tests.<br/>
@@ -33,7 +33,7 @@ import static org.springframework.util.SocketUtils.findAvailableTcpPort;
  * @see <a href="https://qpid.apache.org/">Qpid</a>
  * @since 1.2
  */
-public class EmbeddedAmqpBroker implements Closeable
+public final class EmbeddedAmqpBroker implements Closeable
 {
     public static final  String QPID             = "/qpid/";
     public static final  String FILE_PASS        = "passwd.properties";

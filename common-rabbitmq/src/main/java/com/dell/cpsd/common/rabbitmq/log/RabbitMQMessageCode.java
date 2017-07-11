@@ -59,7 +59,7 @@ public enum RabbitMQMessageCode implements LocalizedErrorCode
      * @param messageCode The message code.
      * @since SINCE-TDB
      */
-    private RabbitMQMessageCode(int errorCode, String messageCode)
+    RabbitMQMessageCode(int errorCode, String messageCode)
     {
         this.errorCode = errorCode;
         this.messageCode = messageCode;

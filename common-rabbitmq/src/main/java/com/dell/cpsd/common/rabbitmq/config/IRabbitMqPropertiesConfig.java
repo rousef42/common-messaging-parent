@@ -29,7 +29,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The rabbit host name.
      * @since SINCE-TBD
      */
-    public String rabbitHostname();
+    String rabbitHostname();
 
     /**
      * This returns the secondary host names. The name of the property is
@@ -38,7 +38,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The secondary rabbit host names.
      * @since SINCE-TBD
      */
-    public String secondaryHostnames();
+    String secondaryHostnames();
 
     /**
      * This returns the rabbit amqp port number. The name of the property is
@@ -47,7 +47,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The rabbit port number.
      * @since SINCE-TBD
      */
-    public Integer rabbitPort();
+    Integer rabbitPort();
 
     /**
      * This returns the rabbit broker password. The name of the property is
@@ -56,7 +56,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The rabbit broker password.
      * @since SINCE-TBD
      */
-    public String rabbitPassword();
+    String rabbitPassword();
 
     /**
      * This returns the rabbit user name. The name of the property is
@@ -65,7 +65,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The rabbit user name.
      * @since SINCE-TBD
      */
-    public String rabbitUsername();
+    String rabbitUsername();
 
     /**
      * This returns the rabbit virtual host name. The name of the property is
@@ -74,7 +74,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The rabbit virtual hostname.
      * @since SINCE-TBD
      */
-    public String rabbitVirtualHost();
+    String rabbitVirtualHost();
 
     /**
      * This returns the rabbit heartbeat interval. The name of the property is
@@ -83,7 +83,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The rabbit heartbeat interval.
      * @since SINCE-TBD
      */
-    public Integer rabbitRequestedHeartbeat();
+    Integer rabbitRequestedHeartbeat();
 
     /**
      * This returns the name of the data center. The name of the property is
@@ -92,7 +92,7 @@ public interface IRabbitMqPropertiesConfig
      * @return The name of the data center.
      * @since SINCE-TBD
      */
-    public String dataCenter();
+    String dataCenter();
 
     /**
      * This returns the name of the service or application name. The name of
