@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.aggregate;
@@ -14,7 +14,7 @@ import org.springframework.integration.aggregator.TimeoutCountSequenceSizeReleas
  * <p>
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @version 1.0
