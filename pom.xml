@@ -20,6 +20,10 @@
         <version>1.0.0</version>
     </parent>
 
+    <properties>
+        <common-dependencies.version>1.2.0</common-dependencies.version>
+    </properties>
+
     <licenses>
         <license>
             <name>Eclipse Public License - v 1.0</name>
@@ -109,7 +113,7 @@
             <dependency>
                 <groupId>com.dell.cpsd</groupId>
                 <artifactId>common-dependencies</artifactId>
-                <version>1.2.0</version>
+                <version>${common-dependencies.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
