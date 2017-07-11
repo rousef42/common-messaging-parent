@@ -68,7 +68,7 @@
             <resource>
                 <directory>${project.basedir}/../</directory>
                 <includes>
-                    <include>Binaries-License.md</include>
+                    <include>LICENSE.md</include>
                 </includes>
             </resource>
         </resources>

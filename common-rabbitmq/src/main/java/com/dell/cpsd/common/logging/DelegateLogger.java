@@ -1,6 +1,6 @@
 /**
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.logging;
@@ -14,9 +14,10 @@ import org.slf4j.Logger;
 /**
  * This is an <code>ILogger</code> delegate for a <code>Log</code>.
  * <p>
- * <p/>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * <p/>
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  *
  * @version 1.0
  * @since SINCE-TDB
