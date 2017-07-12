@@ -1,6 +1,6 @@
 /**
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.context.builder;
@@ -44,8 +44,8 @@ import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyFactory;
 
 /**
  * <p>
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  * <p>
  * This RabbitContextBuilder is an opinionated builder that builds up a set of queues, exchanges, binding, and message descriptions

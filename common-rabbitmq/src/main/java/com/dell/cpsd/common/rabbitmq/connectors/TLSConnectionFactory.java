@@ -1,3 +1,8 @@
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.connectors;
 
 import java.io.FileInputStream;
@@ -15,7 +20,13 @@ import com.rabbitmq.client.ConnectionFactory;
 
 /**
  * Created by varadr1 on 4/27/17.
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  */
+
+
 public class TLSConnectionFactory extends ConnectionFactory
 {
     private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(TLSConnectionFactory.class);

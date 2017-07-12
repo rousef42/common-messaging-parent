@@ -1,6 +1,6 @@
-/*
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.json.utils;
@@ -26,8 +26,8 @@ import java.nio.charset.StandardCharsets;
 /**
  * JSON schema validation utils.
  * <p>
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @version 1.1

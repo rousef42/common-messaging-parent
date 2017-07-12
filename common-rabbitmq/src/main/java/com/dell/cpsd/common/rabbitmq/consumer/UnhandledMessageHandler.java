@@ -1,6 +1,6 @@
 /**
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.consumer;
@@ -9,9 +9,9 @@ package com.dell.cpsd.common.rabbitmq.consumer;
  * The UnhandledMessageHandler that will be invoked when an unhandled message
  * is received by the consumer.
  * <p>
- * <p/>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- *
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  * @version 1.0
  * @since SINCE-TDB
  * @deprecated Use DefaultMessageHandler or MessageHandler instead.

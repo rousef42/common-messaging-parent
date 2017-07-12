@@ -1,6 +1,6 @@
 /**
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
@@ -13,9 +13,9 @@ import org.springframework.retry.RetryPolicy;
  * Class acts as a delegate for <code>ExceptionClassifierRetryPolicy</code> to
  * unpack the exceptions thrown.
  * <p>
- * <p/>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- *
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  * @version 1.0
  * @since SINCE-TDB
  * @deprecated Use DefaultRetryPolicy to configure unwrapping together with retry policies.

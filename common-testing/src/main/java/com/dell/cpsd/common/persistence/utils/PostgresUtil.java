@@ -1,6 +1,6 @@
-/*
- * &copy; 2017 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.persistence.utils;
@@ -17,7 +17,8 @@ import java.util.List;
  * It is not working in a standard symphony database, as users doesn't have permission to disable triggers.
  * For manual Integration Tests only, where database user have all permissions.
  * <p>
- * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since 1.2

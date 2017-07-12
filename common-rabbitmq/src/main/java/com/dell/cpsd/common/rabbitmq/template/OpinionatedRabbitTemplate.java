@@ -1,6 +1,6 @@
 /**
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.template;
@@ -12,8 +12,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 /**
  * <p>
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  * <p>
  * This OpinionatedRabbitTemplate can be used to send messages based on the opinions

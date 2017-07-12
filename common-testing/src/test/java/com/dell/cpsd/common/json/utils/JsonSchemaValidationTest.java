@@ -1,6 +1,6 @@
-/*
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.json.utils;
@@ -15,8 +15,8 @@ import static org.junit.Assert.assertTrue;
 /**
  * JSON schema validator test.
  * <p>
- * &copy; 2017 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @version 1.0
