@@ -68,4 +68,14 @@ public class MessageAnnotationProcessorTest
         Mockito.verify(callback).found(value, clazz);
     }
 
+    @Test
+    public void testProcessMessageNoAnnotation()
+    {
+        Class<Object> clazz = Object.class;
+
+        processor.process(callback, clazz);
+
+        Mockito.verify(callback, Mockito.never()).found(Mockito.anyString(), Mockito.any());
+    }
+
 }
