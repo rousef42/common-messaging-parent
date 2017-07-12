@@ -1,7 +1,8 @@
 /**
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Dell EMC Confidential/Proprietary Information
  */
+
 
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
 
@@ -23,8 +24,8 @@ import java.util.Map;
  * The is a factory for default retry templates.
  * <p>
  * <p>
- * <p>
- * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since 1.1

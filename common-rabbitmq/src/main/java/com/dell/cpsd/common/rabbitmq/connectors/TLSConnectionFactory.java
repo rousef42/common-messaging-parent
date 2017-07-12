@@ -1,3 +1,8 @@
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.connectors;
 
 import com.dell.cpsd.common.rabbitmq.config.IRabbitMqPropertiesConfig;
@@ -11,7 +16,13 @@ import java.security.KeyStore;
 
 /**
  * Created by varadr1 on 4/27/17.
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  */
+
+
 public class TLSConnectionFactory extends ConnectionFactory
 {
 

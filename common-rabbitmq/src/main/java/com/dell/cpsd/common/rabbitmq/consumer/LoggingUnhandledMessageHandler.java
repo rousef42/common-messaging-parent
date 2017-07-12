@@ -1,6 +1,6 @@
 /**
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.consumer;
@@ -13,9 +13,10 @@ import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
  * A default implementation of the UnhandledMessageHandler that will write
  * the details out to the application log file.
  * <p>
- * <p/>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- *
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  * @version 1.0
  * @since SINCE-TBD
  * @deprecated Use DefaultMessageHandler instead.

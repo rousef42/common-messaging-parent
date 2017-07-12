@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  */
 
@@ -13,8 +13,7 @@ import org.jsonschema2pojo.rules.RuleFactory;
 /**
  * Provides factory to create default rules.
  * <p>
- <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>
  */

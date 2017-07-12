@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq;
@@ -11,7 +11,8 @@ import java.util.Date;
 
 /**
  * <p>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since 1.0

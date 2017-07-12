@@ -1,6 +1,6 @@
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
@@ -12,7 +12,8 @@ import org.springframework.amqp.rabbit.retry.MessageKeyGenerator;
  * Default message key generator.
  * <p>
  * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class DefaultMessageKeyGenerator implements MessageKeyGenerator

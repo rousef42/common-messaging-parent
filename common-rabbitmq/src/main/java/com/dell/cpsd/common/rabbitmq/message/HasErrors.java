@@ -1,3 +1,8 @@
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ */
+
 package com.dell.cpsd.common.rabbitmq.message;
 
 import java.util.List;
@@ -6,7 +11,8 @@ import java.util.List;
  * Indicates that message has array of errors. Used mostly for error responses.
  * <p>
  * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public interface HasErrors<T extends ErrorContainer>

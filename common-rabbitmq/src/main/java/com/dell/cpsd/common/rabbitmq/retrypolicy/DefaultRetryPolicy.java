@@ -1,6 +1,6 @@
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.retrypolicy;
@@ -23,7 +23,8 @@ import java.util.Map;
  * Default retry policy for standard exception.
  * <p>
  * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class DefaultRetryPolicy extends ExceptionClassifierRetryPolicy

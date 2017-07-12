@@ -1,6 +1,6 @@
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.validators;
@@ -12,7 +12,8 @@ import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
  * Default implementation of message validator.
  * <p>
  * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class DefaultMessageValidator<M extends HasMessageProperties<? extends MessagePropertiesContainer>>

@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  */
 
@@ -17,7 +17,7 @@ import static java.util.Arrays.asList;
  * Adds interface to a class if it contains all required fields.
  * <p>
  * <p/>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * <p/>
  */

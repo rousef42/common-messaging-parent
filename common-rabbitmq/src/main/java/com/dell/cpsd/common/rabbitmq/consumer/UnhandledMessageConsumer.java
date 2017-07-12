@@ -1,6 +1,6 @@
 /**
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.consumer;
@@ -9,9 +9,10 @@ package com.dell.cpsd.common.rabbitmq.consumer;
  * A base class for any message consumer.  This will handle any unhandled
  * messages by passing them onto a UnhandledMessageHandler.
  * <p>
- * <p/>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- *
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  * @version 1.0
  * @since SINCE-TBD
  * @deprecated Use DefaultMessageListener with DefaultMessageHandler instead.
