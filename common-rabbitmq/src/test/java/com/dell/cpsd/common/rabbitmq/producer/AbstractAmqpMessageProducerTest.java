@@ -11,6 +11,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
+
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
@@ -132,7 +133,7 @@ public class AbstractAmqpMessageProducerTest
         String replyTo = "dummyReplyTo";
 
         concreteAmqpProducer.publishMessage(correlationId, replyTo, EXHCANGE_KEY, "dummyRoutingKey", new Object());
-        doNothing().when(rabbitTemplate).convertAndSend(anyString(), anyString(), anyObject());
+        doNothing().when(rabbitTemplate).convertAndSend(anyString(), anyString(), any(Object.class), any(PropertiesPostProcessor.class));
 
         verify(rabbitTemplate).convertAndSend(anyString(), anyString(), anyObject(), any(PropertiesPostProcessor.class));
     }
