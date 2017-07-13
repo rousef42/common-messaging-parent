@@ -12,7 +12,7 @@ package com.dell.cpsd.common.rabbitmq;
  * Dell EMC Confidential/Proprietary Information
  * </p>
  *
- * @since Vision x.y.z
+ * @since x.y.z
  */
 public class TestCopyRight
 {

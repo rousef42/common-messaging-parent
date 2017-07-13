@@ -21,7 +21,7 @@ import com.dell.cpsd.common.rabbitmq.config.IRabbitMqPropertiesConfig;
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
  *
- * @since Vision 1.3.0
+ * @since 1.3.0
  */
 public class TLSConnectionFactoryTest
 {

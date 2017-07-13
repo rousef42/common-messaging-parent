@@ -21,7 +21,7 @@ import com.dell.cpsd.common.rabbitmq.annotation.Message;
  * Dell EMC Confidential/Proprietary Information
  * </p>
  *
- * @since Vision x.y.z
+ * @since x.y.z
  */
 public class MessageAnnotationProcessorTest
 {
