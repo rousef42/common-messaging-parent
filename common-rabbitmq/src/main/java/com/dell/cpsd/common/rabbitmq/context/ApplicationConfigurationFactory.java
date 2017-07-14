@@ -5,6 +5,9 @@
 
 package com.dell.cpsd.common.rabbitmq.context;
 
+import com.dell.cpsd.common.logging.ILogger;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.UUID;
@@ -19,7 +22,8 @@ import java.util.UUID;
  */
 public final class ApplicationConfigurationFactory
 {
-    private static ApplicationConfigurationFactory INSTANCE = null;
+    private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(ApplicationConfigurationFactory.class);
+    private static       ApplicationConfigurationFactory INSTANCE = null;
     private final String instanceUuid;
     private final String hostName;
 
@@ -51,7 +55,7 @@ public final class ApplicationConfigurationFactory
         }
         catch (UnknownHostException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return null;
     }
