@@ -17,10 +17,11 @@ The import of the testing dependency should use the scope import shown below.
 <scope>import</scope>
 
 - Common Rabbit is a library of AMQP related functions but is not limited to:
- - message aggregator,
- - base Spring configuration,
- - default retry policy,
- - basic error handling,
+ - message aggregator.
+ - base Spring configuration.
+ - basic messaging validation checks.
+ - default retry policy.
+ - basic error handling.
 
 
 ## Documentation
