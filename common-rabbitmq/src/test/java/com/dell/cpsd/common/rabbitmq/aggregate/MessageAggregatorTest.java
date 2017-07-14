@@ -238,9 +238,8 @@ public class MessageAggregatorTest
         DefaultAggregatingMessageGroupProcessor processor = new DefaultAggregatingMessageGroupProcessor();
 
         final long timeoutTime = 5000L;
-        
-        //Wait for longer than timeout for the messages to be handled
-        final long overTimeoutTime = 6000L;
+        //Wait for a little over timeout
+        final long overTimeout = 6000L;
 
         //Keep track of the completed groups
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
@@ -280,7 +279,7 @@ public class MessageAggregatorTest
         //Wait for the expiry
         try
         {
-            Thread.sleep(overTimeoutTime);
+            Thread.sleep(overTimeout);
         }
         catch (InterruptedException e)
         {
