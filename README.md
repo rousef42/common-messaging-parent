@@ -8,6 +8,21 @@
 
 ## Description
 
+This repository contains the source code for common-testing, common-rabbit and common-enricher.
+
+- Common Enricher is userd for enricher is for Java Shared Data(JSD) files to help with the generation of classes from the API JSD files.
+
+- Common Testing is a tiny articact to be used as test dependency that would provide small utilities for JUnit testing purposes (e.g message file reader function)
+The import of the testing dependency should use the scope import shown below.
+<scope>import</scope>
+
+- Common Rabbit is a library of AMQP related functions but is not limited to:
+ - message aggregator,
+ - base Spring configuration,
+ - default retry policy,
+ - basic error handling,
+
+
 ## Documentation
 You can find additional documentation for Project Symphony at [dellemc-symphony.readthedocs.io](https://dellemc-symphony.readthedocs.io).
 
