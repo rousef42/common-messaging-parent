@@ -6,6 +6,7 @@
 package com.dell.cpsd.common.rabbitmq.registration.notifier.service;
 
 import com.dell.cpsd.common.rabbitmq.TestReplyMessage;
+import com.dell.cpsd.common.rabbitmq.processor.PropertiesPostProcessor;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.message.MessageBinding;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.message.MessageExchange;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.message.MessageRegistrationNotified;
@@ -20,15 +21,22 @@ import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 /**
- * Unit tests for AmqpRegistrationNotifierService + AbstractRegistrationNotifierService.
+ * Unit tests for AmqpRegistrationNotifierService.
  *
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
@@ -51,6 +59,7 @@ public class AmqpRegistrationNotifierServiceTest
     @Before
     public void setUp() throws Exception
     {
+        template = Mockito.mock(RabbitTemplate.class);
         mapper = new ObjectMapper();
         service = new AmqpRegistrationNotifierService(mapper, template, notificationExchange, routingKey);
     }
@@ -131,6 +140,52 @@ public class AmqpRegistrationNotifierServiceTest
 
         assertEquals(queueName, actualBinding.getQueueName());
         assertEquals(routingKey, actualBinding.getRoutingKey());
+    }
+
+    @Test
+    public void notifyTest() throws Exception
+    {
+        String serviceName = "serviceName";
+        Class<?> messageClass = TestReplyMessage.class;
+        String messageType = "messageType";
+        String messageVersion = "1.0";
+        String exchangeName = "exchangeName";
+        String queueName = "queeueName";
+        MessageDirectionType direction = MessageDirectionType.CONSUME;
+
+        JsonSchema schema = mapper.generateJsonSchema(MessageBinding.class);
+
+        MessageRegistrationDto entry = getMessageRegistrationDto(serviceName, messageClass, messageType, messageVersion,
+                exchangeName, queueName, direction, schema);
+
+        doNothing().when(template).convertAndSend(eq(notificationExchange), eq(routingKey), any(MessageRegistrationNotified.class));
+
+        service .notify(entry);
+
+        verify(template).convertAndSend(eq(notificationExchange), eq(routingKey), any(MessageRegistrationNotified.class));
+    }
+
+    @Test
+    public void withdrawTest() throws Exception
+    {
+        String serviceName = "serviceName";
+        Class<?> messageClass = TestReplyMessage.class;
+        String messageType = "messageType";
+        String messageVersion = "1.0";
+        String exchangeName = "exchangeName";
+        String queueName = "queeueName";
+        MessageDirectionType direction = MessageDirectionType.CONSUME;
+
+        JsonSchema schema = mapper.generateJsonSchema(MessageBinding.class);
+
+        MessageRegistrationDto entry = getMessageRegistrationDto(serviceName, messageClass, messageType, messageVersion,
+                exchangeName, queueName, direction, schema);
+
+        doNothing().when(template).convertAndSend(eq(notificationExchange), eq(routingKey), any(MessageRegistrationWithdrawn.class));
+
+        service.withdraw(entry);
+
+        verify(template).convertAndSend(eq(notificationExchange), eq(routingKey), any(MessageRegistrationWithdrawn.class));
     }
 
     private MessageRegistrationDto getMessageRegistrationDto(final String serviceName, final Class<?> messageClass,
