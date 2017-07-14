@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -237,6 +238,7 @@ public class MessageAggregatorTest
         DefaultAggregatingMessageGroupProcessor processor = new DefaultAggregatingMessageGroupProcessor();
 
         final long timeoutTime = 5000L;
+        final long overTimeoutTime = 6000L;
 
         //Keep track of the completed groups
         final List<Boolean> completedGroupsCounter = new ArrayList<>();
@@ -276,7 +278,7 @@ public class MessageAggregatorTest
         //Wait for the expiry
         try
         {
-            Thread.sleep(timeoutTime);
+            Thread.sleep(overTimeoutTime);
         }
         catch (InterruptedException e)
         {
@@ -291,6 +293,6 @@ public class MessageAggregatorTest
         handler.getSendChannel().send(message);
         System.out.println("Sent 5");
 
-        assertTrue(completedGroupsCounter.size() == 1);
+        assertEquals(1, completedGroupsCounter.size());
     }
 }
