@@ -50,7 +50,7 @@ pipeline {
        stage('Deploy') {
             steps {
                 script {
-                    if (env.BRANCH_NAME ==~ /stable.*/) {
+                    if (env.BRANCH_NAME ==~ /stable.*-) {
                         withCredentials([string(credentialsId: 'GPG-Dell-Key', variable: 'GPG_PASSPHRASE')]) {
                             sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true -Ppublish-release -Dgpg.passphrase=${GPG_PASSPHRASE} -Dgpg.keyname=73BD7C5F -DskipJavadoc=false -DskipJavasource=false"
                         }
