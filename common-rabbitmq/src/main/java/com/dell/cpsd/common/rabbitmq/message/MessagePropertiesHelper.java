@@ -13,8 +13,6 @@ import java.util.Date;
 /**
  * This helper class for message properties.
  * <p>
- * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

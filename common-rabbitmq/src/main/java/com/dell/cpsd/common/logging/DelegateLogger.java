@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 /**
  * This is an <code>ILogger</code> delegate for a <code>Log</code>.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

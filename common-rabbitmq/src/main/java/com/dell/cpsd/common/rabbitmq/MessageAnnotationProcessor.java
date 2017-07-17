@@ -24,8 +24,6 @@ public class MessageAnnotationProcessor
     /**
      * Called to process the list of classes.
      *
-     * @param callback
-     * @param classes
      */
     public void process(final MessageAnnotationProcessorCallback callback, final List<Class<?>> classes)
     {
@@ -38,8 +36,6 @@ public class MessageAnnotationProcessor
     /**
      * Calls the callback if the class contains the Message annotation.
      *
-     * @param callback
-     * @param aClass
      */
     public void process(final MessageAnnotationProcessorCallback callback, final Class<?> aClass)
     {

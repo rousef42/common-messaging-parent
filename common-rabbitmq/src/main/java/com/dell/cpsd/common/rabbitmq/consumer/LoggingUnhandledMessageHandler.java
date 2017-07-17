@@ -13,7 +13,6 @@ import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
  * A default implementation of the UnhandledMessageHandler that will write
  * the details out to the application log file.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

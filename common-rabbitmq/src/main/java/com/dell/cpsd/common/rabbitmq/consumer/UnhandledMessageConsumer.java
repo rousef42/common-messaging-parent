@@ -9,7 +9,6 @@ package com.dell.cpsd.common.rabbitmq.consumer;
  * A base class for any message consumer.  This will handle any unhandled
  * messages by passing them onto a UnhandledMessageHandler.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

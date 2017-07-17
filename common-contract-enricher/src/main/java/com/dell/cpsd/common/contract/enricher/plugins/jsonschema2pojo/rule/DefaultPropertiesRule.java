@@ -21,7 +21,6 @@ import static java.util.Arrays.asList;
 /**
  * Adds MessagePropertiesContainer interface to generated class if it has necessary properties.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

@@ -15,7 +15,6 @@ import java.util.UUID;
 /**
  * This is a generic handler base class for messages with message properties.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>
@@ -55,52 +54,51 @@ public abstract class GenericMessagePropertiesHandler<R extends Object, E extend
      * sending further messages to continue the conversation.
      *
      * @param requestMessage    The message to process.
-     * @param messageProperites The message properties.
-     * @throws Throwable Thrown if there operation fails.
-     * @since 1.0
-     */
-    protected abstract void executeOperation(final R requestMessage, final MessageProperties messageProperties) throws Throwable;
+         * @param messageProperties The message properties.
+         * @throws Throwable Thrown if there operation fails.
+         * @since 1.0
+         */
+        protected abstract void executeOperation(final R requestMessage, final MessageProperties messageProperties) throws Throwable;
 
-    /**
-     * This handles the message.
-     *
-     * @param requestMessage The message to handle.
-     * @throws Exception Thrown if the message cannot be handled.
-     * @since 1.0
-     */
-    public void handleMessage(final R requestMessage, final MessageProperties messageProperties) throws E
-    {
-        try
+        /**
+         * This handles the message.
+         *
+         * @param requestMessage The message to handle.
+         * @since 1.0
+         */
+        public void handleMessage(final R requestMessage, final MessageProperties messageProperties) throws E
         {
-            executeOperation(requestMessage, messageProperties);
+            try
+            {
+                executeOperation(requestMessage, messageProperties);
+            }
+            catch (Throwable e)
+            {
+                LOGGER.error(e.getMessage(), e);
+            }
+            finally
+            {
+                cleanup(requestMessage);
+            }
         }
-        catch (Throwable e)
+
+        /**
+         * This performs an required cleanup after the message is handled.
+         *
+         * @param requestMessage The request message.
+         * @since 1.0
+         */
+        protected void cleanup(final R requestMessage)
         {
-            LOGGER.error(e.getMessage(), e);
+            // do nothing by default
         }
-        finally
-        {
-            cleanup(requestMessage);
-        }
+
+        /**
+         * This converts an exception.
+         *
+         * @param t The <code>Throwable</code> to convert.
+         * @return The converted exception.
+         * @since 1.0
+         */
+        protected abstract E convertException(Throwable t);
     }
-
-    /**
-     * This performs an required cleanup after the message is handled.
-     *
-     * @param requestMessage The request message.
-     * @since 1.0
-     */
-    protected void cleanup(final R requestMessage)
-    {
-        // do nothing by default
-    }
-
-    /**
-     * This converts an exception.
-     *
-     * @param t The <code>Throwable</code> to convert.
-     * @return The converted exception.
-     * @sincve 1.0
-     */
-    protected abstract E convertException(Throwable t);
-}

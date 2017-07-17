@@ -17,10 +17,9 @@ import java.util.Objects;
 /**
  * Adds generic interface if class has a required property. Generic type is taken from field declaration.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
- * <p/>
+ * </p>
  */
 public class AddGenericInterface implements ClassAction
 {
@@ -35,7 +34,7 @@ public class AddGenericInterface implements ClassAction
     }
 
     /**
-     * If field type is parametrized class like List<T>, takes generic parameter from that class.
+     * If field type is parametrized class like List T, takes generic parameter from that class.
      *
      * @param wrapperClass field wrapper class
      * @return itself for fluent statements building

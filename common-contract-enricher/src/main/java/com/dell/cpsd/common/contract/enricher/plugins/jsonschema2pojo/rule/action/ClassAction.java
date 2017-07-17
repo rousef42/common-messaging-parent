@@ -13,7 +13,6 @@ import java.util.function.Function;
 /**
  * Transforms provided class if it fits specific condition.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

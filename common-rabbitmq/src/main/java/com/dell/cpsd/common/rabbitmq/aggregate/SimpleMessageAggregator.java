@@ -113,7 +113,7 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
     }
 
     /**
-     * Check if given correlationId is present.<br/>
+     * Check if given correlationId is present.
      * Do not use {@link #getAggregate(String)} to check if correlationId is present.
      */
     public boolean checkIfCorrelationIdPresent(final String correlationId)

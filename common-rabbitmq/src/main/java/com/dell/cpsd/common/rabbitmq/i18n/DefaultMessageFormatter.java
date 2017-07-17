@@ -16,7 +16,6 @@ import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 /**
  * Default message formatting functionality.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Profile;
 /**
  * This is the production environment-specific RabbitMQ configuration.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>
