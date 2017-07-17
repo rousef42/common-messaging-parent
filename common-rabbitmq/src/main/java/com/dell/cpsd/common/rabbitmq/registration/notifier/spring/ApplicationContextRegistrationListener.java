@@ -1,6 +1,6 @@
 /**
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.registration.notifier.spring;
@@ -28,8 +28,8 @@ import java.util.Map;
 
 /**
  * <p>
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since SINCE-TBD
@@ -54,10 +54,10 @@ public class ApplicationContextRegistrationListener implements ApplicationListen
 
             if (event instanceof ContextRefreshedEvent)
             {
-                Map<String, MessageRegistrationAware> registrations = context.getBeansOfType(MessageRegistrationAware.class);
+                Map<String, MessageRegistrationAware> msgRegistrations = context.getBeansOfType(MessageRegistrationAware.class);
                 Map<String, Binding> bindings = context.getBeansOfType(Binding.class);
 
-                for (Map.Entry<String, MessageRegistrationAware> registration : registrations.entrySet())
+                for (Map.Entry<String, MessageRegistrationAware> registration : msgRegistrations.entrySet())
                 {
                     MessageRegistrationAware messageRegistration = registration.getValue();
                     if (messageRegistration.isAutoRegister())

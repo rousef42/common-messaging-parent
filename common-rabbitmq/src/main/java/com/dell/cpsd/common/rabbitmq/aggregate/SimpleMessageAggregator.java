@@ -1,13 +1,9 @@
-/*
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.aggregate;
-
-import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,10 +12,15 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Temporal solution. Must be replaced with a proper aggregator.
  * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since 1.0
@@ -117,14 +118,7 @@ public class SimpleMessageAggregator<M extends Aggregate> implements MessageAggr
      */
     public boolean checkIfCorrelationIdPresent(final String correlationId)
     {
-        if (aggregates.get(correlationId) != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return aggregates.get(correlationId) != null;
     }
 
     protected void deleteOldAggregates()

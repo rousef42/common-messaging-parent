@@ -1,6 +1,6 @@
 /**
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.logging;
@@ -11,9 +11,10 @@ import java.util.ResourceBundle;
 /**
  * This interface should be implemented by any class that acts as a logger.
  * <p>
- * <p/>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * <p/>
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  *
  * @version 1.0
  * @since SINCE-TDB
@@ -28,7 +29,7 @@ public interface ILogger extends Serializable
      * @return True if the debug logging level is enabled.
      * @since SINCE-TDB
      */
-    public boolean isDebugEnabled();
+    boolean isDebugEnabled();
 
     /**
      * This logs the message at the debug level.
@@ -36,7 +37,7 @@ public interface ILogger extends Serializable
      * @param message The message to log.
      * @since SINCE-TDB
      */
-    public void debug(String message);
+    void debug(String message);
 
     /**
      * This returns true if the trace logging level is enabled.
@@ -44,7 +45,7 @@ public interface ILogger extends Serializable
      * @return True if the trace logging level is enabled.
      * @since SINCE-TDB
      */
-    public boolean isTraceEnabled();
+    boolean isTraceEnabled();
 
     /**
      * This logs the message at the trace level.
@@ -52,7 +53,7 @@ public interface ILogger extends Serializable
      * @param message The message to log.
      * @since SINCE-TDB
      */
-    public void trace(String message);
+    void trace(String message);
 
     /**
      * This returns true if the information logging level is enabled.
@@ -60,7 +61,7 @@ public interface ILogger extends Serializable
      * @return True if the information logging level is enabled.
      * @since SINCE-TDB
      */
-    public boolean isInfoEnabled();
+    boolean isInfoEnabled();
 
     /**
      * This logs the message at the information level.
@@ -69,7 +70,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String info(String message);
+    String info(String message);
 
     /**
      * This logs the message at the information level.
@@ -79,7 +80,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String info(String message, Object[] params);
+    String info(String message, Object[] params);
 
     /**
      * This logs the message at the warning level.
@@ -88,7 +89,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String warn(String message);
+    String warn(String message);
 
     /**
      * This logs the message at the warning level.
@@ -98,7 +99,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String warn(String message, Object[] params);
+    String warn(String message, Object[] params);
 
     /**
      * This logs the message at the error level.
@@ -107,7 +108,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String error(String message);
+    String error(String message);
 
     /**
      * This logs the message at the error level.
@@ -117,7 +118,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String error(String message, Object[] params);
+    String error(String message, Object[] params);
 
     /**
      * This logs the message at the error level.
@@ -127,7 +128,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String error(String message, Throwable thrown);
+    String error(String message, Throwable thrown);
 
     /**
      * This logs the message at the error level.
@@ -138,7 +139,7 @@ public interface ILogger extends Serializable
      * @return The localized message.
      * @since SINCE-TDB
      */
-    public String error(String message, Object[] params, Throwable thrown);
+    String error(String message, Object[] params, Throwable thrown);
 
     /**
      * This sets the resource bundle for this logger.
@@ -146,6 +147,6 @@ public interface ILogger extends Serializable
      * @param resourceBundle The <code>ResourceBundle</code> for this logger.
      * @since SINCE-TDB
      */
-    public void setResourceBundle(ResourceBundle resourceBundle);
+    void setResourceBundle(ResourceBundle resourceBundle);
 
 }

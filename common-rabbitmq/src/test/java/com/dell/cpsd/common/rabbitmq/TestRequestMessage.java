@@ -1,19 +1,22 @@
 /**
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq;
 
+import com.dell.cpsd.common.rabbitmq.annotation.Message;
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 
 /**
  * <p>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since 1.0
  */
+@Message(value = "test.message.request", version = "1.0")
 public class TestRequestMessage implements HasMessageProperties<TestMessageProperties>
 {
     private TestMessageProperties messageProperties = new TestMessageProperties();

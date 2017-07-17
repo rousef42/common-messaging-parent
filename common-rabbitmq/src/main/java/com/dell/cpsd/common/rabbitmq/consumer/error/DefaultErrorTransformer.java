@@ -1,6 +1,6 @@
 /**
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.consumer.error;
@@ -30,10 +30,9 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * Creates ResponseMessageException using standard approach from
- * <a href="https://wiki.ent.vce.com/display/VSE/AMQP+considerations">https://wiki.ent.vce.com/display/VSE/AMQP+considerations</a>
  * <p>
- * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class DefaultErrorTransformer<ErrorMessage extends ErrorContainer, ErrorResponseMessage extends HasMessageProperties<? extends MessagePropertiesContainer> & HasErrors<ErrorMessage>>

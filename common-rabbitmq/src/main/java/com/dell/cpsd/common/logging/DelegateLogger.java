@@ -1,22 +1,23 @@
 /**
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.logging;
-
-import org.slf4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+
 /**
  * This is an <code>ILogger</code> delegate for a <code>Log</code>.
  * <p>
- * <p/>
- * Copyright © 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
- * <p/>
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ * </p>
  *
  * @version 1.0
  * @since SINCE-TDB
@@ -222,7 +223,7 @@ public class DelegateLogger implements ILogger
     {
         String msg = this.formatMessage(message);
 
-        this.logger.error(message, thrown);
+        this.logger.error(msg, thrown);
 
         return msg;
     }
@@ -240,7 +241,7 @@ public class DelegateLogger implements ILogger
     {
         String msg = this.formatMessage(message, params);
 
-        this.logger.error(message, thrown);
+        this.logger.error(msg, thrown);
 
         return msg;
     }

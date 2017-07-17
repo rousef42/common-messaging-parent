@@ -1,9 +1,12 @@
 /**
- * &copy; 2017 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.context;
+
+import com.dell.cpsd.common.logging.ILogger;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -11,15 +14,16 @@ import java.util.UUID;
 
 /**
  * <p>
- * &copy; 2017 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since SINCE-TBD
  */
-public class ApplicationConfigurationFactory
+public final class ApplicationConfigurationFactory
 {
-    private static ApplicationConfigurationFactory INSTANCE = null;
+    private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(ApplicationConfigurationFactory.class);
+    private static       ApplicationConfigurationFactory INSTANCE = null;
     private final String instanceUuid;
     private final String hostName;
 
@@ -51,7 +55,7 @@ public class ApplicationConfigurationFactory
         }
         catch (UnknownHostException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return null;
     }

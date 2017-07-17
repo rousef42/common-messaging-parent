@@ -1,3 +1,9 @@
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
+ */
+
+
 package com.dell.cpsd.common.rabbitmq.exceptions;
 
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
@@ -6,8 +12,8 @@ import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFaile
 /**
  * Prepares exception for logs: strips wrapper exceptions that bring no useful context.
  * <p>
- * <p>
- * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class ExceptionLogTransformer

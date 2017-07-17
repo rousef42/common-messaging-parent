@@ -1,10 +1,12 @@
 /**
- * &copy; 2017 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.context;
 
+import com.dell.cpsd.common.logging.ILogger;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -23,8 +25,8 @@ import java.util.UUID;
 
 /**
  * <p>
- * &copy; 2017 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since SINCE-TBD
@@ -32,6 +34,8 @@ import java.util.UUID;
 @Component
 public class RabbitContextListener implements ApplicationListener<ApplicationContextEvent>
 {
+    private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(RabbitContextListener.class);
+
     @Override
     public void onApplicationEvent(ApplicationContextEvent event)
     {
@@ -93,7 +97,7 @@ public class RabbitContextListener implements ApplicationListener<ApplicationCon
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
 
@@ -106,7 +110,7 @@ public class RabbitContextListener implements ApplicationListener<ApplicationCon
                 }
                 catch (BeansException e)
                 {
-                    e.printStackTrace();
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         }

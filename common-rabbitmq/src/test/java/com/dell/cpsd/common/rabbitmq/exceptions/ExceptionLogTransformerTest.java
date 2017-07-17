@@ -1,6 +1,6 @@
-/*
- * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
- * VCE Confidential/Proprietary Information
+/**
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.exceptions;
@@ -15,7 +15,8 @@ import static org.junit.Assert.assertSame;
 /**
  * Exception transformer test.
  * <p>
- * Copyright © 2017 Dell Inc. or its subsidiaries. All Rights Reserved.
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  */
 public class ExceptionLogTransformerTest

@@ -1,11 +1,14 @@
 /**
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
+
 
 package com.dell.cpsd.common.rabbitmq.registration;
 
+import com.dell.cpsd.common.logging.ILogger;
 import com.dell.cpsd.common.rabbitmq.MessageAnnotationProcessor;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQLoggingManager;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageDirectionType;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageExchangeDto;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.model.MessageQueueDto;
@@ -25,14 +28,16 @@ import java.util.Map;
 
 /**
  * <p>
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @since SINCE-TBD
  */
 public class RegistrationAwareClassMapper extends DefaultClassMapper implements MessageRegistrationAware
 {
+    private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(RegistrationAwareClassMapper.class);
+
     private String  serviceName;
     private boolean autoRegister;
 
@@ -137,11 +142,11 @@ public class RegistrationAwareClassMapper extends DefaultClassMapper implements 
             }
             catch (JsonMappingException e)
             {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
 
             return null;

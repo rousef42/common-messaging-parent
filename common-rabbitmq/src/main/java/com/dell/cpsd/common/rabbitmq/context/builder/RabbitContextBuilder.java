@@ -1,18 +1,21 @@
 /**
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
-import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
-import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
-import com.dell.cpsd.common.rabbitmq.context.RabbitContext;
-import com.dell.cpsd.common.rabbitmq.context.RabbitContextAware;
-import com.dell.cpsd.common.rabbitmq.context.RequestReplyKey;
-import com.dell.cpsd.common.rabbitmq.message.DefaultMessageConverterFactory;
-import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyFactory;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
@@ -30,21 +33,19 @@ import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.retry.support.RetryTemplate;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
+import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
+import com.dell.cpsd.common.rabbitmq.context.RabbitContext;
+import com.dell.cpsd.common.rabbitmq.context.RabbitContextAware;
+import com.dell.cpsd.common.rabbitmq.context.RequestReplyKey;
+import com.dell.cpsd.common.rabbitmq.message.DefaultMessageConverterFactory;
+import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyFactory;
 
 /**
  * <p>
- * &copy; 2016 VCE Company, LLC. All rights reserved.
- * VCE Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * Dell EMC Confidential/Proprietary Information
  * </p>
  * <p>
  * This RabbitContextBuilder is an opinionated builder that builds up a set of queues, exchanges, binding, and message descriptions
@@ -409,7 +410,7 @@ public class RabbitContextBuilder
         private Set<String> queueNames = new HashSet<>();
         private Object listener;
 
-        public ContainerQueueData(String containerAlias, String queueName, Object listener)
+        ContainerQueueData(String containerAlias, String queueName, Object listener)
         {
             this.containerAlias = containerAlias;
             this.queueNames.add(queueName);
@@ -493,7 +494,7 @@ public class RabbitContextBuilder
         }
     }
 
-    public static class MessageExchangeBuilder
+    public static final class MessageExchangeBuilder
     {
         private RabbitContextBuilder contextBuilder;
         private ExchangeBuilder      nativeBuilder;
