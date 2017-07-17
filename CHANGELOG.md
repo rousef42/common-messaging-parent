@@ -7,6 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.5.0 - 2017-07-17
 
 ### Added
- - Release of the initial Common Messaging Parent Binary
+ - Release of the initial common-messaging-parent binary files.
 
 
