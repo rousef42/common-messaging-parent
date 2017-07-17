@@ -9,6 +9,23 @@
 
 ## Description
 
+This repository contains the source code for common-contract-enricher, common-testing, and common-rabbitmq.
+
+* common-contract-enricher helps with the generation of classes from the API Java Shared Data (JSD) files.
+
+* common-testing is a tiny articact used as a test dependency to provide small utilities for JUnit testing purposes (such as message file reader function)
+The testing dependency import should use the scope import:
+```bash
+<scope>import</scope>
+```
+
+* common-rabbitmq is a library of AMQP-related functions including but not limited to:
+  * message aggregator
+  * base Spring configuration
+  * basic messaging validation checks
+  * default retry policy
+  * basic error handling
+
 ## Documentation
 You can find additional documentation for Project Symphony at [dellemc-symphony.readthedocs.io](https://dellemc-symphony.readthedocs.io).
 
