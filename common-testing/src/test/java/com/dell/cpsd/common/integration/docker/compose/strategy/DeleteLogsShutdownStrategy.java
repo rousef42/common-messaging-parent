@@ -3,7 +3,7 @@
  * Dell EMC Confidential/Proprietary Information
  **/
 
-package com.dell.cpsd.common.integration.docker.suite.strategy;
+package com.dell.cpsd.common.integration.docker.compose.strategy;
 
 import com.palantir.docker.compose.execution.Docker;
 import com.palantir.docker.compose.execution.DockerCompose;
