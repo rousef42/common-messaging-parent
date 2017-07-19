@@ -13,7 +13,6 @@ import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorCode;
 /**
  * This is the message code enum for the package subscription client.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Embedded AMQP message broker for integration tests.<br/>
+ * Embedded AMQP message broker for integration tests.
  * Uses Apache Qpid.
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
@@ -52,9 +52,8 @@ public final class EmbeddedAmqpBroker implements Closeable
         start();
     }
 
-    /**
-     * Should be changed to Spring bean.
-     */
+
+    // Should be changed to Spring bean.
     public static EmbeddedAmqpBroker getInstance() throws Exception
     {
         if (instance == null)

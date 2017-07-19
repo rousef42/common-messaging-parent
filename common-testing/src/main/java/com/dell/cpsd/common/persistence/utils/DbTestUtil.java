@@ -36,9 +36,7 @@ public class DbTestUtil
         this.em = em;
     }
 
-    /**
-     * Factory.
-     */
+    // Factory
     public static DbTestUtil create(final EntityManager em, String dbType)
     {
         if ("h2".equalsIgnoreCase(dbType))

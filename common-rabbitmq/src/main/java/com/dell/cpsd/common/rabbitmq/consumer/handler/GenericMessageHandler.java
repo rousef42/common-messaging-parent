@@ -16,7 +16,6 @@ import java.util.UUID;
 /**
  * This is a generic handler base class.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>
@@ -68,7 +67,6 @@ public abstract class GenericMessageHandler<R extends Object, E extends Throwabl
      * This handles the message.
      *
      * @param requestMessage The message to handle.
-     * @throws Exception Thrown if the message cannot be handled.
      * @since 1.0
      */
     public void handleMessage(final R requestMessage) throws E
@@ -103,7 +101,7 @@ public abstract class GenericMessageHandler<R extends Object, E extends Throwabl
      *
      * @param t The <code>Throwable</code> to convert.
      * @return The converted exception.
-     * @sincve 1.0
+     * @since 1.0
      */
     protected abstract E convertException(Throwable t);
 

@@ -14,7 +14,6 @@ import java.util.ResourceBundle;
 /**
  * This class is a factory for <code>ILogger</code> instances.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

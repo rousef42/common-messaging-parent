@@ -19,7 +19,6 @@ import org.springframework.amqp.core.Message;
 /**
  * Validates message. Converts exception in case of error.
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

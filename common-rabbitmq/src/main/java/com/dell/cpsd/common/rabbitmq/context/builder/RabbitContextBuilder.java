@@ -116,8 +116,6 @@ public class RabbitContextBuilder
     /**
      * Register a message class that is produced
      *
-     * @param produceClass
-     * @return
      */
     public <P> RabbitContextBuilder produces(Class<P> produceClass)
     {
@@ -128,8 +126,6 @@ public class RabbitContextBuilder
     /**
      * Register a message class that is produced
      *
-     * @param produceClass
-     * @return
      */
     public <P> RabbitContextBuilder produces(Class<P> produceClass, boolean durable)
     {
@@ -149,11 +145,6 @@ public class RabbitContextBuilder
     /**
      * Register a message class that is consumed
      *
-     * @param messageClass
-     * @param queueName
-     * @param durable
-     * @param listener
-     * @return
      */
     public <C> RabbitContextBuilder consumes(String queueName, boolean durable, Object listener, Class<C> messageClass)
     {
@@ -163,12 +154,6 @@ public class RabbitContextBuilder
     /**
      * Register a message class that is consumed
      *
-     * @param messageClass
-     * @param queueName
-     * @param durable
-     * @param containerAlias
-     * @param listener
-     * @return
      */
     public <C> RabbitContextBuilder consumes(String queueName, boolean durable, String containerAlias, Object listener,
             Class<C> messageClass)
@@ -190,13 +175,6 @@ public class RabbitContextBuilder
      * Register a produce message class and consumme class pair. This is useful because a listener queue will be bound with the
      * producer routing key for replies
      *
-     * @param requestClass
-     * @param replyClasses
-     * @param queueName
-     * @param durable
-     * @param containerAlias
-     * @param listener
-     * @return
      */
     public <P> RabbitContextBuilder requestsAndReplies(Class<P> requestClass, String queueName, boolean durable, String containerAlias,
             Object listener, Class<?>... replyClasses)
@@ -229,12 +207,6 @@ public class RabbitContextBuilder
      * Register a produce message class and consumme class pair. This is useful because a listener queue will be bound with the
      * producer routing key for replies
      *
-     * @param requestClass
-     * @param replyClasses
-     * @param queueName
-     * @param durable
-     * @param listener
-     * @return
      */
     public <P> RabbitContextBuilder requestsAndReplies(Class<P> requestClass, String queueName, boolean durable, Object listener,
             Class<?>... replyClasses)
@@ -245,8 +217,6 @@ public class RabbitContextBuilder
     /**
      * Add a context aware class that will get populed with the built RabbitContext
      *
-     * @param contextAware
-     * @return
      */
     public RabbitContextBuilder addContextAware(RabbitContextAware contextAware)
     {
@@ -287,8 +257,6 @@ public class RabbitContextBuilder
     /**
      * Add a binding
      *
-     * @param binding
-     * @return
      */
     public RabbitContextBuilder add(Binding binding)
     {
@@ -299,8 +267,6 @@ public class RabbitContextBuilder
     /**
      * Add an exchange
      *
-     * @param exchange
-     * @return
      */
     public RabbitContextBuilder add(Exchange exchange)
     {
@@ -311,8 +277,6 @@ public class RabbitContextBuilder
     /**
      * Add a queue
      *
-     * @param queue
-     * @return
      */
     public RabbitContextBuilder add(Queue queue)
     {
@@ -323,8 +287,6 @@ public class RabbitContextBuilder
     /**
      * Add a container
      *
-     * @param container
-     * @return
      */
     public RabbitContextBuilder add(MessageListenerContainer container)
     {

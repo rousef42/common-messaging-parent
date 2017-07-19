@@ -12,7 +12,6 @@ import org.springframework.integration.aggregator.TimeoutCountSequenceSizeReleas
 /**
  * Release strategies
  * <p>
- * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>

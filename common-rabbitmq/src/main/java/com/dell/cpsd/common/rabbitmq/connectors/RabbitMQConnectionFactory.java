@@ -109,7 +109,6 @@ public final class RabbitMQConnectionFactory extends CachingConnectionFactory
     /**
      * Initializes the connection factory object's host, port and credentials
      *
-     * @throws RabbitMQConnectionException
      * @since SINCE-TBD
      */
     @PostConstruct

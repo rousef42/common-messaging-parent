@@ -62,10 +62,8 @@ public final class MessageLoader
         return new Message(body.getBytes(), properties);
     }
 
-    /**
-     * Detects if the string is in AMQP tool's format. If yes, it is removed.
-     * Text formatting is being lost by doing this.
-     */
+    // Detects if the string is in AMQP tool's format. If yes, it is removed.
+    // Text formatting is being lost by doing this.
     public static String removeAmqpToolWrapper(final String originalContent) throws IOException
     {
         final ObjectMapper mapper = new ObjectMapper();

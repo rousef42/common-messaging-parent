@@ -9,9 +9,8 @@ import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryPolicy;
 
 /**
- * Uses root cause exception to apply retry policy.<br/>
+ * Uses root cause exception to apply retry policy.<br>
  * Note: if it's used as a root policy, only cause exception will be passed to a message recoverer.
- * <p>
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
