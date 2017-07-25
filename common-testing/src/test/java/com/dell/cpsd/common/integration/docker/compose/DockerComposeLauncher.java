@@ -10,8 +10,8 @@ import com.dell.cpsd.common.integration.docker.compose.strategy.DeleteLogsShutdo
 import com.palantir.docker.compose.DockerComposeRule;
 import com.palantir.docker.compose.ImmutableDockerComposeRule;
 import com.palantir.docker.compose.connection.DockerMachine;
+import com.palantir.docker.compose.execution.KillDownShutdownStrategy;
 import org.joda.time.Duration;
-import org.junit.rules.TestRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +35,12 @@ public class DockerComposeLauncher
     private static final Logger LOGGER = LoggerFactory.getLogger(DockerComposeLauncher.class);
 
     /**
+     * The global DOCKER object that is exposed to unit tests
+     * Handy things like the external port for a service can be gleamed from this object
+     */
+    public static ImmutableDockerComposeRule DOCKER    = null;
+
+    /**
      * The entry point for launching docker compose
      *
      * @param services                           - The services list to be spun up
@@ -44,13 +50,16 @@ public class DockerComposeLauncher
      * @param timeoutValue                       - The overall time that will be waited for all containers to start up
      * @param dockerComposeRulesLoggingDirectory - The log directory to which the docker log output for each container is written to
      * @param dockerComposefilePath              - The relative path to the docker compose file
+     * @param deleteLogs                         - Delete logs when done? defaults to yes if you want integration tests to pass
+     * @param leaveContainersRunning             - Set to false by default but change to true if you want to debug integration tests locally
      */
-    public static ImmutableDockerComposeRule launchDockerCompose(ServiceInfo[] services, String envFilePath, String workspaceDirectory, String dockerSuffix,
-            Duration timeoutValue, String dockerComposeRulesLoggingDirectory, String dockerComposefilePath)
+    public static ImmutableDockerComposeRule launchDockerCompose(ServiceInfo[] services, String envFilePath, String workspaceDirectory,
+            String dockerSuffix, Duration timeoutValue, String dockerComposeRulesLoggingDirectory, String dockerComposefilePath,
+            boolean deleteLogs, boolean leaveContainersRunning)
     {
         Properties properties = null;
 
-        if (envFilePath!=null)
+        if (envFilePath != null)
         {
             //Load .env properties
             properties = loadEnvProperties(envFilePath);
@@ -62,12 +71,24 @@ public class DockerComposeLauncher
         DockerComposeRule.Builder dockerStart = DockerComposeRule.builder().machine(dockerMachine)
                 .nativeServiceHealthCheckTimeout(timeoutValue).pullOnStartup(true).saveLogsTo(dockerComposeRulesLoggingDirectory)
                 .file(dockerComposefilePath).removeConflictingContainersOnStartup(true)
-                .shutdownStrategy(new DeleteLogsShutdownStrategy(dockerComposeRulesLoggingDirectory));
+                .shutdownStrategy(
+                        leaveContainersRunning ? (x, y) -> {} :
+                                deleteLogs ?
+                                        new DeleteLogsShutdownStrategy(dockerComposeRulesLoggingDirectory) : new KillDownShutdownStrategy());
+
+        //Spin up each container
         for (ServiceInfo service : services)
         {
             dockerStart = dockerStart.waitingForService(service.getServiceName(), service.getHealthCheck(), service.getTimeout());
         }
-        return dockerStart.build();
+
+        //Create the docker object
+        final ImmutableDockerComposeRule docker = dockerStart.build();
+
+        //Set it globally to be accessible
+        DOCKER = docker;
+
+        return docker;
     }
 
     /**
