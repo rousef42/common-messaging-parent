@@ -9,12 +9,14 @@ package com.dell.cpsd.common.integration.docker.compose;
 import com.dell.cpsd.common.integration.docker.compose.strategy.DeleteLogsShutdownStrategy;
 import com.palantir.docker.compose.DockerComposeRule;
 import com.palantir.docker.compose.ImmutableDockerComposeRule;
+import com.palantir.docker.compose.configuration.DockerComposeFiles;
 import com.palantir.docker.compose.connection.DockerMachine;
 import com.palantir.docker.compose.execution.KillDownShutdownStrategy;
 import org.joda.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +25,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
@@ -32,7 +37,7 @@ import java.util.Properties;
  **/
 public class DockerComposeLauncher
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DockerComposeLauncher.class);
+    private static final Logger                     LOGGER = LoggerFactory.getLogger(DockerComposeLauncher.class);
 
     /**
      * The global DOCKER object that is exposed to unit tests
@@ -45,17 +50,16 @@ public class DockerComposeLauncher
      *
      * @param services                           - The services list to be spun up
      * @param envFilePath                        - The env file to be sourced if necessary
-     * @param workspaceDirectory                 - The workspace directory the local integration tests are being run from
-     * @param dockerSuffix                       - The suffix of the test container (is this still required?)
+     * @param variables                          - The variables to pass in to initialize the containers
      * @param timeoutValue                       - The overall time that will be waited for all containers to start up
      * @param dockerComposeRulesLoggingDirectory - The log directory to which the docker log output for each container is written to
-     * @param dockerComposefilePath              - The relative path to the docker compose file
+     * @param dockerComposeFilePaths             - The relative path to the docker compose file
      * @param deleteLogs                         - Delete logs when done? defaults to yes if you want integration tests to pass
      * @param leaveContainersRunning             - Set to false by default but change to true if you want to debug integration tests locally
      */
-    public static ImmutableDockerComposeRule launchDockerCompose(ServiceInfo[] services, String envFilePath, String workspaceDirectory,
-            String dockerSuffix, Duration timeoutValue, String dockerComposeRulesLoggingDirectory, String dockerComposefilePath,
-            boolean deleteLogs, boolean leaveContainersRunning)
+    public static ImmutableDockerComposeRule launchDockerCompose(ServiceInfo[] services, String envFilePath, String[][] variables,
+            Duration timeoutValue, String dockerComposeRulesLoggingDirectory, String[] dockerComposeFilePaths, boolean deleteLogs,
+            boolean leaveContainersRunning)
     {
         Properties properties = null;
 
@@ -66,29 +70,21 @@ public class DockerComposeLauncher
         }
 
         //Pass properties to docker
-        DockerMachine dockerMachine = createDockerMachine(properties, workspaceDirectory, dockerSuffix);
+        DockerMachine dockerMachine = createDockerMachine(properties, variables);
 
         DockerComposeRule.Builder dockerStart = DockerComposeRule.builder().machine(dockerMachine)
                 .nativeServiceHealthCheckTimeout(timeoutValue).pullOnStartup(true).saveLogsTo(dockerComposeRulesLoggingDirectory)
-                .file(dockerComposefilePath).removeConflictingContainersOnStartup(true)
-                .shutdownStrategy(
-                        leaveContainersRunning ? (x, y) -> {} :
-                                deleteLogs ?
-                                        new DeleteLogsShutdownStrategy(dockerComposeRulesLoggingDirectory) : new KillDownShutdownStrategy());
+                .files(DockerComposeFiles.from(dockerComposeFilePaths)).removeConflictingContainersOnStartup(true)
+                .shutdownStrategy(leaveContainersRunning ? (x, y) -> {
+                } : deleteLogs ? new DeleteLogsShutdownStrategy(dockerComposeRulesLoggingDirectory) : new KillDownShutdownStrategy());
 
         //Spin up each container
         for (ServiceInfo service : services)
         {
             dockerStart = dockerStart.waitingForService(service.getServiceName(), service.getHealthCheck(), service.getTimeout());
         }
-
-        //Create the docker object
-        final ImmutableDockerComposeRule docker = dockerStart.build();
-
-        //Set it globally to be accessible
-        DOCKER = docker;
-
-        return docker;
+        DOCKER = dockerStart.build();
+        return DOCKER;
     }
 
     /**
@@ -118,11 +114,15 @@ public class DockerComposeLauncher
         return properties;
     }
 
-    private static DockerMachine createDockerMachine(Properties properties, final String workspace, final String composeProjectName)
+    private static DockerMachine createDockerMachine(Properties properties, String[][] variables)
     {
-        return DockerMachine.localMachine().withEnvironment(propertiesToStringMap(properties))
-                .withAdditionalEnvironmentVariable("WORKSPACE", workspace)
-                .withAdditionalEnvironmentVariable("COMPOSE_PROJECT_NAME", composeProjectName).build();
+        DockerMachine.LocalBuilder interimMachine = DockerMachine.localMachine().withEnvironment(propertiesToStringMap(properties));
+        for (String[] keyValue : variables)
+        {
+            interimMachine = interimMachine.withAdditionalEnvironmentVariable(keyValue[0], keyValue[1]);
+            LOGGER.info("Extra env variable: " + keyValue[0] + ", " + keyValue[1]);
+        }
+        return interimMachine.build();
     }
 
     /**
@@ -134,13 +134,70 @@ public class DockerComposeLauncher
     private static Map<String, String> propertiesToStringMap(final Properties properties)
     {
         //Create a String,String map of the env properties to pass to the docker machine
-        Map<String, String> map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         final Enumeration<?> propertyNames = properties.propertyNames();
         while (propertyNames.hasMoreElements())
         {
             String propertyName = propertyNames.nextElement().toString();
             map.put(propertyName, properties.get(propertyName).toString());
         }
+        LOGGER.info("Map of properties is: " + map);
         return map;
+    }
+
+    public static String getIPForContainer(String containerName)
+    {
+        String ip = null;
+        try
+        {
+            Process process1 = Runtime.getRuntime()
+                    .exec(new String[] {"/bin/sh", "-c", "docker ps | grep " + containerName + "_ | cut -d\\  -f1"});
+            String containerId = getOutputFromProcess(process1);
+            Process process = Runtime.getRuntime()
+                    .exec(new String[] {"docker", "inspect", "--format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'",
+                            containerId});
+            ip = getOutputFromProcess(process);
+            LOGGER.info("IP for " + containerName + "is: " + ip);
+
+        }
+        catch (IOException e)
+        {
+            LOGGER.error("Process error: " + e);
+        }
+        return ip;
+
+    }
+
+    private static String getOutputFromProcess(Process process)
+    {
+        StringBuffer builder = new StringBuffer();
+        try
+        {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                try
+                {
+                    final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null)
+                    {
+                        builder.append(line);
+                    }
+                    reader.close();
+                }
+                catch (final Exception e)
+                {
+                    e.printStackTrace();
+                }
+            });
+            executor.shutdown();
+            executor.awaitTermination(20, TimeUnit.SECONDS);
+            process.waitFor(20, TimeUnit.SECONDS);
+        }
+        catch (InterruptedException e)
+        {
+            LOGGER.error("Process error: " + e);
+        }
+        return builder.toString();
     }
 }

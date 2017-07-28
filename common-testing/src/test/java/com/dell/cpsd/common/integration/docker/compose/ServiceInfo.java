@@ -7,7 +7,11 @@ package com.dell.cpsd.common.integration.docker.compose;
 
 import com.palantir.docker.compose.connection.Container;
 import com.palantir.docker.compose.connection.waiting.HealthCheck;
+import com.palantir.docker.compose.connection.waiting.SuccessOrFailure;
 import org.joda.time.Duration;
+
+import java.util.ArrayList;
+import java.util.stream.Stream;
 
 /**
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
@@ -22,6 +26,67 @@ public interface ServiceInfo
     Duration getTimeout();
 
     HealthCheck<Container> getHealthCheck();
+
+    class CredentialServiceInfo extends ContainerServiceInfo
+    {
+        public CredentialServiceInfo()
+        {
+            super("credential", (x) ->
+            {
+                sleep(getSleepTime());
+                //TODO: Is there a better way to get this confirmation?
+                return logFileContains("credential.log", "http-nio");
+            }, getTimeoutValue());
+        }
+    }
+
+    class VaultServiceInfo extends ContainerServiceInfo
+    {
+        public VaultServiceInfo()
+        {
+            super("vault", (x) ->
+            {
+                sleep(getSleepTime());
+                return logFileContains("vault.log", "Vault server started");
+            }, getTimeoutValue());
+        }
+    }
+
+    class MongoServiceInfo extends ContainerServiceInfo
+    {
+        public MongoServiceInfo()
+        {
+            super("mongo", (x) ->
+            {
+                sleep(getSleepTime());
+                return logFileContains("mongo.log", "waiting for connections");
+            }, getTimeoutValue());
+        }
+    }
+
+    class RackHDInfo extends ContainerServiceInfo
+    {
+        public RackHDInfo()
+        {
+            super("rackhd", (x) ->
+            {
+                sleep(getSleepTime());
+                return logFileContains("rackhd.log", "[on-http] [Http.Server] [Server] Server Started.");
+            }, getTimeoutValue());
+        }
+    }
+
+    class TaskGraphServiceInfo extends ContainerServiceInfo
+    {
+        public TaskGraphServiceInfo()
+        {
+            super("taskgraph", (x) ->
+            {
+                sleep(getSleepTime());
+                return logFileContains("taskgraph.log", "Task Graph Runner Started");
+            }, getTimeoutValue());
+        }
+    }
 
     class AmqpServiceInfo extends ContainerServiceInfo
     {
