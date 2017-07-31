@@ -35,7 +35,7 @@ public interface ServiceInfo
             {
                 sleep(getSleepTime());
                 //TODO: Is there a better way to get this confirmation?
-                return logFileContains("credential.log", "http-nio");
+                return logFileContains("credential.log", "JVM running");
             }, getTimeoutValue());
         }
     }
