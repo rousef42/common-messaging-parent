@@ -150,17 +150,16 @@ public class DockerComposeLauncher
         String ip = null;
         try
         {
-            Process process1 = Runtime.getRuntime()
-                    .exec(new String[] {"/bin/sh", "-c", "docker ps | grep " + containerName + "_ | cut -d\\  -f1"});
-            String containerId = getOutputFromProcess(process1);
-            Process process = Runtime.getRuntime()
-                    .exec(new String[] {"docker", "inspect", "--format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'",
-                            containerId});
+            String containerId=DOCKER.dockerCompose().id(DOCKER.containers().container(containerName)).orElse(" NO ID!");
+
+            Process process = DOCKER.dockerExecutable()
+                    .execute("inspect", "--format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'", containerId);
             ip = getOutputFromProcess(process);
+            process.waitFor(20, TimeUnit.SECONDS);
             LOGGER.info("IP for " + containerName + "is: " + ip);
 
         }
-        catch (IOException e)
+        catch (IOException | InterruptedException e)
         {
             LOGGER.error("Process error: " + e);
         }
@@ -192,7 +191,6 @@ public class DockerComposeLauncher
             });
             executor.shutdown();
             executor.awaitTermination(20, TimeUnit.SECONDS);
-            process.waitFor(20, TimeUnit.SECONDS);
         }
         catch (InterruptedException e)
         {
