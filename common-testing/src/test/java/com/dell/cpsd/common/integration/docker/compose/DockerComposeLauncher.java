@@ -155,6 +155,10 @@ public class DockerComposeLauncher
             Process process = DOCKER.dockerExecutable()
                     .execute("inspect", "--format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'", containerId);
             ip = getOutputFromProcess(process);
+
+            //Some docker versions give back the IP in single quotes
+            ip=ip.replaceAll("'","");
+
             process.waitFor(20, TimeUnit.SECONDS);
             LOGGER.info("IP for " + containerName + "is: " + ip);
 
