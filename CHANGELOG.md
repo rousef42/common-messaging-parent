@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## UNRELEASED
 
 ### Added
+ - Hardening of common-testing code.
 
 ## 1.5.0 - 2017-07-17
 
