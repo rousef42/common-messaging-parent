@@ -96,20 +96,27 @@ public class DockerComposeLauncher
     private static Properties loadEnvProperties(String filePath)
     {
         Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(new File(filePath));)
+
+        File envFile = new File(filePath);
+
+        if (envFile.exists())
         {
-            try (InputStreamReader isr = new InputStreamReader(fis);)
+            try (FileInputStream fis = new FileInputStream(new File(filePath));)
             {
-                properties.load(isr);
+                try (InputStreamReader isr = new InputStreamReader(fis);)
+                {
+                    properties.load(isr);
+                }
+                catch (IOException ex)
+                {
+                    LOGGER.error("IOException", ex);
+                }
             }
-            catch (IOException ex)
+            catch (IOException ex2)
+
             {
-                LOGGER.error("IOException", ex);
+                LOGGER.error("IOException", ex2);
             }
-        }
-        catch (IOException ex2)
-        {
-            LOGGER.error("IOException", ex2);
         }
         return properties;
     }
@@ -135,13 +142,17 @@ public class DockerComposeLauncher
     {
         //Create a String,String map of the env properties to pass to the docker machine
         Map<String, String> map = new HashMap<>();
-        final Enumeration<?> propertyNames = properties.propertyNames();
-        while (propertyNames.hasMoreElements())
+
+        if (properties!=null)
         {
-            String propertyName = propertyNames.nextElement().toString();
-            map.put(propertyName, properties.get(propertyName).toString());
+            final Enumeration<?> propertyNames = properties.propertyNames();
+            while (propertyNames.hasMoreElements())
+            {
+                String propertyName = propertyNames.nextElement().toString();
+                map.put(propertyName, properties.get(propertyName).toString());
+            }
+            LOGGER.info("Map of properties is: " + map);
         }
-        LOGGER.info("Map of properties is: " + map);
         return map;
     }
 
