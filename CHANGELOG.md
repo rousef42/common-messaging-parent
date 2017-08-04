@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - Hardening of common-testing code.
  - Added docker compose rule health check information for govcsim
+ - Added docker compose rule health check information for system-definition service
 
 ## 1.5.0 - 2017-07-17
 

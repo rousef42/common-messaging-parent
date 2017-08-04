@@ -185,4 +185,16 @@ public interface ServiceInfo
             }, getTimeoutValue());
         }
     }
+
+    class SystemDefinitionServiceInfo extends ContainerServiceInfo
+    {
+        public SystemDefinitionServiceInfo()
+        {
+            super("system-definition-service", (x) ->
+            {
+                sleep(getSleepTime());
+                return logFileContains("system-definition-service.log", "Consumers are already running");
+            }, getTimeoutValue());
+        }
+    }
 }
