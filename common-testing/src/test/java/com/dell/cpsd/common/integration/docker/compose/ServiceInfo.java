@@ -27,6 +27,19 @@ public interface ServiceInfo
 
     HealthCheck<Container> getHealthCheck();
 
+    class GoVCSimServiceInfo extends ContainerServiceInfo
+    {
+        public GoVCSimServiceInfo()
+        {
+            super("govcsim", (x) ->
+            {
+                sleep(getSleepTime());
+                //TODO: Is there a better way to get this confirmation?
+                return logFileContains("govcsim.log", "GOVC_URL");
+            }, getTimeoutValue());
+        }
+    }
+
     class CredentialServiceInfo extends ContainerServiceInfo
     {
         public CredentialServiceInfo()

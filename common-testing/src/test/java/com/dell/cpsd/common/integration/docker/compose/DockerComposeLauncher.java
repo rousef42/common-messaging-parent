@@ -171,7 +171,7 @@ public class DockerComposeLauncher
             ip=ip.replaceAll("'","");
 
             process.waitFor(20, TimeUnit.SECONDS);
-            LOGGER.info("IP for " + containerName + "is: " + ip);
+            LOGGER.info("IP for " + containerName + " is: " + ip);
 
         }
         catch (IOException | InterruptedException e)
