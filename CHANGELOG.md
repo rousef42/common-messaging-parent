@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Added docker compose rule health check information for system-definition service
  
 ### Changed
- - Changing of Maven Central groupID
+ - Updated the GroupID identifier to be consistent with all other projects to com.dell.cpsd
 
 ## 1.5.0 - 2017-07-17
 
