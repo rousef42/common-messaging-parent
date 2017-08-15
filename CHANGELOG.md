@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Hardening of common-testing code.
  - Added docker compose rule health check information for govcsim
  - Added docker compose rule health check information for system-definition service
+ 
+### Changed
+ - Changing of Maven Central groupID
 
 ## 1.5.0 - 2017-07-17
 
 ### Added
  - Release of the initial common-messaging-parent binary files.
-
 

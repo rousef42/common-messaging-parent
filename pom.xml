@@ -5,9 +5,9 @@
     Copyright (c) 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
     -->
 
-    <groupId>com.dell.cpsd.common.messaging</groupId>
+    <groupId>com.dell.cpsd</groupId>
     <artifactId>common-messaging-parent</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Common Messaging Parent</name>
@@ -118,12 +118,12 @@
                 <type>pom</type>
             </dependency>
             <dependency>
-                <groupId>com.dell.cpsd.common.messaging</groupId>
+                <groupId>com.dell.cpsd</groupId>
                 <artifactId>common-rabbitmq</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dell.cpsd.common.messaging</groupId>
+                <groupId>com.dell.cpsd</groupId>
                 <artifactId>common-contract-enricher</artifactId>
                 <version>${project.version}</version>
             </dependency>
