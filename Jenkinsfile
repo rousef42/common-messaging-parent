@@ -46,7 +46,7 @@ pipeline {
                 junit '**/target/*-reports/*.xml'
             }
         }
-       stage('Deploy') {
+        stage('Deploy') {
             steps {
                 script {
                     if (env.BRANCH_NAME ==~ /stable.*/) {
@@ -57,11 +57,6 @@ pipeline {
                         sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
                     }
                 }
-            }
-        }
-        stage('Deploy to Internal Snapshot Repo') {
-            steps {
-                sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true -DaltDeploymentRepository=vce.snapshot::default::http://repo.vmo.lab:8080/artifactory/libs-snapshot-local"
             }
         }
         stage('SonarQube Analysis') {
