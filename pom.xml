@@ -92,6 +92,12 @@
             <organization>com.dell.cpsd</organization>
             <organizationUrl>https://github.com/boettj3</organizationUrl>
         </developer>
+        <developer>
+            <name>Joseph O'Leary</name>
+            <email>joseph.oleary@dell.com</email>
+            <organization>com.dell.cpsd</organization>
+            <organizationUrl>https://github.com/joz73</organizationUrl>
+        </developer>
     </developers>
 
     <scm>
