@@ -12,7 +12,7 @@
         <version>2.0.0</version>
     </parent>
 
-
+    <groupId>com.dell.cpsd</groupId>
     <artifactId>common-testing</artifactId>
     <packaging>jar</packaging>
     <description>An artifact with common messaging testing utilities. To be added only as a test dependency,
@@ -88,7 +88,6 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
