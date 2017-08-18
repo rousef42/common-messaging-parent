@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+### Changed
+
 ## [2.0.0] - 2017-08-18
 
 ### Added
@@ -18,4 +24,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - Release of the initial common-messaging-parent binary files.
 
-[2.0.0]: https://github.com/dellemc-symphony/root-parent/compare/1.5.0...2.0.0
+[2.0.0]: https://github.com/dellemc-symphony/common-messaging-parent/compare/1.5.0...2.0.0
