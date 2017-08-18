@@ -1,12 +1,13 @@
 /**
- * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * Dell EMC Confidential/Proprietary Information
+ * Copyright &copy; 2016 Dell Inc. or its subsidiaries.  All Rights Reserved.
+ * VCE Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.support.converter.MessageConverter;
 
@@ -18,11 +19,11 @@ import static java.util.Arrays.asList;
 /**
  * Adaptor between Spring AMQP listener and MessageHandler implementations.
  * <p>
- * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * Dell EMC Confidential/Proprietary Information
+ * <p>
+ * Copyright &copy; 2016 Dell Inc. or its subsidiaries. All Rights Reserved.
  * </p>
  */
-public class DefaultMessageListener implements ChannelAwareMessageListener
+public class DefaultMessageListener implements ChannelAwareMessageListener, MessageListener
 {
     protected MessageConverter converter;
     protected List<MessageHandler<?>> handlers = new ArrayList<>();
@@ -56,5 +57,24 @@ public class DefaultMessageListener implements ChannelAwareMessageListener
             }
         }
         return null;
+    }
+
+    @Override
+    public void onMessage(final Message message)
+    {
+        Object bean = converter.fromMessage(message);
+        MessageHandler handler = findHandler(message, bean);
+        if (handler == null)
+        {
+            throw new RuntimeException("Failed to find message handler for " + bean);
+        }
+        try
+        {
+            handler.handleMessage(bean);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Unable to handle message");
+        }
     }
 }
