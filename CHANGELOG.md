@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+ - Added log File Name to failing startup message for Docker Compose Rule.
 
 ### Changed
 
