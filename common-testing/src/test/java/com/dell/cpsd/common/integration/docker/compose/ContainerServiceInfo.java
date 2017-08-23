@@ -128,6 +128,6 @@ abstract class ContainerServiceInfo implements ServiceInfo
      */
     static Duration getTimeoutValue()
     {
-        return new Duration(1000*60*60);
+        return Duration.standardMinutes(10);
     }
 }
