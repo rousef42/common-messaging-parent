@@ -97,7 +97,7 @@ abstract class ContainerServiceInfo implements ServiceInfo
 
                     return contentsString.contains(s) ?
                             SuccessOrFailure.success() :
-                            SuccessOrFailure.failure("Log file doesn't contain " + s + " yet");
+                            SuccessOrFailure.failure("Log file " + logFileName + " doesn't contain " + s + " yet");
                 }
                 catch (IOException e)
                 {
@@ -128,6 +128,6 @@ abstract class ContainerServiceInfo implements ServiceInfo
      */
     static Duration getTimeoutValue()
     {
-        return new Duration(1000*60*60);
+        return Duration.standardMinutes(10);
     }
 }

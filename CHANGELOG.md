@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+ - Added log File Name to failing startup message for Docker Compose Rule.
 
 ### Changed
+ - Changed the Default Timeout Value for Containers' Health Checks from 1 hour to 10 minutes.
 
 ## [2.0.0] - 2017-08-18
 
