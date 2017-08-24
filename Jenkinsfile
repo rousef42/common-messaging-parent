@@ -31,6 +31,11 @@ pipeline {
                 doCheckout()
             }
         }
+        stage('.travis.yml Validation') {
+            steps {
+                doTravisLint()
+            }
+        }
         stage('Compile') {
             steps {
                 sh "mvn clean install -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
