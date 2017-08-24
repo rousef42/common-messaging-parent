@@ -61,7 +61,9 @@ pipeline {
         }
         stage('Deploy to Internal Snapshot Repo') {
             steps {
+                withCredentials([string(credentialsId: 'GPG-Dell-Key', variable: 'GPG_PASSPHRASE')]) {
                 sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true -DaltDeploymentRepository=vce.snapshot::default::http://repo.vmo.lab:8080/artifactory/libs-snapshot-local"
+                }
             }
         }
         stage('SonarQube Analysis') {
