@@ -7,23 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
- - Added log File Name to failing startup message for Docker Compose Rule.
+ - Log file name to failing startup message for Docker compose rule.
 
 ### Changed
- - Changed the Default Timeout Value for Containers' Health Checks from 1 hour to 10 minutes.
+ - Default timeout value for containers' health checks from 1 hour to 10 minutes.
 
 ## [2.0.0] - 2017-08-18
 
 ### Added
- - Added docker compose rule health check information for govcsim.
- - Added docker compose rule health check information for system-definition service.
+ - Docker compose rule health check information for govcsim and system-definition service.
  
 ### Changed
- - Updated the GroupID identifier to be consistent with the naming convention com.dell.cpsd.
+ - The GroupID identifier to be consistent with the naming convention com.dell.cpsd.
 
 ## 1.5.0 - 2017-07-17
 
 ### Added
- - Release of the initial common-messaging-parent binary files.
+ - The initial common-messaging-parent binary files.
 
 [2.0.0]: https://github.com/dellemc-symphony/common-messaging-parent/compare/1.5.0...2.0.0
