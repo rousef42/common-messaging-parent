@@ -23,9 +23,13 @@ public class MessageMetaDataReaderTest
     @Test
     public void test()
     {
+        
+        File  file = new File(ClassLoader.getSystemClassLoader().getResource("./api-schema/messaging.json").getFile());
+        System.out.println("Testing Test Case ==================================> "+file.getPath());
+        
         MessageMetaDataReader reader = new MessageMetaDataReader();
         Collection<MessageMetaData> metaDatas = reader
-                .read(new File(ClassLoader.getSystemClassLoader().getResource("./api-schema/messaging.json").getFile()));
+                .read(file);
         Assert.assertEquals(2, metaDatas.size());
     }
 }
