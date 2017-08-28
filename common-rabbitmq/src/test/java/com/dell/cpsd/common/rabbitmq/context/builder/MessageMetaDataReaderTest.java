@@ -24,7 +24,7 @@ public class MessageMetaDataReaderTest
     public void test()
     {
         
-        File  file = new File(ClassLoader.getSystemClassLoader().getResource("./api-schema/messaging.json").getFile());
+        File  file = new File(ClassLoader.getSystemClassLoader().getResource("api-schema/messaging.json").getFile());
         System.out.println("Testing Test Case ==================================> "+file.getPath());
         
         MessageMetaDataReader reader = new MessageMetaDataReader();
