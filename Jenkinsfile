@@ -51,6 +51,11 @@ pipeline {
                 junit '**/target/*-reports/*.xml'
             }
         }
+        stage('PasswordScan') {
+            steps {
+                doPwScan()
+            }
+        }
         stage('Deploy') {
             steps {
                 script {
@@ -84,11 +89,6 @@ pipeline {
                 sh 'rm -rf .repo'
                 doNexbScanning()
            }
-        }
-        stage('PasswordScan') {
-            steps {
-                doPwScan()
-            }
         }
     }
     post {
