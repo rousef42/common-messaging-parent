@@ -2,7 +2,12 @@ UPSTREAM_TRIGGERS = getUpstreamTriggers([
     "common-dependencies"
 ])
 
-pipeline {    
+pipeline { 
+    parameters {
+        string(name: 'dockerImagesDel', defaultValue: 'true')
+        string(name: 'dockerRegistry',  defaultValue: 'docker-dev-local.art.local')
+        string(name: 'dockerImageTag',  defaultValue: '${BRANCH_NAME}.${BUILD_NUMBER}')
+    }
     triggers {
         upstream(upstreamProjects: UPSTREAM_TRIGGERS, threshold: hudson.model.Result.SUCCESS)
     }
@@ -52,16 +57,20 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps {
+            /*steps {
                 script {
                     if (env.BRANCH_NAME ==~ /stable.*/) {
-                        withCredentials([string(credentialsId: 'GPG-Dell-Key', variable: 'GPG_PASSPHRASE')]) {
-                            sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true -Ppublish-release -Dgpg.passphrase=${GPG_PASSPHRASE} -Dgpg.keyname=73BD7C5F -DskipJavadoc=false -DskipJavasource=false"
-                        }
-                    } else {
-                        sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
-                    }
-                }
+                       // withCredentials([string(credentialsId: 'GPG-Dell-Key', variable: 'GPG_PASSPHRASE')]) {
+                       //     sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true -Ppublish-release -Dgpg.passphrase=${GPG_PASSPHRASE} -Dgpg.keyname=73BD7C5F -DskipJavadoc=false -DskipJavasource=false"
+                    //    }
+                    //} else {
+                   //     sh "mvn deploy -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
+                   // }
+               // }
+            //} */
+                        
+            steps {
+                sh "mvn clean deploy -Dmaven.repo.local=.repo -Ddocker.registry=${params.dockerRegistry} -DdockerImage.tag=${params.dockerImageTag} -DdeleteDockerImages=${params.dockerImagesDel}"
             }
         }
         stage('SonarQube Analysis') {
