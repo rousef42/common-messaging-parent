@@ -149,24 +149,28 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
         return environment.getProperty("application.name", "");
     }
 
+    @Deprecated
     @Bean
     public String trustStorePassphrase()
     {
         return environment.getProperty("remote.dell.amqp.rabbitTrustStorePassphrase", "");
     }
 
+    @Deprecated
     @Bean
     public String keyStorePassPhrase()
     {
         return environment.getProperty("remote.dell.amqp.rabbitKeyStorePassPhrase", "");
     }
 
+    @Deprecated
     @Bean
     public String keyStorePath()
     {
         return environment.getProperty("remote.dell.amqp.rabbitKeyStorePath", "");
     }
 
+    @Deprecated
     @Bean
     public String trustStorePath()
     {

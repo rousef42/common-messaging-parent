@@ -108,7 +108,9 @@ public interface IRabbitMqPropertiesConfig
      * the property is <code>trustStorePassphrase</code>
      *
      * @return The trustStorePassphrase
+     * @Deprecated
      */
+    @Deprecated
     String trustStorePassphrase();
 
     /**
@@ -116,7 +118,9 @@ public interface IRabbitMqPropertiesConfig
      * the property is <code>keyStorePassPhrase</code>
      *
      * @return The keyStorePassPhrase
+     * @Deprecated
      */
+    @Deprecated
     String keyStorePassPhrase();
 
     /**
@@ -124,7 +128,9 @@ public interface IRabbitMqPropertiesConfig
      * the property is <code>keyStorePath</code>
      *
      * @return The keyStorePath
+     * @Deprecated
      */
+    @Deprecated
     String keyStorePath();
 
     /**
@@ -132,7 +138,9 @@ public interface IRabbitMqPropertiesConfig
      * the property is <code>trustStorePath</code>
      *
      * @return The trustStorePath
+     * @Deprecated
      */
+    @Deprecated
     String trustStorePath();
 
     /**
