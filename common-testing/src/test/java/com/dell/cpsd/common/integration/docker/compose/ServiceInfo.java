@@ -174,6 +174,18 @@ public interface ServiceInfo
         }
     }
 
+    class ScaleIOServiceInfo extends ContainerServiceInfo
+    {
+        public ScaleIOServiceInfo()
+        {
+            super("scaleio-adapter", (x) ->
+            {
+                sleep(getSleepTime());
+                return logFileContains("scaleio-adapter.log", "JVM running");
+            }, getTimeoutValue());
+        }
+    }
+
     class RackHDServiceInfo extends ContainerServiceInfo
     {
         public RackHDServiceInfo()

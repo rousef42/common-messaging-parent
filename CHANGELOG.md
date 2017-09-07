@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
  - Log file name to failing startup message for Docker compose rule.
+ - Docker compose rule health check information for scaleio-adapter service.
 
 ### Changed
  - Default timeout value for containers' health checks from 1 hour to 10 minutes.
