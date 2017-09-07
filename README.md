@@ -40,6 +40,130 @@ Run the following command to build this project:
 ```bash
 mvn clean install
 ```
+## Useage
+
+### Connecting to Rabbit MQ with SSL
+
+For connecting to Rabbit MQ using SSL the following presequisites are required:-
+
+* Get the root ca, client certificate and the key from tls-service. (Which inturn gets it form Vault) [README (tls-service)](https://github.com/dellemc-symphony/tls-service-parent/blob/refactor-wip/README.md)
+    * Use the tls-service rest api to get the ca and the client certs.
+* Get the amqp username and password from credential-service. (Which inturn gets it form Vault)
+* Create a Java Key Store i.e. jks and import the keys and certs, using the following steps:-
+    * Convert the client pem to der file 
+    ```bash
+    openssl x509 -outform der -in <client-cert>.pem -out <client-cert>.der
+    ```
+    * Export pem client key to pkcs12 format
+    ```bash
+    openssl pkcs12 -export -inkey <client-cert>.pem -in <client-cert>.pem -chain -CAfile <root-ca>.crt -out <pkcs12-file>.p12 -password pass:<pkcs12-password>
+    ```
+    * Create JKS from pkcs12
+    ```bash
+    keytool -importkeystore -deststorepass <jks-password> -destkeypass <jks-password> -destkeystore <jks-file>.jks -srckeystore <pkcs12-file>.p12 -srcstoretype PKCS12 -srcstorepass <pkcs12-password>
+    ```
+    * Import root ca to jks
+    ```bash
+    keytool -import -keystore <jks-file>.jks -file <root-ca>.crt -alias cpsd.root.ca -storepass <jks-password> -noprompt
+    ```
+    * Import client cert to jks
+    ```bash
+    keytool -import -keystore <jks-file>.jks -file <client-cert>.der -alias cpsd.intermideate.ca -storepass <jks-password> -noprompt
+    ```
+* Pass the jks ,its password and amqp credentials as JVM arguments.
+    ```bash
+    java -Xms64m -Xmx192m  \
+        -cp <your-classpath-1>:<your-classpath-2> \
+        -Dcontainer.id=$CONTAINERID \
+        -Djavax.net.ssl.trustStore=<jks-file>.jks \
+        -Djavax.net.ssl.trustStorePassword=<jks-password> \
+        -Dlog4j.configuration=file:<log4j xml file> \
+        -DactiveProfile=<profile> <your-main-class> \
+        --remote.dell.amqp.rabbitUsername=<amqp-username> \
+        --remote.dell.amqp.rabbitPassword=<amqp-password>
+    ```
+* The place where you create your RabbitMQCachingConnectionFactory bean use RabbitMQTLSFactoryBean from this project to configure SSL using your jks.
+    ```java
+    @Bean
+    @Qualifier("rabbitConnectionFactory")
+        public ConnectionFactory productionCachingConnectionFactory()
+        {
+            RabbitMQCachingConnectionFactory cachingCF = null;
+            com.rabbitmq.client.ConnectionFactory connectionFactory;
+            try{
+                if (propertiesConfig.isSslEnabled())
+                {
+                    RabbitMQTLSFactoryBean rabbitMQTLSFactoryBean = new RabbitMQTLSFactoryBean(propertiesConfig);
+                    connectionFactory = rabbitMQTLSFactoryBean.getObject();
+                }
+                else
+                {
+                    connectionFactory = new com.rabbitmq.client.ConnectionFactory();
+                }
+                cachingCF = new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            return cachingCF;
+        }
+    ```
+    
+**NOTE :** If you want to configure your own SSL connection and don't want to use this project's SSL configuration with specific algorithm use amqp-rabbit project's RabbitConnectionFactoryBean.
+For example:
+    
+```java
+    @Bean
+    @Qualifier("rabbitConnectionFactory")
+        public ConnectionFactory productionCachingConnectionFactory()
+        {
+            RabbitMQCachingConnectionFactory cachingCF = null;
+            com.rabbitmq.client.ConnectionFactory connectionFactory;
+            try{
+                if (propertiesConfig.isSslEnabled())
+                {
+                    RabbitConnectionFactoryBean rabbitConnectionFactoryBean = new RabbitConnectionFactoryBean();
+                    rabbitConnectionFactoryBean.setUseSSL(<true or false>);
+                    rabbitConnectionFactoryBean.setSslAlgorithm(<ssl-version>);
+                    rabbitConnectionFactoryBean.setKeyStoreType(<key-store-type jks or pkcs>);
+                    rabbitConnectionFactoryBean.setTrustStoreType(<trust-store-type jks or pkcs>);
+                    rabbitConnectionFactoryBean.setTrustStoreResource(new FileSystemResource(<path-to-trust-store>));
+                    rabbitConnectionFactoryBean.setTrustStorePassphrase(<trust-store-password>);
+                    rabbitConnectionFactoryBean.setKeyStoreResource(new FileSystemResource(<path-to-key-store>));
+                    rabbitConnectionFactoryBean.setKeyStorePassphrase(<key-store-password>);
+                    rabbitConnectionFactoryBean.afterPropertiesSet();
+                    
+                    //Override createSSLContext() to create and/or perform further modification of the context.
+                    //Override setUpSSL() to take complete control over setting up SSL.
+                    
+                    connectionFactory = rabbitConnectionFactoryBean.getObject();
+                }
+                else
+                {
+                    connectionFactory = new com.rabbitmq.client.ConnectionFactory();
+                }
+                cachingCF = new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            return cachingCF;
+        }
+``` 
+
+### Connecting to Rabbit MQ without SSL
+* Get amqp username and password from credential-service
+* Pass amqp credentials as JVM arguments.
+    ```bash
+    java -Xms64m -Xmx192m  \
+        -cp <your-classpath-1>:<your-classpath-2> \
+        -Dcontainer.id=$CONTAINERID \
+        -Dlog4j.configuration=file:<log4j xml file> \
+        -DactiveProfile=<profile> <your-main-class> \
+        --remote.dell.amqp.rabbitUsername=<amqp-username> \
+        --remote.dell.amqp.rabbitPassword=<amqp-password>
+    ```
+
 ## Contributing
 Project Symphony is a collection of services and libraries housed at [GitHub][github].
 
