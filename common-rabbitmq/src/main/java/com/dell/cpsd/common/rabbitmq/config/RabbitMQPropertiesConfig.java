@@ -181,12 +181,12 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     public String tlsVersion()
     {
 
-        return environment.getProperty("remote.dell.amqp.rabbitTlsVersion", "");
+        return environment.getProperty("remote.dell.amqp.rabbitTlsVersion", "TLSv1.2");
     }
 
     @Bean
     public Boolean isSslEnabled()
     {
-        return Boolean.valueOf(environment.getProperty("remote.dell.amqp.rabbitIsSslEnabled", Boolean.FALSE.toString()));
+        return Boolean.valueOf(environment.getProperty("remote.dell.amqp.rabbitIsSslEnabled", Boolean.TRUE.toString()));
     }
 }

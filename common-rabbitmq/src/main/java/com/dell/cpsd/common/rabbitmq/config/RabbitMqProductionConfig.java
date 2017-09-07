@@ -6,6 +6,7 @@
 package com.dell.cpsd.common.rabbitmq.config;
 
 import com.dell.cpsd.common.rabbitmq.connectors.RabbitMQCachingConnectionFactory;
+import com.dell.cpsd.common.rabbitmq.connectors.RabbitMQTLSFactoryBean;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,10 +43,25 @@ public class RabbitMqProductionConfig
     @Qualifier("rabbitConnectionFactory")
     public ConnectionFactory productionCachingConnectionFactory()
     {
-        final com.rabbitmq.client.ConnectionFactory connectionFactory = new com.rabbitmq.client.ConnectionFactory();
+        RabbitMQCachingConnectionFactory cachingCF = null;
+        com.rabbitmq.client.ConnectionFactory connectionFactory;
 
-        final RabbitMQCachingConnectionFactory cachingCF = new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
+        try{
+            if (propertiesConfig.isSslEnabled())
+            {
+                RabbitMQTLSFactoryBean rabbitMQTLSFactoryBean = new RabbitMQTLSFactoryBean(propertiesConfig);
+                connectionFactory = rabbitMQTLSFactoryBean.getObject();
+            }
+            else
+            {
+                connectionFactory = new com.rabbitmq.client.ConnectionFactory();
+            }
 
+            cachingCF = new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return cachingCF;
     }
 }
