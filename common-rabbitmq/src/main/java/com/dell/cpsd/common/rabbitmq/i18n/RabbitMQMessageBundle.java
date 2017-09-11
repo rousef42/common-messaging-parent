@@ -33,6 +33,9 @@ public class RabbitMQMessageBundle extends ListResourceBundle
             {"VAMQP1010E", "VAMQP1010E Failed to create error message for exception [{0}]. Reason:"},
             {"VAMQP1011E", "VAMQP1011E Can not create response error message: property [{0}] not specified"},
             {"VAMQP1012E", "VAMQP1012E Request failed with unexpected error: {0}"},
+            {"VAMQP1013E", "VAMQP1013E Java trustStore is not set for SSL connection set set JVM argument -Djavax.net.ssl.trustStore"},
+            {"VAMQP1014E", "VAMQP1014E Java trustStore password is not set for SSL connection set set JVM argument -Djavax.net.ssl.trustStorePassword"},
+
 
             {"VAMQP2001E", "VAMQP2001E Unexpected error during validation: [{0}]"}, {"VAMQP2002E", "VAMQP2002E Provided message is null."},
             {"VAMQP2003E", "VAMQP2003E Message property [{0}] is null."}, {"VAMQP2004E", "VAMQP2004E Message property [{0}] is empty."},};

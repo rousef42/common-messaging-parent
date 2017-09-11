@@ -24,9 +24,10 @@ import com.rabbitmq.client.ConnectionFactory;
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>
+ * @Deprecated
  */
 
-
+@Deprecated
 public class TLSConnectionFactory extends ConnectionFactory
 {
     private static final ILogger LOGGER = RabbitMQLoggingManager.getLogger(TLSConnectionFactory.class);

@@ -149,24 +149,28 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
         return environment.getProperty("application.name", "");
     }
 
+    @Deprecated
     @Bean
     public String trustStorePassphrase()
     {
         return environment.getProperty("remote.dell.amqp.rabbitTrustStorePassphrase", "");
     }
 
+    @Deprecated
     @Bean
     public String keyStorePassPhrase()
     {
         return environment.getProperty("remote.dell.amqp.rabbitKeyStorePassPhrase", "");
     }
 
+    @Deprecated
     @Bean
     public String keyStorePath()
     {
         return environment.getProperty("remote.dell.amqp.rabbitKeyStorePath", "");
     }
 
+    @Deprecated
     @Bean
     public String trustStorePath()
     {
@@ -177,12 +181,12 @@ public class RabbitMQPropertiesConfig implements IRabbitMqPropertiesConfig
     public String tlsVersion()
     {
 
-        return environment.getProperty("remote.dell.amqp.rabbitTlsVersion", "");
+        return environment.getProperty("remote.dell.amqp.rabbitTlsVersion", "TLSv1.2");
     }
 
     @Bean
     public Boolean isSslEnabled()
     {
-        return Boolean.valueOf(environment.getProperty("remote.dell.amqp.rabbitIsSslEnabled", Boolean.FALSE.toString()));
+        return Boolean.valueOf(environment.getProperty("remote.dell.amqp.rabbitIsSslEnabled", Boolean.TRUE.toString()));
     }
 }
