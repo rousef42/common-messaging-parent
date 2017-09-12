@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/75f9e97ba3a746d9bb0d0a9804aaed92)](https://www.codacy.com/app/chamap1/common-messaging-parent?utm_source=github.com&utm_medium=referral&utm_content=dellemc-symphony/common-messaging-parent&utm_campaign=badger)
 [![License](https://img.shields.io/badge/License-EPL%201.0-red.svg)](https://opensource.org/licenses/EPL-1.0)
 [![Build Status](https://travis-ci.org/dellemc-symphony/common-messaging-parent.svg?branch=master)](https://travis-ci.org/dellemc-symphony/common-messaging-parent)
 [![Slack](http://community.codedellemc.com/badge.svg)](https://codecommunity.slack.com/messages/symphony)
