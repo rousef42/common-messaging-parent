@@ -48,7 +48,7 @@ public class ConsumerConfig
     private Queue             responseQueue;
 
     @Autowired
-    MessageConverter          messageConverter;
+    private MessageConverter          messageConverter;
 
     /**
      * creates bean for SimpleMessageListenerContainer

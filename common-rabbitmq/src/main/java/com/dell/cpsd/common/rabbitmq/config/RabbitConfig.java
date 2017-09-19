@@ -45,10 +45,6 @@ public class RabbitConfig
     @Qualifier("rabbitConnectionFactory")
     private ConnectionFactory        rabbitConnectionFactory;
 
-    @Autowired
-    @Qualifier("rabbitPropertiesConfig")
-    private RabbitMQPropertiesConfig propertiesConfig;
-
     /**
      * create bean for rabbitTemplate
      * 

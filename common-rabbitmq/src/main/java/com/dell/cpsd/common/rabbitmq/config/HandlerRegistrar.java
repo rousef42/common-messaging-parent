@@ -22,7 +22,7 @@ public class HandlerRegistrar
 {
 
     @Autowired
-    SimpleMessageListenerContainer simpleMessageListenerContainer;
+    private SimpleMessageListenerContainer simpleMessageListenerContainer;
 
     @Autowired
     private MessageConverter       messageConverter;
