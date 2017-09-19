@@ -5,10 +5,10 @@
 
 package com.dell.cpsd.common.rabbitmq.registration.notifier.model;
 
-import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 
 /**
  * <p>
