@@ -7,7 +7,6 @@ package com.dell.cpsd.common.rabbitmq.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,7 +21,6 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import com.dell.cpsd.si.common.CommonDefaultClassMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -37,14 +35,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class RabbitConfig
 {
 
-    private static final String      IMPLICIT_RESPONSE_QUEUE     = "queue.dell.cpsd.sil.implicit.response.";
-    // SAMPLE PAQX response
-    private static final Logger      LOGGER                      = LoggerFactory.getLogger(RabbitConfig.class);
-    private static final int         MAX_ATTEMPTS                = 10;
-    private static final int         INITIAL_INTERVAL            = 100;
-    private static final double      MULTIPLIER                  = 2.0;
-    private static final int         MAX_INTERVAL                = 50000;
-    private static final String      LONG_RUNNING_RESPONSE_QUEUE = "queue.dell.cpsd.sil.long.running.response.";
+    private static final Logger      LOGGER           = LoggerFactory.getLogger(RabbitConfig.class);
+    private static final int         MAX_ATTEMPTS     = 10;
+    private static final int         INITIAL_INTERVAL = 100;
+    private static final double      MULTIPLIER       = 2.0;
+    private static final int         MAX_INTERVAL     = 50000;
 
     @Autowired
     @Qualifier("rabbitConnectionFactory")
@@ -52,7 +47,7 @@ public class RabbitConfig
 
     @Autowired
     @Qualifier("rabbitPropertiesConfig")
-    private  propertiesConfig;
+    private RabbitMQPropertiesConfig propertiesConfig;
 
     /**
      * create bean for rabbitTemplate
@@ -122,35 +117,6 @@ public class RabbitConfig
     }
 
     /**
-     * create bean for hostName
-     * 
-     * @return {@link String}
-     */
-    @Bean
-    public String hostName()
-    {
-        try
-        {
-            return System.getProperty("container.id");
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Unable to identify containerId", e);
-        }
-    }
-
-    /**
-     * Create bean for replyTo
-     * 
-     * @return {@link String}
-     */
-    @Bean
-    public String replyTo()
-    {
-        return propertiesConfig.applicationName() + "." + hostName();
-    }
-
-    /**
      * Create bean for AmqpAdmin
      * 
      * @return {@link AmqpAdmin}
@@ -170,35 +136,7 @@ public class RabbitConfig
     @Bean
     public DefaultClassMapper classMapper()
     {
-        DefaultClassMapper classMapper = new DefaultClassMapper();
-        return classMapper;
+        return new DefaultClassMapper();
     }
 
-    /**
-     * create bean for resonseQueue
-     * 
-     * @return {@link Queue}
-     */
-    @Bean
-    public Queue responseQueue()
-    {
-        return new Queue(propertiesConfig.responseQueue() + "." + replyTo());
-    }
-
-    /**
-     * Implicit response queue created by SIL to handle synchronous messages
-     * 
-     * @return Queue - {@link Queue}
-     */
-    @Bean
-    public Queue implicitResponseQueue()
-    {
-        return new Queue(IMPLICIT_RESPONSE_QUEUE + replyTo());
-    }
-
-    @Bean("longRunningResponseQueue")
-    public Queue longRunningResponseQueue()
-    {
-        return new Queue(LONG_RUNNING_RESPONSE_QUEUE + replyTo());
-    }
 }
