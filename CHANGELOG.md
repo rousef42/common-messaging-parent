@@ -11,6 +11,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  	ConsumerConfig - Beans for default ```simpleMessageListenerContainer``` and ```rabbitListenerContainerFactory```
 	RabbitConfig - Beans for default ```rabbitTemplete```, ```rabbitAdmin``` and ```messageConverter```
 
+## [2.1.0] - 2017-09-19
+ - Depricated following methods in ```IRabbitMqPropertiesConfig``` and its default implementation.
+ ```Java
+    String trustStorePassphrase();
+    String keyStorePassPhrase();
+    String keyStorePath();
+    String trustStorePath();
+ ```
+ - TLS is enabled by default with TLSv1.2 in ```IRabbitMqPropertiesConfig```
+ - Depricated ```TLSConnectionFactory``` class.
+ - Added ```RabbitMQTLSFactoryBean``` class replacing ```TLSConnectionFactory``` as the default for rabbit connection with TLS.
+ - ```RabbitMqProductionConfig``` changed to accept new TLS changes.
+
 ## [Unreleased]
 
 ### Added
