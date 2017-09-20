@@ -125,9 +125,9 @@ public class RabbitConfig
     }
 
     /**
-     * create bean for CommonDefaultClassMapper
+     * create bean for DefaultClassMapper
      * 
-     * @return {@link CommonDefaultClassMapper}
+     * @return {@link DefaultClassMapper}
      */
     @Bean
     public DefaultClassMapper classMapper()
