@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+ - Configuration bean classes that can be activated and consumed using spring boot common-rabbitmq-starter project
+ 	ConsumerConfig - Beans for default ```simpleMessageListenerContainer``` and ```rabbitListenerContainerFactory```
+	RabbitConfig - Beans for default ```rabbitTemplete```, ```rabbitAdmin``` and ```messageConverter```
 
 ## [2.1.0] - 2017-09-19
 
