@@ -9,6 +9,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import com.dell.cpsd.common.rabbitmq.consumer.handler.DefaultMessageHandler;
 import com.dell.cpsd.common.rabbitmq.consumer.handler.DefaultMessageListener;
 import com.dell.cpsd.common.rabbitmq.consumer.handler.MessageHandler;
 
@@ -41,7 +42,7 @@ public class HandlerRegistrar
     }
 
     /**
-     * Method to register Message Handler of type {@link AbstractDefaultMessageHandler} with the listener
+     * Method to register Message Handler of type {@link DefaultMessageHandler} with the listener
      * 
      * @param responseHandlers
      *            - Message Handler to be registered wit the listener

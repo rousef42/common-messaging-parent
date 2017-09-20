@@ -74,7 +74,7 @@ public class ConsumerConfigTest
     public void testRabbitListenerContainerFactory()
     {
         RabbitListenerContainerFactory<SimpleMessageListenerContainer> rabbitListenerContainerFactory = classUnderTest
-                .rabbitListenerContainerFactory();
+                .simpleRabbitListenerContainerFactory();
         assertNotNull(rabbitListenerContainerFactory);
     }
 

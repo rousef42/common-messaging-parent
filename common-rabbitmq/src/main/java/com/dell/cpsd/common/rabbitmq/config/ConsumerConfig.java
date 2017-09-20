@@ -86,7 +86,7 @@ public class ConsumerConfig
      * @return SimpleRabbitListenerContainerFactory - {@link SimpleRabbitListenerContainerFactory}
      */
     @Bean
-    public RabbitListenerContainerFactory<SimpleMessageListenerContainer> rabbitListenerContainerFactory()
+    public RabbitListenerContainerFactory<SimpleMessageListenerContainer> simpleRabbitListenerContainerFactory()
     {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(rabbitConnectionFactory);
