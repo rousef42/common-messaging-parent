@@ -31,7 +31,7 @@ import org.springframework.retry.support.RetryTemplate;
 public class RabbitConfigTest
 {
     @InjectMocks
-    RabbitConfig              classUnderTest;
+    private RabbitConfig              classUnderTest;
 
     @Mock
     private ConnectionFactory rabbitConnectionFactory;
@@ -46,6 +46,7 @@ public class RabbitConfigTest
     public void tearDown() throws Exception
     {
         classUnderTest = null;
+        rabbitConnectionFactory = null;
     }
 
     /**

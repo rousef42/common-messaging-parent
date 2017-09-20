@@ -30,7 +30,7 @@ import com.dell.cpsd.common.logging.LoggingManager;
 public class ConsumerConfigTest
 {
     @InjectMocks
-    ConsumerConfig classUnderTest;
+    private ConsumerConfig classUnderTest;
 
     @Mock
     private Queue  responseQueue;
@@ -45,6 +45,7 @@ public class ConsumerConfigTest
     public void tearDown() throws Exception
     {
         classUnderTest = null;
+        responseQueue = null;
     }
 
     /**
