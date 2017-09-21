@@ -2,6 +2,14 @@ UPSTREAM_TRIGGERS = getUpstreamTriggers([
     "common-dependencies"
 ])
 
+properties([[
+    $class: 'BuildBlockerProperty',
+    blockLevel: 'GLOBAL',
+    blockingJobs: UPSTREAM_TRIGGERS.replace(',', '\n'),
+    scanQueueFor: 'ALL',
+    useBuildBlocker: true
+]])
+
 pipeline {    
     triggers {
         upstream(upstreamProjects: UPSTREAM_TRIGGERS, threshold: hudson.model.Result.SUCCESS)
