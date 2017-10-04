@@ -4,9 +4,6 @@
 
 package com.dell.cpsd.common.rabbitmq.config;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -19,6 +16,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
@@ -45,7 +43,6 @@ public class RabbitConfig
     private static final int    INITIAL_INTERVAL = 100;
     private static final double MULTIPLIER       = 2.0;
     private static final int    MAX_INTERVAL     = 50000;
-    private static final String CONTAINER_ID     = "container.id";
 
     @Autowired
     @Qualifier("rabbitConnectionFactory")
@@ -156,6 +153,10 @@ public class RabbitConfig
         return ContainerIdHelper.getContainerId();
     }
 
+    /**
+     * Reply To address suffix. Appliction name + hostName
+     * @return String - replyTo
+     */
     @Bean
     public String replyTo()
     {
@@ -169,6 +170,7 @@ public class RabbitConfig
      */
     // TODO: To be moved to capability execution starter
     @Bean
+    @ConditionalOnProperty(name="queue.dell.cpsd.response.name")
     public Queue responseQueue()
     {
         return new Queue(propertiesConfig.responseQueueName() + "." + replyTo());

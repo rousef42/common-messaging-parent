@@ -18,8 +18,11 @@ import org.springframework.amqp.rabbit.retry.MessageRecoverer;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.retry.RetryPolicy;
 
 import com.dell.cpsd.common.logging.LoggingManager;
@@ -35,6 +38,7 @@ import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyAdvice;
  * </p>
  */
 @Configuration
+@AutoConfigureAfter(RabbitConfig.class)
 public class ConsumerConfig
 {
     @Autowired
@@ -45,6 +49,8 @@ public class ConsumerConfig
     private RabbitTemplate    rabbitTemplate;
 
     @Autowired
+    @Qualifier("responseQueue")
+    @Lazy
     private Queue             responseQueue;
 
     @Autowired
@@ -56,6 +62,7 @@ public class ConsumerConfig
      * @return {@link SimpleMessageListenerContainer}
      */
     @Bean
+    @ConditionalOnBean(name="responseQueue")
     public SimpleMessageListenerContainer simpleMessageListenerContainer()
     {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
@@ -126,6 +133,7 @@ public class ConsumerConfig
      * @return {@link HandlerRegistrar}
      */
     @Bean
+    @Lazy
     public HandlerRegistrar handlerRegistrar()
     {
         return new HandlerRegistrar();

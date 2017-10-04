@@ -134,6 +134,12 @@
                 <artifactId>common-contract-enricher</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!-- TODO: Spring boot autoconfigure to be added to common-dependencies and below entry to be removed after the addition to common-dependencies -->
+            <dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-autoconfigure</artifactId>
+				<version>1.5.3.RELEASE</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 
