@@ -5,6 +5,7 @@
 package com.dell.cpsd.common.rabbitmq.client;
 
 import java.util.Date;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -38,6 +40,7 @@ import static org.junit.Assert.assertNotNull;
 public class SendMessageServiceIT
 {
     @Autowired
+    @Qualifier("amqpAdmin")
     private AmqpAdmin          rabbitAdmin;
 
     @Autowired

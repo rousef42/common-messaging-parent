@@ -4,6 +4,9 @@
 
 package com.dell.cpsd.common.rabbitmq.config;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -22,6 +25,7 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
+import com.dell.cpsd.common.rabbitmq.utils.ContainerIdHelper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -41,6 +45,7 @@ public class RabbitConfig
     private static final int    INITIAL_INTERVAL = 100;
     private static final double MULTIPLIER       = 2.0;
     private static final int    MAX_INTERVAL     = 50000;
+    private static final String CONTAINER_ID     = "container.id";
 
     @Autowired
     @Qualifier("rabbitConnectionFactory")
@@ -148,14 +153,7 @@ public class RabbitConfig
     @Bean
     public String hostName()
     {
-        try
-        {
-            return System.getProperty("container.id");
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Unable to identify containerId", e);
-        }
+        return ContainerIdHelper.getContainerId();
     }
 
     @Bean

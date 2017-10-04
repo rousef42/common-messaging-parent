@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.context.annotation.ComponentScan.Filter;
 
 import com.dell.cpsd.common.rabbitmq.config.ConsumerConfig;
 import com.dell.cpsd.common.rabbitmq.config.IRabbitMqPropertiesConfig;
@@ -32,7 +34,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * </p>
  */
 @Configuration
-@ComponentScan(basePackages = {"com.dell.cpsd.common.rabbitmq.client"})
+@ComponentScan(basePackages = {"com.dell.cpsd.common.rabbitmq.client"}, excludeFilters = {
+        @Filter(type = FilterType.REGEX, pattern = "com.dell.cpsd.common.rabbitmq.*.*Test.*"),
+        @Filter(type = FilterType.REGEX, pattern = "com.dell.cpsd.common.rabbitmq.*.*IT.*")})
 @PropertySources({@PropertySource("classpath:rabbitmq.properties")})
 @Import({RabbitConfig.class, PropertiesConfig.class,ConsumerConfig.class, RabbitMqProductionConfig.class,RegistrationConfig.class})
 public class IntegrationTestConfig

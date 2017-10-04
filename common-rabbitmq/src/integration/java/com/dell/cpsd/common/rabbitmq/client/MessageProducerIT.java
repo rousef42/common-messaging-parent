@@ -18,6 +18,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -39,6 +40,7 @@ import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
 public class MessageProducerIT
 {
     @Autowired
+    @Qualifier("amqpAdmin")
     private AmqpAdmin       rabbitAdmin;
 
     @Autowired
