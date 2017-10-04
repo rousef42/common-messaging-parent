@@ -16,6 +16,7 @@
     <packaging>jar</packaging>
     <groupId>com.dell.cpsd</groupId>
     <artifactId>common-rabbitmq</artifactId>
+    <version>2.1.2-SNAPSHOT</version>
 
     <dependencies>
         <!--  slf4j -->

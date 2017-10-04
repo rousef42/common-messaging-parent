@@ -39,8 +39,7 @@ public class RabbitMqProductionConfig
      * @return The <code>ConnectionFactory</code> to use.
      * @since SINCE-TBD
      */
-    @Bean
-    @Qualifier("rabbitConnectionFactory")
+    @Bean(name="rabbitConnectionFactory")
     public ConnectionFactory productionCachingConnectionFactory()
     {
         RabbitMQCachingConnectionFactory cachingCF = null;
