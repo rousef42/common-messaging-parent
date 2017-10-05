@@ -15,7 +15,7 @@ package com.dell.cpsd.common.rabbitmq.aggregate;
  * @version 1.0
  * @since 1.0
  */
-public class TestMessagesAggregate implements Aggregate
+public class TestMessagesAggregate extends AbstractAggregate
 {
     private TestMessage1 message1;
     private TestMessage2 message2;

@@ -6,20 +6,32 @@
 package com.dell.cpsd.common.rabbitmq.aggregate;
 
 /**
- * Generic interface for message aggregates.
+ * Status of a correlation.
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>
  *
- * @since 1.0
+ * @since 2.1.2
  */
-public interface Aggregate
+public enum CorrelationStatus
 {
     /**
-     * True if aggregate got all expected messages.
+     * The request has been sent.
      *
-     * @since 1.0
+     * @since 2.1.2
      */
-    boolean isComplete();
+    REQUESTED,
+    /**
+     * The answer received.
+     *
+     * @since 2.1.2
+     */
+    RESPONDED,
+    /**
+     * The request has failed.
+     *
+     * @since 2.1.2
+     */
+    FAILED
 }
