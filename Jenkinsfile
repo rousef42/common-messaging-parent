@@ -57,7 +57,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                doSonarAnalysis()    
+                doNewSonarAnalysis()
             }
         }
         stage('Third Party Audit') {
