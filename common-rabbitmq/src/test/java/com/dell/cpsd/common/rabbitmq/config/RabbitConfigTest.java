@@ -12,8 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -32,9 +33,9 @@ public class RabbitConfigTest
 {
     @InjectMocks
     private RabbitConfig              classUnderTest;
-
+    
     @Mock
-    private ConnectionFactory rabbitConnectionFactory;
+    private PropertiesConfig propertiesConfig;
 
     @Before
     public void setUp() throws Exception
@@ -46,7 +47,6 @@ public class RabbitConfigTest
     public void tearDown() throws Exception
     {
         classUnderTest = null;
-        rabbitConnectionFactory = null;
     }
 
     /**
@@ -87,6 +87,16 @@ public class RabbitConfigTest
     {
         AmqpAdmin amqpAdmin = classUnderTest.amqpAdmin();
         assertNotNull(amqpAdmin);
+    }
+    
+    /**
+     * Test rabbitConnectionFactory bean creation config
+     */
+    @Test
+    public void testProductionCachingConnectionFactory(){
+        Mockito.when(propertiesConfig.isSslEnabled()).thenReturn(true);
+        ConnectionFactory connectionFactory =  classUnderTest.productionCachingConnectionFactory();
+        assertNotNull(connectionFactory);
     }
 
     /**

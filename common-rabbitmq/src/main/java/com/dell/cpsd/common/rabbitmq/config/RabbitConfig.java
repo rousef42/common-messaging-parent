@@ -23,6 +23,8 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
+import com.dell.cpsd.common.rabbitmq.connectors.RabbitMQCachingConnectionFactory;
+import com.dell.cpsd.common.rabbitmq.connectors.TLSConnectionFactory;
 import com.dell.cpsd.common.rabbitmq.utils.ContainerIdHelper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,14 +45,35 @@ public class RabbitConfig
     private static final int    INITIAL_INTERVAL = 100;
     private static final double MULTIPLIER       = 2.0;
     private static final int    MAX_INTERVAL     = 50000;
-
-    @Autowired
-    @Qualifier("rabbitConnectionFactory")
-    private ConnectionFactory   rabbitConnectionFactory;
-
+    
     @Autowired
     @Qualifier("rabbitPropertiesConfig")
-    private PropertiesConfig    propertiesConfig;
+    private PropertiesConfig propertiesConfig;
+
+    /**
+     * @return The <code>ConnectionFactory</code> to use. 
+     * TODO: common-rabbitmq version 2.1.0 introduced {@link RabbitMQTLSFactoryBean} to create
+     *         the connection factory. Consumption of this TLS change would require infrastructure and environment updates and hence these
+     *         are not ready for consumption. As a temporary fix till the infrastructure updates are completed, we are creating the connection
+     *         factory using the deprecated {@link TLSConnectionFactory}. 
+     *         This bean needs to be REMOVED once we move to the new connection factory infrastructure. Also, the {@link RabbitMqProductionConfig} 
+     *         class needs to be added to 'spring.factories' of common-rabbitmq-starter
+     */
+    @Bean
+    @Qualifier("rabbitConnectionFactory")
+    public ConnectionFactory productionCachingConnectionFactory()
+    {
+        final com.rabbitmq.client.ConnectionFactory connectionFactory;
+        if (propertiesConfig.isSslEnabled())
+        {
+            connectionFactory = new TLSConnectionFactory(propertiesConfig);
+        }
+        else
+        {
+            connectionFactory = new com.rabbitmq.client.ConnectionFactory();
+        }
+        return new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
+    }
 
     /**
      * create bean for rabbitTemplate
@@ -60,7 +83,7 @@ public class RabbitConfig
     @Bean
     public RabbitTemplate rabbitTemplate()
     {
-        RabbitTemplate template = new RabbitTemplate(rabbitConnectionFactory);
+        RabbitTemplate template = new RabbitTemplate(productionCachingConnectionFactory());
         template.setMessageConverter(messageConverter());
         template.setRetryTemplate(retryTemplate());
         return template;
@@ -128,7 +151,7 @@ public class RabbitConfig
     @Qualifier("rabbitConfigAmqpAdmin")
     public AmqpAdmin amqpAdmin()
     {
-        return new RabbitAdmin(rabbitConnectionFactory);
+        return new RabbitAdmin(productionCachingConnectionFactory());
     }
 
     /**
@@ -155,6 +178,7 @@ public class RabbitConfig
 
     /**
      * Reply To address suffix. Appliction name + hostName
+     * 
      * @return String - replyTo
      */
     @Bean
@@ -170,7 +194,7 @@ public class RabbitConfig
      */
     // TODO: To be moved to capability execution starter
     @Bean
-    @ConditionalOnProperty(name="queue.dell.cpsd.response.name")
+    @ConditionalOnProperty(name = "queue.dell.cpsd.response.name")
     public Queue responseQueue()
     {
         return new Queue(propertiesConfig.responseQueueName() + "." + replyTo());
