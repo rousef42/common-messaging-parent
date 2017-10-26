@@ -4,6 +4,7 @@
 
 package com.dell.cpsd.common.rabbitmq.config;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
@@ -103,9 +104,9 @@ public class RabbitConfigTest
      * Test classMapper bean creation config
      */
     @Test
-    public void testClassMapper()
+    public void testClassMapperOfMessageAnnotation()
     {
-        DefaultClassMapper classMapper = classUnderTest.classMapper();
+        DefaultClassMapper classMapper = classUnderTest.classMapperOfMessageAnnotation();
         assertNotNull(classMapper);
     }
 }
