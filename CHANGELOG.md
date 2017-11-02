@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+ -  Deprecated the following Java classes
+	```	Message
+		MessageContentType
+		MessageError
+		MessageEvent
+		MessageReply
+		MessageRequest
+		MessageStereotype
+		ErrorContainer
+		HasCorrelationId
+		HasErrors
+		HasMessageProperties
+		HasReplyTo
+		HasTimestamp
+		MessagePropertiesContainer
+	```	
 ## [2.1.0] - 2017-09-19
 
 ### Added
