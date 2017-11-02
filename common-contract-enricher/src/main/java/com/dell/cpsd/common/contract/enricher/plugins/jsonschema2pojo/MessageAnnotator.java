@@ -5,16 +5,17 @@
 
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo;
 
-import com.dell.cpsd.common.rabbitmq.annotation.Message;
-import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageError;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageRequest;
+import org.jsonschema2pojo.AbstractAnnotator;
+
+import com.dell.cpsd.contract.extension.amqp.annotation.Message;
+import com.dell.cpsd.contract.extension.amqp.annotation.MessageContentType;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.ErrorMessage;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.EventMessage;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.ReplyMessage;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.RequestMessage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JDefinedClass;
-import org.jsonschema2pojo.AbstractAnnotator;
 
 /**
  * <p>
@@ -85,7 +86,7 @@ public class MessageAnnotator extends AbstractAnnotator
             String stereoTypeValue = stereotype.asText();
             if ("REQUEST".equalsIgnoreCase(stereoTypeValue))
             {
-                JAnnotationUse annotation = clazz.annotate(MessageRequest.class);
+                JAnnotationUse annotation = clazz.annotate(RequestMessage.class);
                 JsonNode replyToProperty = meta.get("replyToProperty");
                 if (replyToProperty != null)
                 {
@@ -94,15 +95,15 @@ public class MessageAnnotator extends AbstractAnnotator
             }
             else if ("REPLY".equalsIgnoreCase(stereoTypeValue))
             {
-                clazz.annotate(MessageReply.class);
+                clazz.annotate(ReplyMessage.class);
             }
             else if ("EVENT".equalsIgnoreCase(stereoTypeValue))
             {
-                clazz.annotate(MessageEvent.class);
+                clazz.annotate(EventMessage.class);
             }
             else if ("ERROR".equalsIgnoreCase(stereoTypeValue))
             {
-                clazz.annotate(MessageError.class);
+                clazz.annotate(ErrorMessage.class);
             }
         }
     }

@@ -33,7 +33,6 @@ import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.retry.support.RetryTemplate;
 
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
 import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
 import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
 import com.dell.cpsd.common.rabbitmq.context.RabbitContext;
@@ -41,6 +40,7 @@ import com.dell.cpsd.common.rabbitmq.context.RabbitContextAware;
 import com.dell.cpsd.common.rabbitmq.context.RequestReplyKey;
 import com.dell.cpsd.common.rabbitmq.message.DefaultMessageConverterFactory;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyFactory;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.StereotypeMessage;
 
 /**
  * <p>
@@ -350,16 +350,16 @@ public class RabbitContextBuilder
             routingKey = messageDescription.getType();
         }
 
-        MessageStereotype stereotype = messageDescription.getStereotype();
+        StereotypeMessage stereotype = messageDescription.getStereotype();
         return resolveRoutingKey(stereotype, routingKey, consumerPostfix);
     }
 
-    private String resolveRoutingKey(MessageStereotype stereotype, String routingKey, String consumerPostfix)
+    private String resolveRoutingKey(StereotypeMessage stereotype, String routingKey, String consumerPostfix)
     {
         StringBuilder builder = new StringBuilder();
         builder.append(routingKey);
 
-        if (MessageStereotype.REPLY == stereotype || MessageStereotype.ERROR == stereotype)
+        if (StereotypeMessage.REPLY == stereotype || StereotypeMessage.ERROR == stereotype)
         {
             builder.append("." + consumerPostfix);
         }

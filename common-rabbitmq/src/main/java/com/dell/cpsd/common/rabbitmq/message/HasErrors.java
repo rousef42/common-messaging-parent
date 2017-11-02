@@ -13,7 +13,9 @@ import java.util.List;
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
  * Dell EMC Confidential/Proprietary Information
  * </p>
+ * @deprecated use {@link com.dell.cpsd.contract.extension.amqp.message.HasErrors} instead
  */
+@Deprecated
 public interface HasErrors<T extends ErrorContainer>
 {
     List<T> getErrors();

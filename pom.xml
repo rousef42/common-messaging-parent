@@ -22,6 +22,7 @@
 
     <properties>
         <common-dependencies.version>1.2.0</common-dependencies.version>
+        <amqp-contract.extension.version>0.1.0-SNAPSHOT</amqp-contract.extension.version>
     </properties>
 
     <licenses>
@@ -140,6 +141,11 @@
 				<artifactId>spring-boot-autoconfigure</artifactId>
 				<version>1.5.3.RELEASE</version>
 			</dependency>
+			  <dependency>
+                <groupId>com.dell.cpsd</groupId>
+                <artifactId>amqp-contract-extension</artifactId>
+                <version>${amqp-contract.extension.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

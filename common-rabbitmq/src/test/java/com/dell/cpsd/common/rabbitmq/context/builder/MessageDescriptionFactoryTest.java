@@ -5,14 +5,15 @@
 
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
-import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
-import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
-import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
+import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
+import com.dell.cpsd.contract.extension.amqp.annotation.MessageContentType;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.StereotypeMessage;
 
 /**
  * <p>
@@ -38,7 +39,7 @@ public class MessageDescriptionFactoryTest
         Assert.assertEquals(MessageExchangeType.TOPIC, description.getExchangeType());
 
         Assert.assertEquals("routing.base", description.getRoutingKey());
-        Assert.assertEquals(MessageStereotype.REQUEST, description.getStereotype());
+        Assert.assertEquals(StereotypeMessage.REQUEST, description.getStereotype());
         Assert.assertEquals(MessageContentType.CLEAR, description.getContentType());
     }
 
