@@ -13,6 +13,7 @@ import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.ErrorMessage
 import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.EventMessage;
 import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.ReplyMessage;
 import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.RequestMessage;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.StereotypeMessage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JDefinedClass;
@@ -84,7 +85,7 @@ public class MessageAnnotator extends AbstractAnnotator
         if (stereotype != null)
         {
             String stereoTypeValue = stereotype.asText();
-            if ("REQUEST".equalsIgnoreCase(stereoTypeValue))
+            if (StereotypeMessage.REQUEST.toString().equalsIgnoreCase(stereoTypeValue))
             {
                 JAnnotationUse annotation = clazz.annotate(RequestMessage.class);
                 JsonNode replyToProperty = meta.get("replyToProperty");
@@ -93,15 +94,15 @@ public class MessageAnnotator extends AbstractAnnotator
                     annotation.param("replyToProperty", replyToProperty.asText());
                 }
             }
-            else if ("REPLY".equalsIgnoreCase(stereoTypeValue))
+            else if (StereotypeMessage.REPLY.toString().equalsIgnoreCase(stereoTypeValue))
             {
                 clazz.annotate(ReplyMessage.class);
             }
-            else if ("EVENT".equalsIgnoreCase(stereoTypeValue))
+            else if (StereotypeMessage.EVENT.toString().equalsIgnoreCase(stereoTypeValue))
             {
                 clazz.annotate(EventMessage.class);
             }
-            else if ("ERROR".equalsIgnoreCase(stereoTypeValue))
+            else if (StereotypeMessage.ERROR.toString().equalsIgnoreCase(stereoTypeValue))
             {
                 clazz.annotate(ErrorMessage.class);
             }
