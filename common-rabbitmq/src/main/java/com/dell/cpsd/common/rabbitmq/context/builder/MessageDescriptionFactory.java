@@ -5,19 +5,20 @@
 
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
-import com.dell.cpsd.common.rabbitmq.annotation.Message;
-import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageEvent;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageRequest;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
-import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
-import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.dell.cpsd.common.rabbitmq.context.ApplicationConfiguration;
+import com.dell.cpsd.common.rabbitmq.context.MessageDescription;
+import com.dell.cpsd.contract.extension.amqp.annotation.Message;
+import com.dell.cpsd.contract.extension.amqp.annotation.MessageContentType;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.EventMessage;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.ReplyMessage;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.RequestMessage;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.StereotypeMessage;
 
 /**
  * <p>
@@ -47,7 +48,7 @@ public class MessageDescriptionFactory
     {
         String type = null;
         String version = null;
-        MessageStereotype stereotype = null;
+        StereotypeMessage stereotype = null;
         MessageContentType contentType = null;
 
         String exchange = null;
@@ -81,21 +82,21 @@ public class MessageDescriptionFactory
         }
 
         // Stereotype
-        MessageRequest requestAnnotation = messageClass.getAnnotation(MessageRequest.class);
+        RequestMessage requestAnnotation = messageClass.getAnnotation(RequestMessage.class);
         if (requestAnnotation != null)
         {
             stereotype = requestAnnotation.stereotype();
         }
 
         // Stereotype
-        MessageReply replyAnnotation = messageClass.getAnnotation(MessageReply.class);
+        ReplyMessage replyAnnotation = messageClass.getAnnotation(ReplyMessage.class);
         if (replyAnnotation != null)
         {
             stereotype = replyAnnotation.stereotype();
         }
 
         // Stereotype
-        MessageEvent eventAnnotation = messageClass.getAnnotation(MessageEvent.class);
+        EventMessage eventAnnotation = messageClass.getAnnotation(EventMessage.class);
         if (eventAnnotation != null)
         {
             stereotype = eventAnnotation.stereotype();

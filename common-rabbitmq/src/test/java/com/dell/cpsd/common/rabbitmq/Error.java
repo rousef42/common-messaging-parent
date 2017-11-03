@@ -5,7 +5,7 @@
 
 package com.dell.cpsd.common.rabbitmq;
 
-import com.dell.cpsd.common.rabbitmq.message.ErrorContainer;
+import com.dell.cpsd.contract.extension.amqp.message.ErrorContainer;
 
 /**
  * <p>

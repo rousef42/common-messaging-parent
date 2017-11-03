@@ -5,9 +5,9 @@
 
 package com.dell.cpsd.common.rabbitmq.context;
 
-import com.dell.cpsd.common.rabbitmq.annotation.MessageContentType;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageStereotype;
 import com.dell.cpsd.common.rabbitmq.context.builder.MessageExchangeType;
+import com.dell.cpsd.contract.extension.amqp.annotation.MessageContentType;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.StereotypeMessage;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import com.dell.cpsd.common.rabbitmq.context.builder.MessageExchangeType;
 public class MessageDescription<M>
 {
     private Class<M>            messageClass = null;
-    private MessageStereotype   stereotype   = null;
+    private StereotypeMessage   stereotype   = null;
     private String              type         = null;
     private String              version      = null;
     private String              exchange     = null;
@@ -28,12 +28,12 @@ public class MessageDescription<M>
     private String              routingKey   = null;
     private MessageContentType  contentType  = null;
 
-    public MessageStereotype getStereotype()
+    public StereotypeMessage getStereotype()
     {
         return stereotype;
     }
 
-    public void setStereotype(MessageStereotype stereotype)
+    public void setStereotype(StereotypeMessage stereotype)
     {
         this.stereotype = stereotype;
     }

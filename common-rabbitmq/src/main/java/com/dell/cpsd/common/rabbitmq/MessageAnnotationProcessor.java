@@ -14,7 +14,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
-import com.dell.cpsd.common.rabbitmq.annotation.Message;
+import com.dell.cpsd.contract.extension.amqp.annotation.Message;
 
 /**
  * An annotation process for evaluating @Message annotations.

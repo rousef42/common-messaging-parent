@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Date;
 
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.junit.Test;
 
 import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
