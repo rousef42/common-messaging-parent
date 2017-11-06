@@ -5,10 +5,12 @@
 
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo;
 
-import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.DefaultPropertiesRule;
-import com.sun.codemodel.JDefinedClass;
 import org.jsonschema2pojo.rules.Rule;
 import org.jsonschema2pojo.rules.RuleFactory;
+
+import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.DefaultPropertiesRule;
+import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.DefaultPropertyRule;
+import com.sun.codemodel.JDefinedClass;
 
 /**
  * Provides factory to create default rules.
@@ -23,5 +25,11 @@ public class DefaultRuleFactory extends RuleFactory
     public Rule<JDefinedClass, JDefinedClass> getPropertiesRule()
     {
         return new DefaultPropertiesRule(this);
+    }
+    
+    @Override
+    public Rule<JDefinedClass, JDefinedClass> getPropertyRule()
+    {
+        return new DefaultPropertyRule(this);
     }
 }

@@ -17,6 +17,7 @@ import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.StereotypeMe
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JMethod;
 
 /**
  * <p>
@@ -41,6 +42,13 @@ public class MessageAnnotator extends AbstractAnnotator
         {
             annotateMessage(clazz, meta);
             annotateStereotype(clazz, meta);
+        }
+    }
+    
+    @Override
+    public void propertyGetter(JMethod getter, String propertyName) {
+        if("messageProperties".equals(propertyName.trim())){
+            getter.annotate(Override.class);
         }
     }
 

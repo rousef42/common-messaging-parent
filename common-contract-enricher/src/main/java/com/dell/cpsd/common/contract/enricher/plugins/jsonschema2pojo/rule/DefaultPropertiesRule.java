@@ -5,18 +5,21 @@
 
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule;
 
-import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action.AddGenericInterface;
-import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action.AddInterface;
-import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action.ClassAction;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.codemodel.JDefinedClass;
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jsonschema2pojo.Schema;
 import org.jsonschema2pojo.rules.PropertiesRule;
 import org.jsonschema2pojo.rules.RuleFactory;
 
-import java.util.List;
-
-import static java.util.Arrays.asList;
+import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action.AddGenericInterface;
+import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action.AddInterface;
+import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action.ClassAction;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.StereotypeMessage;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.codemodel.JDefinedClass;
 
 /**
  * Adds MessagePropertiesContainer interface to generated class if it has necessary properties.
@@ -27,10 +30,8 @@ import static java.util.Arrays.asList;
  */
 public class DefaultPropertiesRule extends PropertiesRule
 {
-    protected List<ClassAction> actions = asList(new AddInterface(asList("correlationId", "replyTo", "timestamp"),
-                    "com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer"),
+    protected List<ClassAction> actions = asList(
             new AddInterface(asList("code", "message"), "com.dell.cpsd.contract.extension.amqp.message.ErrorContainer"),
-            new AddGenericInterface("messageProperties", "com.dell.cpsd.common.rabbitmq.message.HasMessageProperties"),
             new AddGenericInterface("errors", "com.dell.cpsd.contract.extension.amqp.message.HasErrors").unwrapFieldType(List.class));
 
     public DefaultPropertiesRule(RuleFactory ruleFactory)
@@ -41,10 +42,26 @@ public class DefaultPropertiesRule extends PropertiesRule
     @Override
     public JDefinedClass apply(String nodeName, JsonNode node, JDefinedClass jClass, Schema schema)
     {
+        List<ClassAction> allActions = new ArrayList<ClassAction>();
+        allActions.addAll(actions);
+        
+        try
+		{
+            JsonNode metaNode = schema.getContent().get("_meta");
+            JsonNode steroNode = metaNode.get("stereotype");
+            if (metaNode != null)
+            {
+                if(steroNode != null){
+                    findStereotype(steroNode, allActions);
+                }
+            }
+        } catch (Exception execption) {
+        }
+        
         jClass = super.apply(nodeName, node, jClass, schema);
 
         // Run actions once properties of jClass are populated
-        for (ClassAction action : actions)
+        for (ClassAction action : allActions)
         {
             if (action.supports(jClass))
             {
@@ -52,5 +69,21 @@ public class DefaultPropertiesRule extends PropertiesRule
             }
         }
         return jClass;
+    }
+    
+    private void findStereotype(JsonNode stereotype, List<ClassAction> allActions)
+    {
+        if (stereotype != null)
+        {
+            String stereoTypeValue = stereotype.asText();
+            if (StereotypeMessage.REQUEST.toString().equalsIgnoreCase(stereoTypeValue))
+            {
+                allActions.add(new AddInterface("messageProperties", "com.dell.cpsd.contract.extension.amqp.message.RequestMessage"));
+            }
+            else if ("RESPONSE".equalsIgnoreCase(stereoTypeValue))
+            {
+                allActions.add(new AddInterface("messageProperties", "com.dell.cpsd.contract.extension.amqp.message.ResponseMessage"));
+            } 
+        }
     }
 }

@@ -5,14 +5,14 @@
 
 package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.action;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JType;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Adds generic interface if class has a required property. Generic type is taken from field declaration.
@@ -61,7 +61,17 @@ public class AddGenericInterface implements ClassAction
         JType fieldType = field.type();
         fieldType = unwrap(fieldType);
         JClass jGenericInterface = jInterface.narrow(fieldType);
-
+       /* System.out.println("Methods ==== "+jClass.methods());
+        JMethod setterMethod = null;
+        for(JMethod method: jClass.methods()){
+            String methodName = method.name();
+            System.out.println("--Method name ==== "+methodName);
+            if(methodName.startsWith("setReponseMessage") || methodName.startsWith("setRequestMessage") ){
+                System.out.println("Removing.................");
+                setterMethod = method;
+            }
+        }
+        jClass.methods().remove(setterMethod);*/
         return jClass._implements(jGenericInterface);
     }
 
