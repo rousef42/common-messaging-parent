@@ -45,21 +45,18 @@ public class DefaultPropertiesRule extends PropertiesRule
         List<ClassAction> allActions = new ArrayList<ClassAction>();
         allActions.addAll(actions);
         
-        try
-		{
-            JsonNode metaNode = schema.getContent().get("_meta");
-            JsonNode steroNode = metaNode.get("stereotype");
-            if (metaNode != null)
+        JsonNode metaNode = schema.getContent().get("_meta");
+        if (null != metaNode)
+        {
+            JsonNode steretypeoNode = metaNode.get("stereotype");
+            if(null != steretypeoNode)
             {
-                if(steroNode != null){
-                    findStereotype(steroNode, allActions);
-                }
+                addActionForStereotype(steretypeoNode, allActions);
             }
-        } catch (Exception execption) {
-        }
-        
+         }
+       
         jClass = super.apply(nodeName, node, jClass, schema);
-
+        
         // Run actions once properties of jClass are populated
         for (ClassAction action : allActions)
         {
@@ -71,16 +68,16 @@ public class DefaultPropertiesRule extends PropertiesRule
         return jClass;
     }
     
-    private void findStereotype(JsonNode stereotype, List<ClassAction> allActions)
+    private void addActionForStereotype(JsonNode steretypeoNode, List<ClassAction> allActions)
     {
-        if (stereotype != null)
+        if (null != steretypeoNode)
         {
-            String stereoTypeValue = stereotype.asText();
+            String stereoTypeValue = steretypeoNode.asText();
             if (StereotypeMessage.REQUEST.toString().equalsIgnoreCase(stereoTypeValue))
             {
                 allActions.add(new AddInterface("messageProperties", "com.dell.cpsd.contract.extension.amqp.message.RequestMessage"));
             }
-            else if ("RESPONSE".equalsIgnoreCase(stereoTypeValue))
+            else if (StereotypeMessage.RESPONSE.toString().equalsIgnoreCase(stereoTypeValue))
             {
                 allActions.add(new AddInterface("messageProperties", "com.dell.cpsd.contract.extension.amqp.message.ResponseMessage"));
             } 

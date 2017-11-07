@@ -61,17 +61,6 @@ public class AddGenericInterface implements ClassAction
         JType fieldType = field.type();
         fieldType = unwrap(fieldType);
         JClass jGenericInterface = jInterface.narrow(fieldType);
-       /* System.out.println("Methods ==== "+jClass.methods());
-        JMethod setterMethod = null;
-        for(JMethod method: jClass.methods()){
-            String methodName = method.name();
-            System.out.println("--Method name ==== "+methodName);
-            if(methodName.startsWith("setReponseMessage") || methodName.startsWith("setRequestMessage") ){
-                System.out.println("Removing.................");
-                setterMethod = method;
-            }
-        }
-        jClass.methods().remove(setterMethod);*/
         return jClass._implements(jGenericInterface);
     }
 
