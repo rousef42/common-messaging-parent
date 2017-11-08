@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Ping",
+  "description": "Ping message",
+  "_meta": {
+    "message": "com.dell.cpsd.ping",
+    "version": "1.0"
+  },
+  "properties": {
+    "message": {
+      "type": "string",
+      "title": "Error code",
+      "description": "Message send with ping."
+    },
+    "messageProperties" : {
+      "type" : "object",
+      "$ref" : "ResponseMessageProperties.jsd"
+    }
+  },
+  "required": [
+    "message"
+  ]
+}
