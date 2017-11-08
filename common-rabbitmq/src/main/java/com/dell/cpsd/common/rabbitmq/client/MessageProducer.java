@@ -6,8 +6,7 @@ package com.dell.cpsd.common.rabbitmq.client;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.contract.extension.amqp.message.ResponseMessage;
 
 /**
  * MessageProducer - Interface for message producing related api's. Api's to send message to the message bus.
@@ -30,5 +29,5 @@ public interface MessageProducer
      * @exception IllegalArgumentException
      *                {@link IllegalArgumentException} - if the parameters passed are null/empty.
      */
-    void convertAndSend(String exchangeName, String routingKey, HasMessageProperties<? extends MessagePropertiesContainer> message);
+    void convertAndSend(String exchangeName, String routingKey, ResponseMessage message);
 }

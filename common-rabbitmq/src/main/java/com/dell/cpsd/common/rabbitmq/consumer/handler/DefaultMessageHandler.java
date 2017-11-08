@@ -5,16 +5,16 @@
 
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
-import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorContext;
-import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorTransformer;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
-import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
-import com.dell.cpsd.common.rabbitmq.validators.MessageValidator;
-import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
+
+import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorContext;
+import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorTransformer;
+import com.dell.cpsd.common.rabbitmq.message.visitor.CorrelationIdVisitor;
+import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
+import com.dell.cpsd.common.rabbitmq.validators.MessageValidator;
+import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
 
 /**
  * Validates message. Converts exception in case of error.
@@ -23,7 +23,7 @@ import org.springframework.amqp.core.Message;
  * Dell EMC Confidential/Proprietary Information
  * </p>
  */
-public abstract class DefaultMessageHandler<M extends HasMessageProperties<? extends MessagePropertiesContainer>>
+public abstract class DefaultMessageHandler<M extends com.dell.cpsd.contract.extension.amqp.message.Message>
         implements MessageHandler<M>
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -31,10 +31,11 @@ public abstract class DefaultMessageHandler<M extends HasMessageProperties<? ext
     protected Class<M>                                  messageClass;
     protected MessageValidator<M>                       validator;
     protected String                                    errorRoutingKeyPrefix;
-    protected ErrorTransformer<HasMessageProperties<?>> errorTransformer;
+    protected ErrorTransformer<com.dell.cpsd.contract.extension.amqp.message.Message> errorTransformer;
+    protected CorrelationIdVisitor correlationIdVisitor;
 
     public DefaultMessageHandler(Class<M> messageClass, MessageValidator<M> validator, String errorRoutingKeyPrefix,
-            ErrorTransformer<HasMessageProperties<?>> errorTransformer)
+            ErrorTransformer<com.dell.cpsd.contract.extension.amqp.message.Message> errorTransformer)
     {
         this.messageClass = messageClass;
         this.validator = validator;
@@ -63,17 +64,17 @@ public abstract class DefaultMessageHandler<M extends HasMessageProperties<? ext
             log.info("Finished processing message {} with correlationId [{}]", message.getClass().getSimpleName(),
                     getCorrelationId(message));
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
             log.error("Failed to process message {} with correlationId [{}]: {}", message.getClass().getSimpleName(),
-                    getCorrelationId(message), e.getMessage());
-            handleError(e, message);
+                    getCorrelationId(message), exception.getMessage());
+            handleError(exception, message);
         }
     }
 
     private Object getCorrelationId(M message)
     {
-        return message.getMessageProperties() == null ? null : message.getMessageProperties().getCorrelationId();
+        return message.accept(correlationIdVisitor);
     }
 
     protected void validate(M message) throws Exception
@@ -89,14 +90,14 @@ public abstract class DefaultMessageHandler<M extends HasMessageProperties<? ext
         }
     }
 
-    protected void handleError(Exception e, M message) throws Exception
+    protected void handleError(Exception exception, M message) throws Exception
     {
-        throw convertError(e, message);
+        throw convertError(exception, message);
     }
 
-    protected Exception convertError(Exception e, M message)
+    protected Exception convertError(Exception exception, M message)
     {
-        ErrorContext<HasMessageProperties<?>> context = new ErrorContext<>(message, errorRoutingKeyPrefix);
-        return errorTransformer.transform(e, context);
+        ErrorContext<com.dell.cpsd.contract.extension.amqp.message.Message> context = new ErrorContext<>(message, errorRoutingKeyPrefix);
+        return errorTransformer.transform(exception, context);
     }
 }

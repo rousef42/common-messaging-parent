@@ -8,8 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.contract.extension.amqp.message.ResponseMessage;
 
 /**
  * Impl Class for Send Message Service. Has three overloaded messages that can be utilized to send response Message
@@ -38,7 +37,7 @@ public class SendMessageServiceImpl implements SendMessageService
      */
     @Override
     public void sendMessage(String exchange, String replyToAddress, String responseKey,
-            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage) throws IllegalArgumentException
+            ResponseMessage responseMessage) throws IllegalArgumentException
     {
         messageProducer.convertAndSend(exchange, generateRequestRoutingKey(replyToAddress, responseKey, DEFAULT_REPLY_TO_PLACEHOLDER),
                 responseMessage);
@@ -49,7 +48,7 @@ public class SendMessageServiceImpl implements SendMessageService
      */
     @Override
     public void sendMessage(String exchange, String replyToAddress, String responseKey,
-            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, String placeHolder) throws IllegalArgumentException
+            ResponseMessage responseMessage, String placeHolder) throws IllegalArgumentException
     {
         messageProducer.convertAndSend(exchange, generateRequestRoutingKey(replyToAddress, responseKey, placeHolder), responseMessage);
     }
@@ -58,7 +57,7 @@ public class SendMessageServiceImpl implements SendMessageService
      * {@inheritDoc}
      */
     @Override
-    public void sendMessage(String exchange, String responseKey, HasMessageProperties<? extends MessagePropertiesContainer> responseMessage)
+    public void sendMessage(String exchange, String responseKey, ResponseMessage responseMessage)
     {
         messageProducer.convertAndSend(exchange, responseKey, responseMessage);
     }

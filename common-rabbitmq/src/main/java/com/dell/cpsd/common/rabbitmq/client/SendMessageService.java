@@ -4,16 +4,15 @@
 
 package com.dell.cpsd.common.rabbitmq.client;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.contract.extension.amqp.message.ResponseMessage;
 
 /**
  * Send Message Service, has three overloaded messages that can be utilized to send response Message
  * 
  *
- *         <p>
- *         Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
- *         </p>
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
+ * </p>
  */
 public interface SendMessageService
 {
@@ -33,7 +32,7 @@ public interface SendMessageService
      *             - Throws {@link IllegalArgumentException} if <b>responseKey</b> or <b>replyToAddress</b> is null
      */
     void sendMessage(String exchange, String replyToAddress, String responseKey,
-            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage) throws IllegalArgumentException;
+            ResponseMessage responseMessage);
 
     /**
      * This method will replace placeHolder in responseKey with the replyToAddress Send the message to the message bus
@@ -51,8 +50,8 @@ public interface SendMessageService
      * @throws IllegalArgumentException
      *             - Throws {@link IllegalArgumentException} if <b>responseKey</b> or <b>replyToAddress</b> or <b>placeHolder</b> is null
      */
-    void sendMessage(String exchange, String replyToAddress, String responseKey,
-            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, String placeHolder) throws IllegalArgumentException;
+    void sendMessage(String exchange, String replyToAddress, String responseKey, ResponseMessage responseMessage, String placeHolder)
+            throws IllegalArgumentException;
 
     /**
      * Send the message to the message bus. Here Consumer needs to pass a valid/unique Response Key. This Key should match with the response
@@ -66,6 +65,6 @@ public interface SendMessageService
      * @param responseMessage
      *            - {@link HasMessageProperties} - Response Message to be sent to Client
      */
-    void sendMessage(String exchange, String responseKey, HasMessageProperties<? extends MessagePropertiesContainer> responseMessage);
+    void sendMessage(String exchange, String responseKey, ResponseMessage responseMessage);
 
 }

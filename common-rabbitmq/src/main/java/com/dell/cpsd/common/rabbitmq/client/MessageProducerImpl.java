@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.contract.extension.amqp.message.ResponseMessage;
 
 /**
  * MessageProducerImpl provides Api's to send the messages to the message bus.
@@ -28,7 +27,7 @@ public class MessageProducerImpl implements MessageProducer
      * {@inheritDoc}
      */
     @Override
-    public void convertAndSend(String exchangeName, String routingKey, HasMessageProperties<? extends MessagePropertiesContainer> message)
+    public void convertAndSend(String exchangeName, String routingKey, ResponseMessage message)
     {
         Assert.notNull(message, "Message cannot be empty");
         Assert.hasText(routingKey, "Routing key cannot be empty");

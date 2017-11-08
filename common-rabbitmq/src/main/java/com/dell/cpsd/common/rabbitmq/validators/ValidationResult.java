@@ -42,6 +42,12 @@ public class ValidationResult
         this.errors.add(error);
         return this;
     }
+    
+    public ValidationResult addValidationResultErrors(ValidationResult validationResult)
+    {
+        this.errors.addAll(validationResult.getLocalizedErrors());
+        return this;
+    }
 
     /**
      * @return list of error messages
