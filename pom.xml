@@ -15,9 +15,9 @@
     <url>https://github.com/dellemc-symphony/common-messaging-parent</url>
 
     <parent>
-        <groupId>com.dell.cpsd</groupId>
+        <groupId>com.dell.temporary</groupId>
         <artifactId>root-parent</artifactId>
-        <version>1.0.1</version>
+        <version>0.2.7-SNAPSHOT</version>
     </parent>
 
     <properties>
