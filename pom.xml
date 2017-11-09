@@ -22,7 +22,7 @@
 
     <properties>
         <common-dependencies.version>1.2.0</common-dependencies.version>
-        <amqp-contract.extension.version>0.1.0-SNAPSHOT</amqp-contract.extension.version>
+        <amqp-contract.extension.version>1.0.0-SNAPSHOT</amqp-contract.extension.version>
     </properties>
 
     <licenses>

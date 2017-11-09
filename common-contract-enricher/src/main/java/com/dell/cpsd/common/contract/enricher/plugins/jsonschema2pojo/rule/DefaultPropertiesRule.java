@@ -28,9 +28,9 @@ import static java.util.Arrays.asList;
 public class DefaultPropertiesRule extends PropertiesRule
 {
     protected List<ClassAction> actions = asList(new AddInterface(asList("correlationId", "replyTo", "timestamp"),
-                    "com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer"),
+                    "com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer"),
             new AddInterface(asList("code", "message"), "com.dell.cpsd.contract.extension.amqp.message.ErrorContainer"),
-            new AddGenericInterface("messageProperties", "com.dell.cpsd.common.rabbitmq.message.HasMessageProperties"),
+            new AddGenericInterface("messageProperties", "com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties"),
             new AddGenericInterface("errors", "com.dell.cpsd.contract.extension.amqp.message.HasErrors").unwrapFieldType(List.class));
 
     public DefaultPropertiesRule(RuleFactory ruleFactory)

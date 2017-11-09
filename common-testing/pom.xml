@@ -110,11 +110,7 @@
             <artifactId>docker-compose-rule-junit4</artifactId>
             <version>0.32.0</version>
         </dependency>
-		  <dependency>
-                <groupId>com.dell.cpsd</groupId>
-                <artifactId>amqp-contract-extension</artifactId>
-                <scope>test</scope>
-          </dependency>
+
     </dependencies>
 
     <build>

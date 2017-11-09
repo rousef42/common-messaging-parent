@@ -60,8 +60,8 @@ public class DefaultPropertiesRuleTest
     {
         JCodeModel codeModel = new JCodeModel();
 
-        jClassGeneric = codeModel._class("com.dell.cpsd.common.rabbitmq.message.HasMessageProperties");
-        jClassInterface = codeModel._class("com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer");
+        jClassGeneric = codeModel._class("com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties");
+        jClassInterface = codeModel._class("com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer");
         ruleFactory = new RuleFactory();
         defaultPropertiesRule = new DefaultPropertiesRule(ruleFactory);
 
@@ -83,7 +83,7 @@ public class DefaultPropertiesRuleTest
 
         Iterator<JClass> interfaces = jClassGeneric._implements();
         assertTrue(interfaces.hasNext());
-        assertEquals("com.dell.cpsd.common.rabbitmq.message.HasMessageProperties<java.lang.String>", interfaces.next().fullName());
+        assertEquals("com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties<java.lang.String>", interfaces.next().fullName());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class DefaultPropertiesRuleTest
 
         Iterator<JClass> interfaces = jClassInterface._implements();
         assertTrue(interfaces.hasNext());
-        assertEquals("com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer", interfaces.next().fullName());
+        assertEquals("com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer", interfaces.next().fullName());
     }
 
 }
