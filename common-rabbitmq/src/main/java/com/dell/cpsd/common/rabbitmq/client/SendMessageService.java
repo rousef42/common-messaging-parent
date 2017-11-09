@@ -4,8 +4,8 @@
 
 package com.dell.cpsd.common.rabbitmq.client;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * Send Message Service, has three overloaded messages that can be utilized to send response Message

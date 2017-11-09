@@ -4,6 +4,9 @@
 
 package com.dell.cpsd.common.rabbitmq.client;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Date;
 
 import org.junit.FixMethodOrder;
@@ -21,11 +24,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * Integration test class for the APIs provided by SendMessageService

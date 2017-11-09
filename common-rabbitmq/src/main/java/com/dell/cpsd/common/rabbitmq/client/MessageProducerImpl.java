@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * MessageProducerImpl provides Api's to send the messages to the message bus.

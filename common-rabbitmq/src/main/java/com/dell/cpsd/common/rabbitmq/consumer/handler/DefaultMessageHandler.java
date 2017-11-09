@@ -5,16 +5,17 @@
 
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
-import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorContext;
-import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorTransformer;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
-import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
-import com.dell.cpsd.common.rabbitmq.validators.MessageValidator;
-import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
+
+import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorContext;
+import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorTransformer;
+import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
+import com.dell.cpsd.common.rabbitmq.validators.MessageValidator;
+import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * Validates message. Converts exception in case of error.

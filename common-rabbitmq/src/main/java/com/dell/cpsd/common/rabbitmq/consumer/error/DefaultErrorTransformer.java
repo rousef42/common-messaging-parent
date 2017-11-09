@@ -22,12 +22,12 @@ import org.slf4j.LoggerFactory;
 import com.dell.cpsd.common.rabbitmq.exceptions.RabbitMQException;
 import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
 import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorsProvider;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
 import com.dell.cpsd.contract.extension.amqp.message.ErrorContainer;
 import com.dell.cpsd.contract.extension.amqp.message.HasErrors;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * Creates ResponseMessageException using standard approach from

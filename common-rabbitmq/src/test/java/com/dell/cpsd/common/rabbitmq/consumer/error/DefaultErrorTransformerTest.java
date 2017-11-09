@@ -20,12 +20,12 @@ import com.dell.cpsd.common.rabbitmq.TestErrorMessage;
 import com.dell.cpsd.common.rabbitmq.TestRequestMessage;
 import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
 import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorsProvider;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseDetails;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
 import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
 import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 
 /**
  * <p>

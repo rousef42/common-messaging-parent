@@ -5,9 +5,9 @@
 
 package com.dell.cpsd.common.rabbitmq;
 
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
-
 import java.util.Date;
+
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * <p>
