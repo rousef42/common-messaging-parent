@@ -77,7 +77,7 @@ public class DefaultPropertiesRule extends PropertiesRule
             {
                 allActions.add(new AddInterface("messageProperties", "com.dell.cpsd.contract.extension.amqp.message.RequestMessage"));
             }
-            else if ("RESPONSE".equalsIgnoreCase(stereoTypeValue))
+            else if (StereotypeMessage.RESPONSE.toString().equalsIgnoreCase(stereoTypeValue))
             {
                 allActions.add(new AddInterface("messageProperties", "com.dell.cpsd.contract.extension.amqp.message.ResponseMessage"));
             } 
