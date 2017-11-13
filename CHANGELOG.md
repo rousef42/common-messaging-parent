@@ -5,11 +5,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
 ### Added
  - Configuration bean classes that can be activated and consumed using spring boot common-rabbitmq-starter project
  	ConsumerConfig - Beans for default ```simpleMessageListenerContainer``` and ```rabbitListenerContainerFactory```
 	RabbitConfig - Beans for default ```rabbitTemplete```, ```rabbitAdmin``` and ```messageConverter```
 
+## [2.2.0] - 2017-11-09
+
+### Changed
+ -  Deprecated the following Java classes
+	```	Message
+		MessageContentType
+		MessageError
+		MessageEvent
+		MessageReply
+		MessageRequest
+		MessageStereotype
+		ErrorContainer
+		HasCorrelationId
+		HasErrors
+		HasMessageProperties
+		HasReplyTo
+		HasTimestamp
+		MessagePropertiesContainer
+	```	
 ## [2.1.0] - 2017-09-19
 
 ### Added
