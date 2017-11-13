@@ -29,6 +29,9 @@ import com.sun.codemodel.JMethod;
  */
 public class MessageAnnotator extends AbstractAnnotator
 {
+    
+    private static final String MESSAGE_PROPERTIES = "messageProperties";
+    
     public MessageAnnotator()
     {
         super();
@@ -45,12 +48,12 @@ public class MessageAnnotator extends AbstractAnnotator
         }
     }
     
-    @Override
+  /*  @Override
     public void propertyGetter(JMethod getter, String propertyName) {
-        if("messageProperties".equals(propertyName.trim())){
+        if(MESSAGE_PROPERTIES.equals(propertyName.trim())){
             getter.annotate(Override.class);
         }
-    }
+    }*/
 
     private void annotateMessage(JDefinedClass clazz, JsonNode meta)
     {

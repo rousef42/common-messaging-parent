@@ -10,7 +10,11 @@ import org.jsonschema2pojo.rules.RuleFactory;
 
 import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.DefaultPropertiesRule;
 import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.DefaultPropertyRule;
+import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.DefaultSchemaRule;
+import com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.DefaultTypeRule;
+import com.sun.codemodel.JClassContainer;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JType;
 
 /**
  * Provides factory to create default rules.
@@ -31,5 +35,17 @@ public class DefaultRuleFactory extends RuleFactory
     public Rule<JDefinedClass, JDefinedClass> getPropertyRule()
     {
         return new DefaultPropertyRule(this);
+    }
+    
+    @Override
+    public Rule<JClassContainer, JType> getSchemaRule()
+    {
+        return new DefaultSchemaRule(this);
+    }
+    
+    @Override
+    public Rule<JClassContainer, JType> getTypeRule()
+    {
+        return new DefaultTypeRule(this);
     }
 }

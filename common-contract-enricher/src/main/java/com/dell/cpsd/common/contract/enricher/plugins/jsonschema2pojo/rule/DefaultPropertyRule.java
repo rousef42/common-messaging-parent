@@ -12,10 +12,13 @@ import org.jsonschema2pojo.rules.RuleFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JBlock;
+import com.sun.codemodel.JClass;
+import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JDocCommentable;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JFormatter;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.JType;
@@ -155,6 +158,63 @@ public class DefaultPropertyRule extends PropertyRule
 
     private JMethod addGetter(JDefinedClass c, JFieldVar field, String jsonPropertyName, JsonNode node)
     {
+       /* 
+        String fieldTypeName = field.type().name();
+       
+        if (MESSAGE_PROPERTIES.equals(jsonPropertyName.trim()))
+        {
+            field.type(new JType()
+            {
+                
+                @Override
+                public void generate(JFormatter f)
+                {
+                    field.type().g
+                }
+                
+                @Override
+                public JType unboxify()
+                {
+                    return field.type().unboxify();
+                }
+                
+                @Override
+                public JCodeModel owner()
+                {
+                    return field.type().owner();
+                }
+                
+                @Override
+                public String name()
+                {
+                    return fieldTypeName;
+                }
+                
+                @Override
+                public String fullName()
+                {
+                    String fullyQualifiedClassName = null;
+                    if("RequestMessageProperties".equalsIgnoreCase(field.type().name().trim())){
+                        fullyQualifiedClassName = "com.dell.cpsd.contract.extension.amqp.RequestMessageProperties";
+                    } else if ("ResponseMessageProperties".equalsIgnoreCase(field.type().name().trim())){
+                        fullyQualifiedClassName = "com.dell.cpsd.contract.extension.amqp.ResponseMessageProperties";
+                    }
+                    return fullyQualifiedClassName;
+                }
+                
+                @Override
+                public JClass boxify()
+                {
+                    return field.type().boxify();
+                }
+                
+                @Override
+                public JClass array()
+                {
+                    return field.type().array();
+                }
+            });
+        }*/
         JMethod getter = c.method(JMod.PUBLIC, field.type(), getGetterName(jsonPropertyName, field.type(), node));
         JBlock body = getter.body();
         body._return(field);

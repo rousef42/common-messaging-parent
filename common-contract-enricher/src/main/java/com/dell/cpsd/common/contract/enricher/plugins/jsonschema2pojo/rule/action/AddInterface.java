@@ -8,6 +8,8 @@ package com.dell.cpsd.common.contract.enricher.plugins.jsonschema2pojo.rule.acti
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JType;
 
 import java.util.List;
 
@@ -45,8 +47,24 @@ public class AddInterface implements ClassAction
     @Override
     public JDefinedClass apply(JDefinedClass jClass)
     {
+        //jClass.owner().
         JCodeModel codeModel = jClass.owner();
+        codeModel._ref(com.dell.cpsd.contract.extension.amqp.RequestMessageProperties.class); 
         JClass jInterface = codeModel.directClass(interfaceName);
-        return jClass._implements(jInterface);
+        JDefinedClass _implements = jClass._implements(jInterface);
+        
+        
+        _implements.direct("private String TEST;");
+        
+        _implements.generify("com.dell.cpsd.contract.extension.amqp.ResponseMessageProperties");
+        _implements.erasure();
+        JFieldVar field = _implements.fields().get(requiredProperties.get(0));
+        JType fieldType = field.type();
+       // fieldType = unwrap(fieldType);
+        
+        
+        fieldType.owner()._package("com.dell.cpsd.contract.extension.amqp");
+        
+         return _implements;
     }
 }

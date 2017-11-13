@@ -61,6 +61,7 @@ public class AddGenericInterface implements ClassAction
         JType fieldType = field.type();
         fieldType = unwrap(fieldType);
         JClass jGenericInterface = jInterface.narrow(fieldType);
+        jClass.direct("private String TEST123;");
         return jClass._implements(jGenericInterface);
     }
 
