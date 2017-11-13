@@ -28,7 +28,7 @@ import com.dell.cpsd.contract.extension.amqp.annotation.Message;
 public class MessageAnnotationProcessor
 {
     private static final String DEFAULT_PACKAGE_TO_SCAN = "com.dell.cpsd";
-    private Logger                      LOG                     = LoggerFactory.getLogger(MessageAnnotationProcessor.class);
+    private static final Logger log                     = LoggerFactory.getLogger(MessageAnnotationProcessor.class);
 
     /**
      * Called to process the list of classes.
@@ -69,7 +69,7 @@ public class MessageAnnotationProcessor
         classPathScanner.addIncludeFilter(new AnnotationTypeFilter(Message.class));
 
         Set<BeanDefinition> beanDefinitions = classPathScanner.findCandidateComponents(packageToBeScanned);
-        
+
         beanDefinitions.forEach(beanDefinition -> {
             String beanClassName = beanDefinition.getBeanClassName();
             try
@@ -79,8 +79,9 @@ public class MessageAnnotationProcessor
             catch (ClassNotFoundException classNotFoundException)
             {
                 // This exception will never be thrown. We are initially scanning the classloaders and getting the names of classes with the
-                // annotation and using the same class we found in Class.forName() method. Hence, we will never get class not found exception.
-                LOG.error("Class of name" + beanClassName + " with @Message annotation could not be loaded");
+                // annotation and using the same class we found in Class.forName() method. Hence, we will never get class not found
+                // exception. Hence, cannot be tested.
+                log.error("Class of name" + beanClassName + " with @Message annotation could not be loaded", classNotFoundException);
             }
         });
     }

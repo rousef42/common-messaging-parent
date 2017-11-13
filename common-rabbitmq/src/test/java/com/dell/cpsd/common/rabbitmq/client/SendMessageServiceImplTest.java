@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
@@ -54,15 +54,12 @@ public class SendMessageServiceImplTest
             @Override
             public MessagePropertiesContainer getMessageProperties()
             {
-                // TODO Auto-generated method stub
                 return null;
             }
 
             @Override
             public void setMessageProperties(MessagePropertiesContainer messageProperties)
             {
-                // TODO Auto-generated method stub
-                
             }
         };
     }

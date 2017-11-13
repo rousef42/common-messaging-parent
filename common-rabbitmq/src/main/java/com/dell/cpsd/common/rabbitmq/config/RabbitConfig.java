@@ -203,7 +203,6 @@ public class RabbitConfig
      * 
      * @return {@link Queue}
      */
-    // TODO: To be moved to capability execution starter
     @Bean
     @ConditionalOnProperty(name = "queue.dell.cpsd.response.name")
     public Queue responseQueue()
