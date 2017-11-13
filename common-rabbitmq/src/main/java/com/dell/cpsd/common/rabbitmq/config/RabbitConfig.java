@@ -56,8 +56,7 @@ public class RabbitConfig
     private PropertiesConfig    propertiesConfig;
 
     /**
-     * @return The <code>ConnectionFactory</code> to use. 
-     * TODO: common-rabbitmq version 2.1.0 introduced {@link RabbitMQTLSFactoryBean} to
+     * @return The <code>ConnectionFactory</code> to use. TODO: common-rabbitmq version 2.1.0 introduced {@link RabbitMQTLSFactoryBean} to
      *         create the connection factory. Consumption of this TLS change would require infrastructure and environment updates and hence
      *         these are not ready for consumption. As a temporary fix till the infrastructure updates are completed, we are creating the
      *         connection factory using the deprecated {@link TLSConnectionFactory}. This bean needs to be REMOVED once we move to the new

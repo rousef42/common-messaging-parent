@@ -54,7 +54,7 @@ public class ConsumerConfig
     private Queue             responseQueue;
 
     @Autowired
-    private MessageConverter          messageConverter;
+    private MessageConverter  messageConverter;
 
     /**
      * creates bean for SimpleMessageListenerContainer
@@ -62,7 +62,7 @@ public class ConsumerConfig
      * @return {@link SimpleMessageListenerContainer}
      */
     @Bean
-    @ConditionalOnBean(name="responseQueue")
+    @ConditionalOnBean(name = "responseQueue")
     public SimpleMessageListenerContainer simpleMessageListenerContainer()
     {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
