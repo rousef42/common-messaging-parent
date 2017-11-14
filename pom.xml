@@ -26,6 +26,7 @@
         <!-- TODO: Spring boot autoconfigure to be added to common-dependencies and below entry to be removed after the addition to common-dependencies . -->
         <plugin-maven-compiler-version>3.3</plugin-maven-compiler-version>
         <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+        <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     </properties>
 
     <licenses>
