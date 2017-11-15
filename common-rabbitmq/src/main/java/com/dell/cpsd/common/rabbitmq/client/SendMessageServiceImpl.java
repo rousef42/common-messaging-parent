@@ -15,9 +15,9 @@ import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
  * Impl Class for Send Message Service. Has three overloaded messages that can be utilized to send response Message
  * 
  *
- *         <p>
- *         Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
- *         </p>
+ * <p>
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
+ * </p>
  */
 @Service("sendMessageService")
 public class SendMessageServiceImpl implements SendMessageService

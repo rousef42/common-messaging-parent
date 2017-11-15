@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.dell.cpsd.common.rabbitmq.config.RabbitMQPropertiesConfig;
-
 /**
  * The configuration for the client.This class will fetch the rabbitmq properties from the properties file and creates a bean out of it.
  * <p>

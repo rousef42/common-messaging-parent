@@ -26,7 +26,7 @@ public class HandlerRegistrar
     private SimpleMessageListenerContainer simpleMessageListenerContainer;
 
     @Autowired
-    private MessageConverter       messageConverter;
+    private MessageConverter               messageConverter;
 
     /**
      * Bean of type {@link DefaultMessageListener}.
