@@ -5,20 +5,21 @@
 
 package com.dell.cpsd.common.rabbitmq.consumer.handler;
 
-import com.dell.cpsd.common.rabbitmq.TestRequestMessage;
-import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorTransformer;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
-import com.dell.cpsd.common.rabbitmq.validators.MessageValidator;
-import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
+import java.util.function.Consumer;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.function.Consumer;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import com.dell.cpsd.common.rabbitmq.TestRequestMessage;
+import com.dell.cpsd.common.rabbitmq.consumer.error.ErrorTransformer;
+import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
+import com.dell.cpsd.common.rabbitmq.validators.MessageValidator;
+import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 
 /**
  * <p>

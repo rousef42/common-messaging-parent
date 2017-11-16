@@ -5,8 +5,8 @@
 
 package com.dell.cpsd.common.rabbitmq.context.builder;
 
-import com.dell.cpsd.common.rabbitmq.annotation.Message;
-import com.dell.cpsd.common.rabbitmq.annotation.stereotypes.MessageReply;
+import com.dell.cpsd.contract.extension.amqp.annotation.Message;
+import com.dell.cpsd.contract.extension.amqp.annotation.stereotypes.ReplyMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since 1.0
  */
 @Message(value = "test.message.reply", version = "1.0")
-@MessageReply
+@ReplyMessage
 public class TestReplyMessage
 {
     @JsonProperty("correlationId")

@@ -5,28 +5,29 @@
 
 package com.dell.cpsd.common.rabbitmq.consumer.error;
 
-import com.dell.cpsd.common.rabbitmq.exceptions.RabbitMQException;
-import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
-import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorsProvider;
-import com.dell.cpsd.common.rabbitmq.message.ErrorContainer;
-import com.dell.cpsd.common.rabbitmq.message.HasErrors;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
-import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
-import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_FAILED_E;
+import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_NO_PROPERTY_E;
+import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_UNEXPECTED_ERROR_E;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_FAILED_E;
-import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_NO_PROPERTY_E;
-import static com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode.ERROR_RESPONSE_UNEXPECTED_ERROR_E;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.dell.cpsd.common.rabbitmq.exceptions.RabbitMQException;
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
+import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorsProvider;
+import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
+import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
+import com.dell.cpsd.contract.extension.amqp.message.ErrorContainer;
+import com.dell.cpsd.contract.extension.amqp.message.HasErrors;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * Creates ResponseMessageException using standard approach from

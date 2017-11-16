@@ -5,10 +5,10 @@
 
 package com.dell.cpsd.common.rabbitmq.registration.notifier.message;
 
-import com.dell.cpsd.common.rabbitmq.annotation.Message;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Date;
+
+import com.dell.cpsd.contract.extension.amqp.annotation.Message;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * <p>

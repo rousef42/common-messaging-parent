@@ -5,8 +5,8 @@
 
 package com.dell.cpsd.common.rabbitmq.validators;
 
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-import com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
+import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * Default implementation of message validator.

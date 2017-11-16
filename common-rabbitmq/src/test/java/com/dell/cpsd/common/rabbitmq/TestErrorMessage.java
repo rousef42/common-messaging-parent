@@ -5,10 +5,10 @@
 
 package com.dell.cpsd.common.rabbitmq;
 
-import com.dell.cpsd.common.rabbitmq.message.HasErrors;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
-
 import java.util.List;
+
+import com.dell.cpsd.contract.extension.amqp.message.HasErrors;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 
 /**
  * <p>

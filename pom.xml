@@ -7,7 +7,7 @@
 
     <groupId>com.dell.cpsd</groupId>
     <artifactId>common-messaging-parent</artifactId>
-    <version>2.2.0-SNAPSHOT</version>
+    <version>2.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Common Messaging Parent</name>
@@ -22,6 +22,11 @@
 
     <properties>
         <common-dependencies.version>1.2.0</common-dependencies.version>
+        <amqp-contract.extension.version>1.0.0-SNAPSHOT</amqp-contract.extension.version>
+        <!-- TODO: Spring boot autoconfigure to be added to common-dependencies and below entry to be removed after the addition to common-dependencies . -->
+        <plugin-maven-compiler-version>3.3</plugin-maven-compiler-version>
+        <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+        <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     </properties>
 
     <licenses>
@@ -98,6 +103,12 @@
             <organization>com.dell.cpsd</organization>
             <organizationUrl>https://github.com/joz73</organizationUrl>
         </developer>
+        <developer>
+			<name>Srikanth M</name>
+			<email>srikanth.madhavan@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/madhas8</organizationUrl>
+		</developer>
     </developers>
 
     <scm>
@@ -112,6 +123,7 @@
         <module>common-rabbitmq</module>
         <module>common-contract-enricher</module>
         <module>common-testing</module>
+        <module>common-rabbitmq-starter</module>
     </modules>
 
     <dependencyManagement>
@@ -133,6 +145,17 @@
                 <artifactId>common-contract-enricher</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!-- TODO: Spring boot autoconfigure to be added to common-dependencies and below entry to be removed after the addition to common-dependencies . -->
+            <dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-autoconfigure</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+			  <dependency>
+                <groupId>com.dell.cpsd</groupId>
+                <artifactId>amqp-contract-extension</artifactId>
+                <version>${amqp-contract.extension.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -141,13 +164,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>${plugin-maven-compiler-version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -5,26 +5,27 @@
 
 package com.dell.cpsd.common.rabbitmq.consumer.error;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.dell.cpsd.common.rabbitmq.Error;
 import com.dell.cpsd.common.rabbitmq.TestErrorMessage;
 import com.dell.cpsd.common.rabbitmq.TestRequestMessage;
 import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedError;
 import com.dell.cpsd.common.rabbitmq.i18n.error.LocalizedErrorsProvider;
-import com.dell.cpsd.common.rabbitmq.message.HasMessageProperties;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ErrorResponseException;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseDetails;
 import com.dell.cpsd.common.rabbitmq.retrypolicy.exception.ResponseMessageException;
 import com.dell.cpsd.common.rabbitmq.validators.MessageValidationException;
 import com.dell.cpsd.common.rabbitmq.validators.ValidationResult;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 
 /**
  * <p>

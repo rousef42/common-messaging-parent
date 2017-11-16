@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.dell.cpsd</groupId>
         <artifactId>common-messaging-parent</artifactId>
-        <version>2.2.0-SNAPSHOT</version>
+        <version>2.3.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.dell.cpsd</groupId>
@@ -22,7 +22,7 @@
 
     <properties>
         <qpid-version>0.28</qpid-version>
-        <test-everit-json-schema-version>1.5.1</test-everit-json-schema-version>
+        <docker-compose-rule-junit4.version>0.32.0</docker-compose-rule-junit4.version>
     </properties>
 
     <dependencies>
@@ -68,7 +68,6 @@
         <dependency>
             <groupId>org.everit.json</groupId>
             <artifactId>org.everit.json.schema</artifactId>
-            <version>${test-everit-json-schema-version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -108,7 +107,7 @@
         <dependency>
             <groupId>com.palantir.docker.compose</groupId>
             <artifactId>docker-compose-rule-junit4</artifactId>
-            <version>0.32.0</version>
+            <version>${docker-compose-rule-junit4.version}</version>
         </dependency>
 
     </dependencies>
@@ -118,17 +117,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -145,12 +141,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-failsafe-plugin.version}</version>
             </plugin>
         </plugins>
         <resources>

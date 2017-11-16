@@ -36,7 +36,7 @@ public class MessageAnnotatorTest
     @Before
     public void setUp() throws JClassAlreadyExistsException{
         JCodeModel codeModel = new JCodeModel();
-        jDefinedClass = codeModel._class("com.dell.cpsd.common.rabbitmq.message.MessagePropertiesContainer");
+        jDefinedClass = codeModel._class("com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer");
         messageAnnotator = new MessageAnnotator();
     }
       

@@ -5,10 +5,10 @@
 
 package com.dell.cpsd.common.rabbitmq.message;
 
-import org.springframework.amqp.core.MessageProperties;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+
+import org.springframework.amqp.core.MessageProperties;
 
 /**
  * This helper class for message properties.
