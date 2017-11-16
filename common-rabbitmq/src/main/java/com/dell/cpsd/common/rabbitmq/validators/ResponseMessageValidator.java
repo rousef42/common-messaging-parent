@@ -8,17 +8,19 @@ import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
- * Default implementation of message validator.
- * <p>
+ * Validator implementation of Response message.
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
+ * 
+ * @param <M>
+ *            - Message class to be validated
  */
-public class DefaultMessageValidator<M extends HasMessageProperties<? extends MessagePropertiesContainer>>
+public class ResponseMessageValidator<M extends HasMessageProperties<? extends MessagePropertiesContainer>>
         extends GenericMessageValidator<M>
 {
     /**
-     * Validates MessageProperties (Non Null), correlationId(Non Blank) and replyTo(Non Blank)
+     * Validates MessageProperties (non null) and correlationId(Non Blank)
      */
     @Override
     protected void validateMessage(M message, ValidationResult validationResult) throws Exception
@@ -28,7 +30,6 @@ public class DefaultMessageValidator<M extends HasMessageProperties<? extends Me
         if (properties != null)
         {
             validateNotEmpty(properties.getCorrelationId(), "correlationId", validationResult);
-            validateNotEmpty(properties.getReplyTo(), "replyTo", validationResult);
         }
     }
 }
