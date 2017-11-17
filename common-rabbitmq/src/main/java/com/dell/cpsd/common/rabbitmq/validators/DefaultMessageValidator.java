@@ -13,6 +13,9 @@ import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
+ * 
+ * @param <M> - Message to be validated
+ * @deprecated Use {@link RequestMessageValidator}, {@link ResponseMessageValidator} or {@link EventMessageValidator}
  */
 public class DefaultMessageValidator<M extends HasMessageProperties<? extends MessagePropertiesContainer>>
         extends GenericMessageValidator<M>
