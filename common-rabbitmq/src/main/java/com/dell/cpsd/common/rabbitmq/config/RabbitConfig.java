@@ -133,8 +133,6 @@ public class RabbitConfig
 
         final ObjectMapper objectMapper = new ObjectMapper();
 
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-
         // use ISO8601 format for dates
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         messageConverter.setJsonObjectMapper(objectMapper);
