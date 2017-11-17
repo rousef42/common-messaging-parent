@@ -8,16 +8,15 @@ import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
- * Default implementation of message validator.
- * <p>
+ * Validator implementation of Request message.
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
  * 
- * @param <M> - Message to be validated
- * @deprecated Use {@link RequestMessageValidator}, {@link ResponseMessageValidator} or {@link EventMessageValidator}
+ * @param <M>
+ *            - Message class to be validated
  */
-public class DefaultMessageValidator<M extends HasMessageProperties<? extends MessagePropertiesContainer>>
+public class RequestMessageValidator<M extends HasMessageProperties<? extends MessagePropertiesContainer>>
         extends GenericMessageValidator<M>
 {
     /**

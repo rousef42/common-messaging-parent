@@ -17,7 +17,7 @@ import com.dell.cpsd.annotation.message.test.data.TestMessageForAutoAnnotationSc
 import com.dell.cpsd.contract.extension.amqp.annotation.Message;
 
 /**
- * TODO: Document usage. Set proper Vision version in since tag.
+ * Unit Tests for MessageAnnotationProcessorTest
  *
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
