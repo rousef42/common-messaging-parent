@@ -4,6 +4,8 @@
 
 package com.dell.cpsd.common.rabbitmq.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,8 +26,10 @@ import com.dell.cpsd.common.rabbitmq.config.RabbitMQPropertiesConfig;
 import com.dell.cpsd.common.rabbitmq.config.RabbitMqProductionConfig;
 import com.dell.cpsd.common.rabbitmq.connectors.RabbitMQCachingConnectionFactory;
 import com.dell.cpsd.common.rabbitmq.connectors.RabbitMQTLSFactoryBean;
+import com.dell.cpsd.common.rabbitmq.log.RabbitMQMessageCode;
 import com.dell.cpsd.common.rabbitmq.registration.notifier.config.RegistrationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.DefaultSaslConfig;
 
 /**
  * The class contains all the related configurations required to run integration tests
@@ -41,6 +45,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Import({RabbitConfig.class, PropertiesConfig.class,ConsumerConfig.class, RabbitMqProductionConfig.class,RegistrationConfig.class})
 public class IntegrationTestConfig
 {
+    private static final Logger       LOGGER = LoggerFactory.getLogger(RabbitMqProductionConfig.class);
+
     /*
      * The configuration properties for the client.
      */
@@ -49,8 +55,6 @@ public class IntegrationTestConfig
 
     /**
      * @return The <code>ConnectionFactory</code> to use.
-     * @since SINCE-TBD TODO: Reuse the config from RabbitMqProductionConfig. Currently that bean is set to production profile and hence
-     *        cannot be used.
      */
     @Bean
     @Qualifier("rabbitConnectionFactory")
@@ -58,24 +62,20 @@ public class IntegrationTestConfig
     {
         RabbitMQCachingConnectionFactory cachingCF = null;
         com.rabbitmq.client.ConnectionFactory connectionFactory;
-
-        try
-        {
-            if (propertiesConfig.isSslEnabled())
-            {
+        try {
+            if (propertiesConfig.isSslEnabled()) {
                 RabbitMQTLSFactoryBean rabbitMQTLSFactoryBean = new RabbitMQTLSFactoryBean(propertiesConfig);
                 connectionFactory = rabbitMQTLSFactoryBean.getObject();
-            }
-            else
-            {
+                cachingCF = new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
+                cachingCF.getRabbitConnectionFactory().setSaslConfig(DefaultSaslConfig.EXTERNAL);
+            } else {
                 connectionFactory = new com.rabbitmq.client.ConnectionFactory();
+                cachingCF = new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
             }
-
-            cachingCF = new RabbitMQCachingConnectionFactory(connectionFactory, propertiesConfig);
-        }
-        catch (Exception exception)
+        } catch (Exception exception)
         {
-            exception.printStackTrace();
+            Object[] lparams = {exception.getMessage()};
+            LOGGER.error(RabbitMQMessageCode.ERROR_RESPONSE_UNEXPECTED_ERROR_E.getMessageCode(), lparams, exception);
         }
         return cachingCF;
     }
