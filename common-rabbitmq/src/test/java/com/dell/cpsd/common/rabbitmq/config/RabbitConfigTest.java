@@ -4,7 +4,6 @@
 
 package com.dell.cpsd.common.rabbitmq.config;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
@@ -13,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -37,6 +35,9 @@ public class RabbitConfigTest
     
     @Mock
     private PropertiesConfig propertiesConfig;
+    
+    @Mock
+    private ConnectionFactory connectionFactory;
 
     @Before
     public void setUp() throws Exception
@@ -90,16 +91,6 @@ public class RabbitConfigTest
         assertNotNull(amqpAdmin);
     }
     
-    /**
-     * Test rabbitConnectionFactory bean creation config
-     */
-    @Test
-    public void testProductionCachingConnectionFactory(){
-        Mockito.when(propertiesConfig.isSslEnabled()).thenReturn(true);
-        ConnectionFactory connectionFactory =  classUnderTest.productionCachingConnectionFactory();
-        assertNotNull(connectionFactory);
-    }
-
     /**
      * Test classMapper bean creation config
      */
