@@ -143,7 +143,7 @@ public class SendMessageServiceImplTest
     @Test(expected = IllegalArgumentException.class)
     public void testSendMessageForNull_placeHolderMethodTwo() throws IllegalArgumentException
     {
-        classUnderTest.sendMessage(exchange, replyToAddress, responseKey, responseMessage, null);
+        classUnderTest.sendMessage(exchange, replyToAddress, responseKey, responseMessage, "");
     }
 
     /**
