@@ -31,4 +31,22 @@ public interface MessageProducer
      *                {@link IllegalArgumentException} - if the parameters passed are null/empty.
      */
     void convertAndSend(String exchangeName, String routingKey, HasMessageProperties<? extends MessagePropertiesContainer> message);
+
+    /**
+     * Invokes the convertAndSend() method of {@link RabbitTemplate} that converts the object to Message object and sends. This method uses
+     * the rabbitTemplate passed by the user.
+     * 
+     * @param message
+     *            {@link HasMessageProperties} - request message
+     * @param routingKey
+     *            {@link String} - routing key
+     * @param exchangeName
+     *            {@link String} - exchange name
+     * @param rabbitTemplate
+     *            {@link RabbitTemplate} - rabbit template
+     * @exception IllegalArgumentException
+     *                {@link IllegalArgumentException} - if the parameters passed are null/empty.
+     */
+    void convertAndSend(String exchangeName, String routingKey, HasMessageProperties<? extends MessagePropertiesContainer> message,
+            RabbitTemplate rabbitTemplate);
 }

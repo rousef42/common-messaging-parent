@@ -33,7 +33,20 @@ public class MessageProducerImpl implements MessageProducer
         Assert.notNull(message, "Message cannot be empty");
         Assert.hasText(routingKey, "Routing key cannot be empty");
         Assert.hasText(exchangeName, "Exchange name cannot be empty");
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, message);
+        this.rabbitTemplate.convertAndSend(exchangeName, routingKey, message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void convertAndSend(String exchangeName, String routingKey, HasMessageProperties<? extends MessagePropertiesContainer> message,
+            RabbitTemplate typedObjectRabbitTemplate)
+    {
+        Assert.notNull(message, "Message cannot be empty");
+        Assert.hasText(routingKey, "Routing key cannot be empty");
+        Assert.hasText(exchangeName, "Exchange name cannot be empty");
+        typedObjectRabbitTemplate.convertAndSend(exchangeName, routingKey, message);
+    }
+    
 }

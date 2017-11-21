@@ -40,7 +40,7 @@ import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyAdvice;
  */
 @Configuration
 @AutoConfigureAfter(RabbitConfig.class)
-@ComponentScan(basePackages="com.dell.cpsd.common.rabbitmq.client")
+@ComponentScan(basePackages = "com.dell.cpsd.common.rabbitmq.client")
 public class ConsumerConfig
 {
     @Autowired
@@ -57,6 +57,10 @@ public class ConsumerConfig
 
     @Autowired
     private MessageConverter  messageConverter;
+
+    @Autowired
+    @Qualifier("objectTypedMessageConverter")
+    private MessageConverter  objectTypedMessageConverter;
 
     /**
      * creates bean for SimpleMessageListenerContainer
@@ -103,6 +107,25 @@ public class ConsumerConfig
         factory.setAdviceChain(new Advice[] {retryPolicyAdvice()});
         factory.setErrorHandler(new DefaultContainerErrorHandler("simpleRabbitListenerContainerFactory"));
         factory.setMessageConverter(messageConverter);
+        return factory;
+    }
+
+    /**
+     * Creates bean for simpleRabbitListenerContainerFactoryForLongRunningRequests
+     * 
+     * @param connectionFactory
+     *            - {@link ConnectionFactory}
+     * @return SimpleRabbitListenerContainerFactory - {@link SimpleRabbitListenerContainerFactory}
+     */
+    @Bean
+    public RabbitListenerContainerFactory<SimpleMessageListenerContainer> simpleRabbitListenerContainerFactoryForLongRunningRequests()
+    {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(rabbitConnectionFactory);
+        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        factory.setAdviceChain(new Advice[] {retryPolicyAdvice()});
+        factory.setErrorHandler(new DefaultContainerErrorHandler("simpleRabbitListenerContainerFactory"));
+        factory.setMessageConverter(objectTypedMessageConverter);
         return factory;
     }
 

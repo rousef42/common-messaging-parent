@@ -4,6 +4,8 @@
 
 package com.dell.cpsd.common.rabbitmq.client;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
 import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
@@ -67,5 +69,26 @@ public interface SendMessageService
      *            - {@link HasMessageProperties} - Response Message to be sent to Client
      */
     void sendMessage(String exchange, String responseKey, HasMessageProperties<? extends MessagePropertiesContainer> responseMessage);
+
+    /**
+     * This method will replace "{replyTo}" in responseKey with the replyToAddress Send the message to the message bus. User defined rabbit
+     * template is used to send the message.
+     * 
+     * @param exchange
+     *            - {@link String} - Response Exchange of Consumer
+     * @param replyToAddress
+     *            - {@link String} - Reply To Address of Client
+     * @param responseKey
+     *            - {@link String} - Response Key of Consumer - expected to have {replyTo} that needs to be replaced
+     * @param responseMessage
+     *            - {@link HasMessageProperties} - Response Message to be sent to Client
+     * @param typedObjectRabbitTemplate
+     *            - {@link RabbitTemplate} - User provided Rabbit Template to send messages
+     * @throws IllegalArgumentException
+     *             - Throws {@link IllegalArgumentException} if <b>responseKey</b> or <b>replyToAddress</b> is null
+     */
+    void sendMessage(String exchange, String replyToAddress, String responseKey,
+            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, RabbitTemplate typedObjectRabbitTemplate)
+            throws IllegalArgumentException;
 
 }
