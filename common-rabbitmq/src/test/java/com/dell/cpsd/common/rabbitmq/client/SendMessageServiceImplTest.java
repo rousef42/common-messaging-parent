@@ -194,17 +194,6 @@ public class SendMessageServiceImplTest
      * @throws IllegalArgumentException
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testSendMessageForNull_exchangeMethodFour() throws IllegalArgumentException
-    {
-        classUnderTest.sendMessage(null, replyToAddress, responseKey, responseMessage, rabbitTemplate);
-    }
-    
-    /**
-     * Negative - Validate Send Message (Method Four) triggers Null Pointer Exception when exchange is null
-     * 
-     * @throws IllegalArgumentException
-     */
-    @Test(expected = IllegalArgumentException.class)
     public void testSendMessageForNull_responseKeyMethodFour() throws IllegalArgumentException
     {
         classUnderTest.sendMessage(exchange, replyToAddress, null, responseMessage, rabbitTemplate);
