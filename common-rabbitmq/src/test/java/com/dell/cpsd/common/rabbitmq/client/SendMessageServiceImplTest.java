@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
@@ -37,6 +38,9 @@ public class SendMessageServiceImplTest
 
     @Mock
     private HasMessageProperties<? extends MessagePropertiesContainer> responseMessage;
+    
+    @Mock
+    private RabbitTemplate                                              rabbitTemplate;
 
     /**
      * @throws java.lang.Exception
@@ -158,5 +162,52 @@ public class SendMessageServiceImplTest
                 .convertAndSend(Mockito.anyString(), Mockito.anyString(), Mockito.any(HasMessageProperties.class));
         classUnderTest.sendMessage(exchange, responseKey, responseMessage);
     }
+    
+    /**
+     * Positive - Validate Send Message (Method Four) to send a valid response
+     * 
+     * @throws IllegalArgumentException
+     */
+    @Test
+    public void testSendMessage_WithUserProvidedRabbitTemplate_MethodFour() throws IllegalArgumentException
+    {
+        Mockito.doNothing().when(messageProducer)
+                .convertAndSend(Mockito.anyString(), Mockito.anyString(), Mockito.any(HasMessageProperties.class), Mockito.any(RabbitTemplate.class));
+        classUnderTest.sendMessage(exchange, replyToAddress, responseKey, responseMessage, rabbitTemplate);
+    }
 
+    /**
+     * Negative - Validate Send Message (Method Four) triggers Null Pointer Exception when rabbit template is null
+     * 
+     * @throws IllegalArgumentException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendMessageForNull_rabbitTemplateMethodFour() throws IllegalArgumentException
+    {
+        rabbitTemplate = null;
+        classUnderTest.sendMessage(exchange, replyToAddress, responseKey, responseMessage, rabbitTemplate);
+    }
+    
+    /**
+     * Negative - Validate Send Message (Method Four) triggers Null Pointer Exception when exchange is null
+     * 
+     * @throws IllegalArgumentException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendMessageForNull_exchangeMethodFour() throws IllegalArgumentException
+    {
+        classUnderTest.sendMessage(null, replyToAddress, responseKey, responseMessage, rabbitTemplate);
+    }
+    
+    /**
+     * Negative - Validate Send Message (Method Four) triggers Null Pointer Exception when exchange is null
+     * 
+     * @throws IllegalArgumentException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendMessageForNull_responseKeyMethodFour() throws IllegalArgumentException
+    {
+        classUnderTest.sendMessage(exchange, replyToAddress, null, responseMessage, rabbitTemplate);
+    }
+    
 }

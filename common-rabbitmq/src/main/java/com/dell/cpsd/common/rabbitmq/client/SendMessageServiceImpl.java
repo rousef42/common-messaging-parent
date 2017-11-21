@@ -72,8 +72,15 @@ public class SendMessageServiceImpl implements SendMessageService
             HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, RabbitTemplate typedObjectRabbitTemplate)
             throws IllegalArgumentException
     {
-        messageProducer.convertAndSend(exchange, generateRequestRoutingKey(replyToAddress, responseKey, DEFAULT_REPLY_TO_PLACEHOLDER),
-                responseMessage, typedObjectRabbitTemplate);
+        if (null != typedObjectRabbitTemplate)
+        {
+            messageProducer.convertAndSend(exchange, generateRequestRoutingKey(replyToAddress, responseKey, DEFAULT_REPLY_TO_PLACEHOLDER),
+                    responseMessage, typedObjectRabbitTemplate);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Rabbit template cannot be null");
+        }
     }
     
     private String generateRequestRoutingKey(String replyToFromRequestMessageProperties, String responseKey, String placeHolder)

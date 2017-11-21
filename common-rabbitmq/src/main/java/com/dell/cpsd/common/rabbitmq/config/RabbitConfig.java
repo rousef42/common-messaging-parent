@@ -78,7 +78,7 @@ public class RabbitConfig
     @Bean
     public RabbitTemplate rabbitTemplateWithObjectTypedMsgConverter()
     {
-        RabbitTemplate template = new RabbitTemplate(productionCachingConnectionFactory());
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(messageConverterWithObjectTyping());
         template.setRetryTemplate(retryTemplate());
         return template;
