@@ -99,7 +99,7 @@ public class RabbitConfig
      * @return {@link rabbitTemplate}
      */
     @Bean
-    public RabbitTemplate rabbitTemplateObjectTypedMessageConverter()
+    public RabbitTemplate rabbitTemplateWithObjectTypedMsgConverter()
     {
         RabbitTemplate template = new RabbitTemplate(productionCachingConnectionFactory());
         template.setMessageConverter(messageConverterWithObjectTyping());
