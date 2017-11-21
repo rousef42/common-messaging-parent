@@ -48,6 +48,9 @@ public class SendMessageServiceIT
 
     @Autowired
     private RabbitTemplate     rabbitTemplate;
+    
+    @Autowired
+    private RabbitTemplate rabbitTemplateWithObjectTypedMsgConverter;
 
     /**
      * Validate that message is sent to exchange when replyTo is given by the user and default placeholder ({replyTo}) is used in the
@@ -124,6 +127,32 @@ public class SendMessageServiceIT
         assertEquals(responseMsg.getMessageProperties().getCorrelationId(), "567890");
         assertEquals(responseMsg.getMessageProperties().getReplyTo(), "test");
 
+    }
+    
+    /**
+     * Validate that message is sent to exchange when replyTo is given by the user and default placeholder ({replyTo}) is used in the
+     * response routing key and rabbit template passed by the calling method
+     * 
+     * @throws InterruptedException
+     */
+    @Test
+    public void testSendMessageWithRabbitTemplate() throws InterruptedException
+    {
+        TopicExchange topicExchange = new TopicExchange("testExchange");
+        rabbitAdmin.declareExchange(topicExchange);
+
+        Queue queue = new Queue("testQueue");
+        rabbitAdmin.declareQueue(queue);
+
+        rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
+        TestResponseMessage testResponseMessage = new TestResponseMessage();
+        sendMessageService.sendMessage("testExchange", "test", "com.dell.cpsd.exchange.routing.key{replyTo}", testResponseMessage,
+                rabbitTemplateWithObjectTypedMsgConverter);
+        Thread.sleep(5000);
+        TestResponseMessage responseMsg = (TestResponseMessage) rabbitTemplateWithObjectTypedMsgConverter.receiveAndConvert("testQueue");
+        assertNotNull(responseMsg);
+        assertEquals(responseMsg.getMessageProperties().getCorrelationId(), "567890");
+        assertEquals(responseMsg.getMessageProperties().getReplyTo(), "test");
     }
 
 }
