@@ -45,6 +45,9 @@ public class MessageProducerIT
 
     @Autowired
     private RabbitTemplate  rabbitTemplate;
+    
+    @Autowired
+    private RabbitTemplate rabbitTemplateWithObjectTypedMsgConverter;
 
     @Autowired
     private MessageProducer messageProducer;
@@ -73,6 +76,31 @@ public class MessageProducerIT
         assertEquals(responseMsg.getMessageProperties().getCorrelationId(), "567890");
         assertEquals(responseMsg.getMessageProperties().getReplyTo(), "test");
 
+    }
+    
+    /**
+     * Validate that message is sent to the exchange with rabbit template
+     * 
+     * @throws InterruptedException
+     */
+    @Test
+    public void testMessageProducerMethodTwo() throws InterruptedException
+    {
+        TopicExchange topicExchange = new TopicExchange("testExchange");
+        rabbitAdmin.declareExchange(topicExchange);
+
+        Queue queue = new Queue("testQueue");
+        rabbitAdmin.declareQueue(queue);
+
+        rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
+        TestRequestMessage testRequestMessage = new TestRequestMessage();
+        
+        messageProducer.convertAndSend("testExchange", "com.dell.cpsd.exchange.routing.key.test", testRequestMessage, rabbitTemplateWithObjectTypedMsgConverter);
+        Thread.sleep(5000);
+        TestRequestMessage alternateRabbitTemplateresponseMsg = (TestRequestMessage) rabbitTemplateWithObjectTypedMsgConverter.receiveAndConvert("testQueue");
+        assertNotNull(alternateRabbitTemplateresponseMsg);
+        assertEquals(alternateRabbitTemplateresponseMsg.getMessageProperties().getCorrelationId(), "567890");
+        assertEquals(alternateRabbitTemplateresponseMsg.getMessageProperties().getReplyTo(), "test");
     }
 
 }

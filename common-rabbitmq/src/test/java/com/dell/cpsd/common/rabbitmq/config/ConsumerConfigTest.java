@@ -88,5 +88,16 @@ public class ConsumerConfigTest
         HandlerRegistrar handlerRegistrar = classUnderTest.handlerRegistrar();
         assertNotNull(handlerRegistrar);
     }
+    
+    /**
+     * Test RabbitListenerContainerFactory bean creation config for Long Running requests
+     */
+    @Test
+    public void testRabbitListenerContainerFactoryForLongRunning()
+    {
+        RabbitListenerContainerFactory<SimpleMessageListenerContainer> rabbitListenerContainerFactory = classUnderTest
+                .simpleRabbitListenerContainerFactoryForLongRunningRequests();
+        assertNotNull(rabbitListenerContainerFactory);
+    }
 
 }

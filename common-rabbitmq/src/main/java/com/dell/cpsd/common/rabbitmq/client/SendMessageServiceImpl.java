@@ -5,6 +5,7 @@
 package com.dell.cpsd.common.rabbitmq.client;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,25 @@ public class SendMessageServiceImpl implements SendMessageService
         messageProducer.convertAndSend(exchange, responseKey, responseMessage);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sendMessage(String exchange, String replyToAddress, String responseKey,
+            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, RabbitTemplate rabbitTemplate)
+            throws IllegalArgumentException
+    {
+        if (null != rabbitTemplate)
+        {
+            messageProducer.convertAndSend(exchange, generateRequestRoutingKey(replyToAddress, responseKey, DEFAULT_REPLY_TO_PLACEHOLDER),
+                    responseMessage, rabbitTemplate);
+        }
+        else
+        {
+            throw new IllegalArgumentException("Rabbit template cannot be null");
+        }
+    }
+    
     private String generateRequestRoutingKey(String replyToFromRequestMessageProperties, String responseKey, String placeHolder)
             throws IllegalArgumentException
     {

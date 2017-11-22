@@ -100,4 +100,24 @@ public class RabbitConfigTest
         DefaultClassMapper classMapper = classUnderTest.classMapperOfMessageAnnotation();
         assertNotNull(classMapper);
     }
+    
+    /**
+     * Test rabbitTemplate bean creation config having message converter that supports typing of objects.
+     */
+    @Test
+    public void testRabbitTemplateWithObjectTypedMsgConverter()
+    {
+        RabbitTemplate rabbitTemplate = classUnderTest.rabbitTemplateWithObjectTypedMsgConverter();
+        assertNotNull(rabbitTemplate);
+    }
+    
+    /**
+     * Test messageConverter bean creation config with typing for Object.
+     */
+    @Test
+    public void testmessageConverterWithObjectTyping()
+    {
+        MessageConverter messageConverter = classUnderTest.messageConverterWithObjectTyping();
+        assertNotNull(messageConverter);
+    }
 }

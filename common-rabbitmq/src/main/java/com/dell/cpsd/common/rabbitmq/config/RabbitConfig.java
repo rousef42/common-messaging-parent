@@ -69,6 +69,20 @@ public class RabbitConfig
         template.setRetryTemplate(retryTemplate());
         return template;
     }
+    
+    /**
+     * create bean for rabbitTemplate with message converter supporting default typing of java.lang.Object referred classes.
+     * 
+     * @return {@link rabbitTemplate}
+     */
+    @Bean
+    public RabbitTemplate rabbitTemplateWithObjectTypedMsgConverter()
+    {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(messageConverterWithObjectTyping());
+        template.setRetryTemplate(retryTemplate());
+        return template;
+    }
 
     /**
      * create bean for retryTemplate
@@ -110,7 +124,34 @@ public class RabbitConfig
 
         final ObjectMapper objectMapper = new ObjectMapper();
         
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        // use ISO8601 format for dates
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        messageConverter.setJsonObjectMapper(objectMapper);
+
+        // ignore properties we don't need or aren't expecting
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        messageConverter.setJsonObjectMapper(objectMapper);
+
+        return messageConverter;
+    }
+    
+    /**
+     * This message converter is used by the message listener container to serialize and deserialize the messages. It also helps in
+     * retaining the correct object type for classes that are referred by java.lang.Object.
+     * 
+     * @return {@link MessageConverter}
+     */
+    @Bean
+    @Qualifier("objectTypedMessageConverter")
+    public MessageConverter messageConverterWithObjectTyping()
+    {
+        Jackson2JsonMessageConverter messageConverter = new Jackson2JsonMessageConverter();
+        messageConverter.setClassMapper(classMapperOfMessageAnnotation());
+        messageConverter.setCreateMessageIds(true);
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        
+        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
 
         // use ISO8601 format for dates
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);

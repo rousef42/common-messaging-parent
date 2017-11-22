@@ -108,6 +108,45 @@ public class MessageProducerImplTest
     {
         this.classUnderTest.convertAndSend(requestExchangeName, routingKey, null);
     }
+    
+    /**
+     * Test Convert and Send functionality of Message producer. Happy path validation for Convert and Send functionality of Message producer..
+     * with custom rabbit template.
+     */
+    @Test
+    public void testConvertAndSend_MethodTwo()
+    {
+        Mockito.doNothing().when(this.rabbitTemplate).convertAndSend(requestExchangeName, routingKey, this.requestMessage);
+        this.classUnderTest.convertAndSend(requestExchangeName, routingKey, this.requestMessage, this.rabbitTemplate);
+        Mockito.verify(this.rabbitTemplate, Mockito.atLeastOnce()).convertAndSend(requestExchangeName, routingKey, this.requestMessage);
+    }
+
+    /**
+     * Test convert and send method two with routing key null.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConvertAndSendWithRoutingKeyNull_MethodTwo()
+    {
+        this.classUnderTest.convertAndSend(requestExchangeName, null, this.requestMessage, rabbitTemplate);
+    }
+
+    /**
+     * Test convert and send method two with request exchange null.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConvertAndSendWithRequestExchangeNull_MethodTwo()
+    {
+        this.classUnderTest.convertAndSend(null, routingKey, this.requestMessage, rabbitTemplate);
+    }
+
+    /**
+     * Test convert and send method two with request message null.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConvertAndSendWithRequestMessageNull_MethodTwo()
+    {
+        this.classUnderTest.convertAndSend(requestExchangeName, routingKey, null, rabbitTemplate);
+    }
 
     /**
      * Creates the message properties object.
