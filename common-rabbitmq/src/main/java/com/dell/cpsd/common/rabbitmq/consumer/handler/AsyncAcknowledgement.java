@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * @param <T>
  *            Response object class
- * @since TBD
+ * @since 2.3.0
  */
 public interface AsyncAcknowledgement<T>
 {

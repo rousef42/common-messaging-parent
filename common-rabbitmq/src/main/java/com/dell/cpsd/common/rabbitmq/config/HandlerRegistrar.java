@@ -19,7 +19,7 @@ import com.dell.cpsd.common.rabbitmq.consumer.handler.MessageHandler;
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
  * 
- * @since TBD
+ * @since 2.3.0
  */
 public class HandlerRegistrar
 {

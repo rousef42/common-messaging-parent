@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
  * 
- * @since TBD
+ * @since 2.3.0
  */
 @Configuration
 @Qualifier("rabbitPropertiesConfig")
