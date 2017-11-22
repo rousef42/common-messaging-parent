@@ -41,12 +41,12 @@ public class MessageProducerImpl implements MessageProducer
      */
     @Override
     public void convertAndSend(String exchangeName, String routingKey, HasMessageProperties<? extends MessagePropertiesContainer> message,
-            RabbitTemplate typedObjectRabbitTemplate)
+            RabbitTemplate rabbitTemplate)
     {
         Assert.notNull(message, "Message cannot be empty");
         Assert.hasText(routingKey, "Routing key cannot be empty");
         Assert.hasText(exchangeName, "Exchange name cannot be empty");
-        typedObjectRabbitTemplate.convertAndSend(exchangeName, routingKey, message);
+        rabbitTemplate.convertAndSend(exchangeName, routingKey, message);
     }
     
 }

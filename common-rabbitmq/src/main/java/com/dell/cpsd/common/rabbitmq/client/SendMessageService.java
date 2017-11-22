@@ -82,13 +82,13 @@ public interface SendMessageService
      *            - {@link String} - Response Key of Consumer - expected to have {replyTo} that needs to be replaced
      * @param responseMessage
      *            - {@link HasMessageProperties} - Response Message to be sent to Client
-     * @param typedObjectRabbitTemplate
+     * @param rabbitTemplate
      *            - {@link RabbitTemplate} - User provided Rabbit Template to send messages
      * @throws IllegalArgumentException
      *             - Throws {@link IllegalArgumentException} if <b>responseKey</b> or <b>replyToAddress</b> is null
      */
     void sendMessage(String exchange, String replyToAddress, String responseKey,
-            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, RabbitTemplate typedObjectRabbitTemplate)
+            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, RabbitTemplate rabbitTemplate)
             throws IllegalArgumentException;
 
 }

@@ -69,13 +69,13 @@ public class SendMessageServiceImpl implements SendMessageService
      */
     @Override
     public void sendMessage(String exchange, String replyToAddress, String responseKey,
-            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, RabbitTemplate typedObjectRabbitTemplate)
+            HasMessageProperties<? extends MessagePropertiesContainer> responseMessage, RabbitTemplate rabbitTemplate)
             throws IllegalArgumentException
     {
-        if (null != typedObjectRabbitTemplate)
+        if (null != rabbitTemplate)
         {
             messageProducer.convertAndSend(exchange, generateRequestRoutingKey(replyToAddress, responseKey, DEFAULT_REPLY_TO_PLACEHOLDER),
-                    responseMessage, typedObjectRabbitTemplate);
+                    responseMessage, rabbitTemplate);
         }
         else
         {
