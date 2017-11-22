@@ -17,6 +17,8 @@ import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
+ * 
+ * @since TBD
  */
 @Service("messageProducer")
 public class MessageProducerImpl implements MessageProducer
@@ -48,5 +50,5 @@ public class MessageProducerImpl implements MessageProducer
         Assert.hasText(exchangeName, "Exchange name cannot be empty");
         rabbitTemplate.convertAndSend(exchangeName, routingKey, message);
     }
-    
+
 }

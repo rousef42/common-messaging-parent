@@ -18,6 +18,8 @@ import com.dell.cpsd.common.rabbitmq.consumer.handler.MessageHandler;
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
+ * 
+ * @since TBD
  */
 public class HandlerRegistrar
 {
@@ -45,7 +47,7 @@ public class HandlerRegistrar
      * Method to register Message Handler of type {@link DefaultMessageHandler} with the listener
      * 
      * @param responseHandlers
-     *            - Message Handler to be registered wit the listener
+     *            Message Handler to be registered wit the listener
      */
     public void register(MessageHandler<?>... responseHandlers)
     {

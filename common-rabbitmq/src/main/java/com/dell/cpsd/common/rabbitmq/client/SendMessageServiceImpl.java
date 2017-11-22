@@ -14,11 +14,11 @@ import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
 /**
  * Impl Class for Send Message Service. Has three overloaded messages that can be utilized to send response Message
- * 
- *
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
+ * 
+ * @since TBD
  */
 @Service("sendMessageService")
 public class SendMessageServiceImpl implements SendMessageService
@@ -82,7 +82,7 @@ public class SendMessageServiceImpl implements SendMessageService
             throw new IllegalArgumentException("Rabbit template cannot be null");
         }
     }
-    
+
     private String generateRequestRoutingKey(String replyToFromRequestMessageProperties, String responseKey, String placeHolder)
             throws IllegalArgumentException
     {

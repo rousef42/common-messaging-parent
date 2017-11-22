@@ -14,7 +14,8 @@ import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
  * </p>
  * 
  * @param <M>
- *            - Message class to be validated
+ *            Message class to be validated
+ * @since TBD
  */
 public class EventMessageValidator<M extends HasMessageProperties<? extends MessagePropertiesContainer>> extends GenericMessageValidator<M>
 {

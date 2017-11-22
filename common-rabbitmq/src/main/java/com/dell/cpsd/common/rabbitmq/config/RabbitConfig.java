@@ -37,6 +37,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
+ * 
+ * @since TBD
  */
 @Configuration
 public class RabbitConfig
@@ -51,10 +53,10 @@ public class RabbitConfig
     @Autowired
     @Qualifier("rabbitPropertiesConfig")
     private PropertiesConfig    propertiesConfig;
-    
+
     @Autowired
     @Qualifier("rabbitConnectionFactory")
-    private ConnectionFactory connectionFactory;
+    private ConnectionFactory   connectionFactory;
 
     /**
      * create bean for rabbitTemplate
@@ -69,7 +71,7 @@ public class RabbitConfig
         template.setRetryTemplate(retryTemplate());
         return template;
     }
-    
+
     /**
      * create bean for rabbitTemplate with message converter supporting default typing of java.lang.Object referred classes.
      * 
@@ -123,7 +125,7 @@ public class RabbitConfig
         messageConverter.setCreateMessageIds(true);
 
         final ObjectMapper objectMapper = new ObjectMapper();
-        
+
         // use ISO8601 format for dates
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         messageConverter.setJsonObjectMapper(objectMapper);
@@ -134,7 +136,7 @@ public class RabbitConfig
 
         return messageConverter;
     }
-    
+
     /**
      * This message converter is used by the message listener container to serialize and deserialize the messages. It also helps in
      * retaining the correct object type for classes that are referred by java.lang.Object.
@@ -150,7 +152,7 @@ public class RabbitConfig
         messageConverter.setCreateMessageIds(true);
 
         final ObjectMapper objectMapper = new ObjectMapper();
-        
+
         objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
 
         // use ISO8601 format for dates
