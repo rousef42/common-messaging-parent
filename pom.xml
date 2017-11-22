@@ -103,12 +103,60 @@
             <organization>com.dell.cpsd</organization>
             <organizationUrl>https://github.com/joz73</organizationUrl>
         </developer>
-        <developer>
+		<developer>
 			<name>Srikanth M</name>
 			<email>srikanth.madhavan@dell.com</email>
 			<organization>com.dell.cpsd</organization>
 			<organizationUrl>https://github.com/madhas8</organizationUrl>
 		</developer>
+		<developer>
+			<name>Shoaib Munaver</name>
+			<email>shoaib.munaver@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/ShoaibMunaver</organizationUrl>
+		</developer>
+		<developer>
+			<name>Mir Taqeeulla</name>
+			<email>mir.taqeeulla@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/taqeem</organizationUrl>
+		</developer>
+		<developer>
+			<name>Sandeep Kumar</name>
+			<email>Sandeep.Kumar5@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/kumars182</organizationUrl>
+		</developer>
+		<developer>
+			<name>Pavan KR</name>
+			<email>Pavan.KR@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/krp2</organizationUrl>
+		</developer>
+		<developer>
+			<name>Rohit Bandi</name>
+			<email>Rohit.Bandi@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/bandir</organizationUrl>
+		</developer>
+		<developer>
+			<name>Ashok Chourasia</name>
+			<email>Ashok.Chourasia@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/choura07</organizationUrl>
+		</developer>
+		<developer>
+			<name>Jeevan B Manooj</name>
+			<email>jeevan.manoj@dell.com</email>
+			<organization>com.dell.cpsd</organization>
+			<organizationUrl>https://github.com/jeevanbmanoj</organizationUrl>
+		</developer>
+		<developer>
+             <name>Vibhav Hiremath</name>
+             <email>vibhav.hiremath@dell.com</email>
+             <organization>com.dell.cpsd</organization>
+             <organizationUrl>https://github.com/Vibhavgit</organizationUrl>
+      </developer>
     </developers>
 
     <scm>
