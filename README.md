@@ -27,7 +27,7 @@ The testing dependency import should use the scope import:
   * default retry policy
   * basic error handling
 
-## Documentation
+## Documentation 
 You can find additional documentation for Project Symphony at [dellemc-symphony.readthedocs.io](https://dellemc-symphony.readthedocs.io).
 
 ## Before you begin

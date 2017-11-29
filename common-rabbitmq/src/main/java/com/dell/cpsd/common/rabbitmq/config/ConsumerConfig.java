@@ -37,6 +37,8 @@ import com.dell.cpsd.common.rabbitmq.retrypolicy.DefaultRetryPolicyAdvice;
  * <p>
  * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
+ * 
+ * @since 2.3.0
  */
 @Configuration
 @AutoConfigureAfter(RabbitConfig.class)
@@ -94,8 +96,6 @@ public class ConsumerConfig
     /**
      * Creates bean for simpleRabbitListenerContainerFactory
      * 
-     * @param connectionFactory
-     *            - {@link ConnectionFactory}
      * @return SimpleRabbitListenerContainerFactory - {@link SimpleRabbitListenerContainerFactory}
      */
     @Bean
@@ -113,8 +113,6 @@ public class ConsumerConfig
     /**
      * Creates bean for simpleRabbitListenerContainerFactoryForLongRunningRequests
      * 
-     * @param connectionFactory
-     *            - {@link ConnectionFactory}
      * @return SimpleRabbitListenerContainerFactory - {@link SimpleRabbitListenerContainerFactory}
      */
     @Bean
