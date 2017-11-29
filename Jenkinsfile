@@ -40,6 +40,11 @@ pipeline {
                 sh "mvn clean install -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
             }
         }
+      stage('Fortify Scan') { 
+         steps { 
+              runFortifyScan() 
+           } 
+      }
 		stage('Unit Testing') {
             steps {
                 sh "mvn test -Dmaven.repo.local=.repo"
