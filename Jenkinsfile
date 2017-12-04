@@ -30,7 +30,7 @@ pipeline {
                 doCheckout()
             }
         }
-        stage('Parallel Stages1') {
+        stage('Build') {
           parallel {
               stage('TravisCI Linter') {
                   steps {
@@ -42,14 +42,19 @@ pipeline {
                   sh "mvn clean install -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
                }
             }
-          }
-       }
-      stage('Fortify Scan') { 
-         steps { 
-              runFortifyScan() 
-           } 
-      }
-		stage('Unit Testing') {
+              stage('Fortify Scan') { 
+               steps { 
+                  runFortifyScan() 
+                 } 
+               }
+              stage('PasswordScan') {
+               steps {
+                 doPwScan()
+               }
+             }
+            }
+         }
+	stage('Unit Testing') {
             steps {
                 sh "mvn test -Dmaven.repo.local=.repo"
             }
@@ -59,30 +64,29 @@ pipeline {
                 junit '**/target/*-reports/*.xml'
             }
         }
-        stage('PasswordScan') {
-            steps {
-                doPwScan()
+        stage('Scans and Checks') {
+          parallel {
+            stage('SonarQube Analysis') {
+               steps {
+                  doSonarAnalysis()    
+               }
             }
+            stage('Third Party Audit') {
+               steps {
+                  doThirdPartyAudit()
+               }
+            }
+            stage('Github Release') {
+               steps {
+                  githubRelease()
+                }
+             }
+           }
         }
         stage('Deploy') {
             steps {
-                doMvnDeploy()
-            }
-        }
-        stage('SonarQube Analysis') {
-            steps {
-                doSonarAnalysis()    
-            }
-        }
-        stage('Third Party Audit') {
-            steps {
-                doThirdPartyAudit()
-            }
-        }
-        stage('Github Release') {
-            steps {
-                githubRelease()
-            }
+               doMvnDeploy()
+           }
         }
         stage('NexB Scan') {
             steps {
