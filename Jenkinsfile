@@ -30,16 +30,20 @@ pipeline {
                 doCheckout()
             }
         }
-        stage('TravisCI Linter') {
-            steps {
-                doTravisLint()
+        stage('Parallel Stages1') {
+          parallel {
+              stage('TravisCI Linter') {
+                  steps {
+                  doTravisLint()
+                   }
+                }
+              stage('Build') {
+               steps {
+                  sh "mvn clean install -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
+               }
             }
-        }
-        stage('Build') {
-            steps {
-                sh "mvn clean install -Dmaven.repo.local=.repo -DskipTests=true -DskipITs=true"
-            }
-        }
+          }
+       }
       stage('Fortify Scan') { 
          steps { 
               runFortifyScan() 
