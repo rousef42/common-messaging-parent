@@ -27,6 +27,8 @@
         <plugin-maven-compiler-version>3.3</plugin-maven-compiler-version>
         <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+	<sonar.analysis.mode>preview</sonar.analysis.mode>
+         <sonar.issuesReport.html.enable>true</sonar.issuesReport.html.enable>
     </properties>
 
     <licenses>
