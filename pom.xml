@@ -7,7 +7,7 @@
 
     <groupId>com.dell.cpsd</groupId>
     <artifactId>common-messaging-parent</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Common Messaging Parent</name>
@@ -17,18 +17,26 @@
     <parent>
         <groupId>com.dell.cpsd</groupId>
         <artifactId>root-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </parent>
 
     <properties>
-        <common-dependencies.version>1.2.0</common-dependencies.version>
-        <amqp-contract.extension.version>1.0.0-SNAPSHOT</amqp-contract.extension.version>
+
+        <!-- com.dell.cpsd Dependency Properties -->
+        <common-dependencies.version>0.1.0-SNAPSHOT</common-dependencies.version>
+        <amqp-contract.extension.version>0.1.0-SNAPSHOT</amqp-contract.extension.version>
+
         <!-- TODO: Spring boot autoconfigure to be added to common-dependencies and below entry to be removed after the addition to common-dependencies . -->
-        <plugin-maven-compiler-version>3.3</plugin-maven-compiler-version>
+        <!-- External Dependency Properties -->
         <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+
+        <!-- Plugin Properties -->
+        <plugin-maven-compiler-version>3.3</plugin-maven-compiler-version>
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
-	<sonar.analysis.mode>preview</sonar.analysis.mode>
-         <sonar.issuesReport.html.enable>true</sonar.issuesReport.html.enable>
+
+        <!-- Misc Properties -->
+        <sonar.analysis.mode>preview</sonar.analysis.mode>
+        <sonar.issuesReport.html.enable>true</sonar.issuesReport.html.enable>
     </properties>
 
     <licenses>
@@ -215,10 +223,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${plugin-maven-compiler-version}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>
