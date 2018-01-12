@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.dell.cpsd.common.rabbitmq.TestReplyMessage;
 import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
@@ -68,10 +69,12 @@ public class SendMessageServiceIT
         rabbitAdmin.declareQueue(queue);
 
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
-        TestResponseMessage testResponseMessage = new TestResponseMessage();
+        TestReplyMessage testResponseMessage = new TestReplyMessage();
+        testResponseMessage.getMessageProperties().setCorrelationId("567890");
+        testResponseMessage.getMessageProperties().setReplyTo("test");
         sendMessageService.sendMessage("testExchange", "test", "com.dell.cpsd.exchange.routing.key{replyTo}", testResponseMessage);
         Thread.sleep(5000);
-        TestResponseMessage responseMsg = (TestResponseMessage) rabbitTemplate.receiveAndConvert("testQueue");
+        TestReplyMessage responseMsg = (TestReplyMessage) rabbitTemplate.receiveAndConvert("testQueue");
         assertNotNull(responseMsg);
         assertEquals(responseMsg.getMessageProperties().getCorrelationId(), "567890");
         assertEquals(responseMsg.getMessageProperties().getReplyTo(), "test");
@@ -93,10 +96,12 @@ public class SendMessageServiceIT
         rabbitAdmin.declareQueue(queue);
 
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
-        TestResponseMessage testResponseMessage = new TestResponseMessage();
+        TestReplyMessage testResponseMessage = new TestReplyMessage();
+        testResponseMessage.getMessageProperties().setCorrelationId("567890");
+        testResponseMessage.getMessageProperties().setReplyTo("test");
         sendMessageService.sendMessage("testExchange", "com.dell.cpsd.exchange.routing.key.test", testResponseMessage);
         Thread.sleep(5000);
-        TestResponseMessage responseMsg = (TestResponseMessage) rabbitTemplate.receiveAndConvert("testQueue");
+        TestReplyMessage responseMsg = (TestReplyMessage) rabbitTemplate.receiveAndConvert("testQueue");
         assertNotNull(responseMsg);
         assertEquals(responseMsg.getMessageProperties().getCorrelationId(), "567890");
         assertEquals(responseMsg.getMessageProperties().getReplyTo(), "test");
@@ -118,11 +123,13 @@ public class SendMessageServiceIT
         rabbitAdmin.declareQueue(queue);
 
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
-        TestResponseMessage testResponseMessage = new TestResponseMessage();
+        TestReplyMessage testResponseMessage = new TestReplyMessage();
+        testResponseMessage.getMessageProperties().setCorrelationId("567890");
+        testResponseMessage.getMessageProperties().setReplyTo("test");
         sendMessageService.sendMessage("testExchange", "test", "com.dell.cpsd.exchange.routing.key{customPlaceHolder}",
                 testResponseMessage, "{customPlaceHolder}");
         Thread.sleep(5000);
-        TestResponseMessage responseMsg = (TestResponseMessage) rabbitTemplate.receiveAndConvert("testQueue");
+        TestReplyMessage responseMsg = (TestReplyMessage) rabbitTemplate.receiveAndConvert("testQueue");
         assertNotNull(responseMsg);
         assertEquals(responseMsg.getMessageProperties().getCorrelationId(), "567890");
         assertEquals(responseMsg.getMessageProperties().getReplyTo(), "test");
@@ -145,31 +152,18 @@ public class SendMessageServiceIT
         rabbitAdmin.declareQueue(queue);
 
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
-        TestResponseMessage testResponseMessage = new TestResponseMessage();
+        TestReplyMessage testResponseMessage = new TestReplyMessage();
+        testResponseMessage.getMessageProperties().setCorrelationId("567890");
+        testResponseMessage.getMessageProperties().setReplyTo("test");
         sendMessageService.sendMessage("testExchange", "test", "com.dell.cpsd.exchange.routing.key{replyTo}", testResponseMessage,
                 rabbitTemplateWithObjectTypedMsgConverter);
         Thread.sleep(5000);
-        TestResponseMessage responseMsg = (TestResponseMessage) rabbitTemplateWithObjectTypedMsgConverter.receiveAndConvert("testQueue");
+        TestReplyMessage responseMsg = (TestReplyMessage) rabbitTemplateWithObjectTypedMsgConverter.receiveAndConvert("testQueue");
         assertNotNull(responseMsg);
         assertEquals(responseMsg.getMessageProperties().getCorrelationId(), "567890");
         assertEquals(responseMsg.getMessageProperties().getReplyTo(), "test");
     }
 
-}
-
-class TestResponseMessage implements HasMessageProperties<MessagePropertiesContainer>
-{
-
-    @Override
-    public MessagePropertiesContainer getMessageProperties()
-    {
-        return new TestMessage();
-    }
-
-    @Override
-    public void setMessageProperties(MessagePropertiesContainer messageProperties)
-    {
-    }
 }
 
 class TestMessage implements MessagePropertiesContainer

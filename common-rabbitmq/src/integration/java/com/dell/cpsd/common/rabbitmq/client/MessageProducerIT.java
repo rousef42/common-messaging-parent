@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.dell.cpsd.common.rabbitmq.TestRequestMessage;
 import com.dell.cpsd.contract.extension.amqp.message.HasMessageProperties;
 import com.dell.cpsd.contract.extension.amqp.message.MessagePropertiesContainer;
 
@@ -68,7 +69,8 @@ public class MessageProducerIT
 
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
         TestRequestMessage testRequestMessage = new TestRequestMessage();
-
+        testRequestMessage.getMessageProperties().setCorrelationId("567890");
+        testRequestMessage.getMessageProperties().setReplyTo("test");
         messageProducer.convertAndSend("testExchange", "com.dell.cpsd.exchange.routing.key.test", testRequestMessage);
         Thread.sleep(5000);
         TestRequestMessage responseMsg = (TestRequestMessage) rabbitTemplate.receiveAndConvert("testQueue");
@@ -94,7 +96,8 @@ public class MessageProducerIT
 
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue).to(topicExchange).with("com.dell.cpsd.exchange.routing.key.test"));
         TestRequestMessage testRequestMessage = new TestRequestMessage();
-        
+        testRequestMessage.getMessageProperties().setCorrelationId("567890");
+        testRequestMessage.getMessageProperties().setReplyTo("test");
         messageProducer.convertAndSend("testExchange", "com.dell.cpsd.exchange.routing.key.test", testRequestMessage, rabbitTemplateWithObjectTypedMsgConverter);
         Thread.sleep(5000);
         TestRequestMessage alternateRabbitTemplateresponseMsg = (TestRequestMessage) rabbitTemplateWithObjectTypedMsgConverter.receiveAndConvert("testQueue");
@@ -105,20 +108,6 @@ public class MessageProducerIT
 
 }
 
-class TestRequestMessage implements HasMessageProperties<MessagePropertiesContainer>
-{
-
-    @Override
-    public MessagePropertiesContainer getMessageProperties()
-    {
-        return new TestMessageProperties();
-    }
-
-    @Override
-    public void setMessageProperties(MessagePropertiesContainer messageProperties)
-    {
-    }
-}
 
 class TestMessageProperties implements MessagePropertiesContainer
 {
