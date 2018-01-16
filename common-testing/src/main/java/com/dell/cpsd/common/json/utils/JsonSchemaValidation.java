@@ -1,11 +1,14 @@
 /**
- * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * Dell EMC Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  */
 
 package com.dell.cpsd.common.json.utils;
 
-import com.dell.cpsd.common.rabbitmq.utils.MessageLoader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.io.IOUtils;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.SchemaException;
@@ -18,16 +21,12 @@ import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import com.dell.cpsd.common.rabbitmq.utils.MessageLoader;
 
 /**
  * JSON schema validation utils.
  * <p>
- * Copyright &copy; 2017 Dell Inc. or its subsidiaries.  All Rights Reserved.
- * Dell EMC Confidential/Proprietary Information
+ * Copyright &copy; 2017 Dell Inc. or its subsidiaries. All Rights Reserved. Dell EMC Confidential/Proprietary Information
  * </p>
  *
  * @version 1.1
@@ -39,15 +38,18 @@ public final class JsonSchemaValidation
 
     private JsonSchemaValidation()
     {
-        //Utility class
+        // Utility class
     }
 
     /**
      * Validate JSON message against schema definition.
      *
-     * @param schemaResourcePath absolute path to schema resource
-     * @param jsonResourcePath   absolute path to message example resource
-     * @param includesDir        additional path to llok for includes
+     * @param schemaResourcePath
+     *            absolute path to schema resource
+     * @param jsonResourcePath
+     *            absolute path to message example resource
+     * @param includesDir
+     *            additional path to llok for includes
      * @return null if correct, string with description when error.
      * @since 1.0
      */
@@ -59,7 +61,7 @@ public final class JsonSchemaValidation
             final String originalContent = IOUtils.toString(streamExample);
             final String body = MessageLoader.removeAmqpToolWrapper(originalContent);
             final ByteArrayInputStream bodyIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-            return validateSchema(streamSchema, bodyIS, includesDir);
+            return validateSchema(streamSchema, bodyIS, includesDir, null);
         }
         catch (final IOException e)
         {
@@ -72,20 +74,59 @@ public final class JsonSchemaValidation
     /**
      * Validate JSON message against schema definition.
      *
-     * @param streamSchema  schema InputStream
-     * @param streamExample message example InputStream
-     * @param includesDir   additional path to llok for includes
+     * @param schemaResourcePath
+     *            absolute path to schema resource
+     * @param jsonResourcePath
+     *            absolute path to message example resource
+     * @param includesDir
+     *            additional path to look for includes
+     * @param schemaDir
+     *            additional schema path to look for includes
      * @return null if correct, string with description when error.
      * @since 1.0
      */
-    public static String validateSchema(final InputStream streamSchema, final InputStream streamExample, final String includesDir)
+    public static String validateSchema(final String schemaResourcePath, final String jsonResourcePath, final String includesDir,
+            final String schemaDir)
+    {
+        try (final InputStream streamSchema = JsonSchemaValidation.class.getResourceAsStream(schemaResourcePath);
+                final InputStream streamExample = JsonSchemaValidation.class.getResourceAsStream(jsonResourcePath))
+        {
+            final String originalContent = IOUtils.toString(streamExample);
+            final String body = MessageLoader.removeAmqpToolWrapper(originalContent);
+            final ByteArrayInputStream bodyIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+            return validateSchema(streamSchema, bodyIS, includesDir, schemaDir);
+        }
+        catch (final IOException e)
+        {
+            final String message = e.getMessage() + "\n" + schemaResourcePath + "\n" + jsonResourcePath;
+            LOGGER.error(message, e);
+            return message;
+        }
+    }
+
+    /**
+     * Validate JSON message against schema definition.
+     *
+     * @param streamSchema
+     *            schema InputStream
+     * @param streamExample
+     *            message example InputStream
+     * @param includesDir
+     *            additional path to look for includes
+     * @param schemaDir
+     *            schema dir to look for includes
+     * @return null if correct, string with description when error.
+     * @since 1.0
+     */
+    public static String validateSchema(final InputStream streamSchema, final InputStream streamExample, final String includesDir,
+            final String schemaDir)
     {
         final JSONTokener schemaTokener = new JSONTokener(streamSchema);
         final JSONObject rawSchema = new JSONObject(schemaTokener);
         final Schema schema;
         try
         {
-            final SchemaClient client = new ResourcesSchemaClient(includesDir);
+            final SchemaClient client = new ResourcesSchemaClient(includesDir, schemaDir);
             schema = SchemaLoader.load(rawSchema, client);
         }
         catch (final SchemaException e)
@@ -111,15 +152,14 @@ public final class JsonSchemaValidation
             LOGGER.error(message, e);
             return message + "\n" + e.getLocalizedMessage();
         }
-        //Everything fine
+        // Everything fine
         return null;
     }
 
     public static String readValidationException(final ValidationException e)
     {
         final StringBuilder bld = new StringBuilder(e.getMessage());
-        e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(err ->
-        {
+        e.getCausingExceptions().stream().map(ValidationException::getMessage).forEach(err -> {
             LOGGER.error(err);
             bld.append(err);
             bld.append("\n");

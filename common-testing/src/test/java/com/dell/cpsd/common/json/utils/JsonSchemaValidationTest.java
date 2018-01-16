@@ -52,4 +52,28 @@ public class JsonSchemaValidationTest
         assertNotNull(errors);
         assertTrue(errors.contains("message"));
     }
+    
+    @Test
+    public void ValidateSchemaPositive_schemaDir() throws Exception
+    {
+        String messageName = "ping";
+        String errors = validateSchema(SCHEMA_DIR + messageName + ".jsd", EXAMPLE_DIR + messageName + ".json", INCLUDES_DIR, SCHEMA_DIR);
+        assertNull(errors, errors);
+    }
+
+    @Test
+    public void ValidateSchemaPositiveUsage_schemaDir() throws Exception
+    {
+        String messageName = "ping";
+        String errors = validateSchema(SCHEMA_DIR + messageName + ".jsd", EXAMPLE_DIR + messageName + ".usage.json", INCLUDES_DIR, SCHEMA_DIR);
+        assertNull(errors, errors);
+    }
+
+    @Test
+    public void ValidateSchemaNegative_schemaDir() throws Exception
+    {
+        String errors = validateSchema(SCHEMA_DIR + "ping.jsd", EXAMPLE_DIR + "pong.json", INCLUDES_DIR, SCHEMA_DIR);
+        assertNotNull(errors);
+        assertTrue(errors.contains("message"));
+    }
 }
