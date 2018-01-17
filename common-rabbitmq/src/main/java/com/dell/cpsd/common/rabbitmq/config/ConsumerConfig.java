@@ -136,16 +136,17 @@ public class ConsumerConfig
     public Advice retryPolicyAdvice()
     {
         MessageRecoverer messageRecoverer = new DefaultMessageRecoverer(rabbitTemplate);
-        return new DefaultRetryPolicyAdvice(messageRecoverer, retryPolicy());
+        return new DefaultRetryPolicyAdvice(messageRecoverer, commonRetryPolicy());
     }
 
     /**
-     * creates bean for DefaultRetryPolicy
+     * creates bean for DefaultRetryPolicy - Qualifier as commonRetryPolicy to resolve the issue with systemDefinition
      * 
      * @return {@link RetryPolicy}
      */
     @Bean
-    public RetryPolicy retryPolicy()
+    @Qualifier("commonRetryPolicy")
+    public RetryPolicy commonRetryPolicy()
     {
         return new DefaultRetryPolicy();
     }
