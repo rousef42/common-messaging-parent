@@ -12,7 +12,7 @@
 
     <name>Common Messaging Parent</name>
     <description>Common messaging project for Dell CPSD</description>
-    <url>https://github.com/dellemc-symphony/common-messaging-parent</url>
+    <url>https://github.com/rousef42/common-messaging-parent</url>
 
     <parent>
         <groupId>com.dell.cpsd</groupId>
@@ -170,10 +170,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/dellemc-symphony/common-messaging-parent.git</connection>
-        <developerConnection>scm:git:https://github.com/dellemc-symphony/common-messaging-parent.git
+        <connection>scm:git:https://github.com/rousef42/common-messaging-parent.git</connection>
+        <developerConnection>scm:git:https://github.com/rousef42/common-messaging-parent.git
         </developerConnection>
-        <url>https://github.com/dellemc-symphony/common-messaging-parent/tree/master</url>
+        <url>https://github.com/rousef42/common-messaging-parent/tree/master</url>
         <tag>HEAD</tag>
     </scm>
 
